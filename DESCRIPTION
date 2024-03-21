@@ -1,0 +1,16 @@
+Package: hypometrics
+Type: Package
+Title: Methods To Analyse CGM and Activity Data
+Version: 0.0.9
+Author: Gilberte Martine-Edith 
+Maintainer: Jonah Thomas <jjct1@leicester.ac.uk>
+Description: A series of functions to analyse hypoglycaemia and physicalactivity data. 
+License: What license is it under?
+Encoding: UTF-8
+LazyData: true
+Suggests: 
+    knitr,
+    rmarkdown,
+    testthat (>= 3.0.0)
+VignetteBuilder: knitr
+Config/testthat/edition: 3
