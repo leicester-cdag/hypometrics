@@ -14,27 +14,27 @@
 sdhDetection <- function(DataFrame, DetectionLimit, DetectionDuration){
 
   #### Original CGM data in long format with added niformation on time of data and values below threshold####
-  cgm_data_long <-  DataFrame %>%
-    group_by(id) %>%
-    mutate(Time_of_day = ifelse(as.numeric(format(cgm_timestamp, "%H"))<6 & as.numeric(format(cgm_timestamp, "%H"))>=0, "Night", "Day")) %>%
-    select(id, Time_of_day, cgm_timestamp, glucose) %>%
-    mutate(below_threshold = case_when(glucose < DetectionLimit ~ 1,
-                                       glucose >= DetectionLimit ~ 0),
-           seq_event = rleid(below_threshold))
+  cgm_data_long <- DataFrame %>%
+    dplyr::group_by(id) %>%
+    dplyr::mutate(time_of_day = ifelse(as.numeric(format(cgm_timestamp, "%H"))<6 & as.numeric(format(cgm_timestamp, "%H"))>=0, "Night", "Day")) %>%
+    dplyr::select(id, time_of_day, cgm_timestamp, glucose) %>%
+    dplyr::mutate(below_threshold = dplyr::case_when(glucose < DetectionLimit ~ 1,
+                                                     glucose >= DetectionLimit ~ 0),
+                  seq_event = data.table::rleid(below_threshold))
 
   #### Transform CGM data to wide format ####
   #Data frame displays the sequence of events i.e. below threshold, above threshold, NA... and how long for
   cgm_data_wide <- cgm_data_long %>%
-    group_by(id) %>%
-    mutate(last_timestamp = last(cgm_timestamp)) %>%
-    group_by(id, seq_event, below_threshold,last_timestamp) %>%
-    summarise(start_seq = first(cgm_timestamp)) %>%
-    group_by(id, last_timestamp) %>%
-    mutate(end_seq = lead(start_seq)) %>%
-    transform(end_seq = if_else(is.na(end_seq), last_timestamp, end_seq)) %>%
-    mutate(interval_seq = as.interval(start_seq, end_seq),
-           duration_seq= time_length(interval_seq, unit = "min")) %>%
-    select(-last_timestamp)
+    dplyr::group_by(id) %>%
+    dplyr::mutate(last_timestamp = data.table::last(cgm_timestamp)) %>%
+    dplyr::group_by(id, seq_event, below_threshold,last_timestamp) %>%
+    dplyr::summarise(start_seq = data.table::first(cgm_timestamp)) %>%
+    dplyr::group_by(id, last_timestamp) %>%
+    dplyr::mutate(end_seq = dplyr::lead(start_seq)) %>%
+    transform(end_seq = dplyr::if_else(is.na(end_seq), last_timestamp, end_seq)) %>%
+    dplyr::mutate(interval_seq = lubridate::as.interval(start_seq, end_seq),
+                  duration_seq= lubridate::time_length(interval_seq, unit = "min")) %>%
+    dplyr::select(-last_timestamp)
 
   #This will mark adjacent SDH (less than the detection duration apart)
   #as a single group (i.e. as a single event) where applicable based on Hypo-METRICS rules (please refer to manual)
@@ -69,44 +69,51 @@ sdhDetection <- function(DataFrame, DetectionLimit, DetectionDuration){
   }
 
   #Return in a long format dataset, the information about whether or not SDH are eligible to be grouped (based on the sdh_grouped variable)
-  combined_cgm <- full_join(cgm_data_long, cgm_data_wide, by = c("id", "seq_event", "below_threshold"))
+  combined_cgm <- dplyr::full_join(cgm_data_long,
+                                   cgm_data_wide,
+                                   by = c("id", "seq_event", "below_threshold"))
 
   #Add when there is an SDH, internal, duration and nadir information (dataset still in long format)
   combined_cgm <- combined_cgm %>%
-    group_by(id) %>%
-    mutate(sdh_seq = ifelse(sdh_grouped==1, rleid(sdh_grouped), NA)) %>%
-    group_by(id, sdh_seq, sdh_grouped) %>%
-    mutate(sdh_interval = if_else(!is.na(sdh_seq), as.interval(first(start_seq), last(end_seq)), NA), #note if_else here, as opposed to ifelse will preserve the interval format and not coerce it to numeric
-           sdh_duration_mins = ifelse(!is.na(sdh_seq), time_length(sdh_interval, unit = "mins"), NA),
-           sdh_nadir = ifelse(!is.na(sdh_seq), min(glucose), NA))
+    dplyr::group_by(id) %>%
+    dplyr::mutate(sdh_seq = ifelse(sdh_grouped==1, data.table::rleid(sdh_grouped), NA)) %>%
+    dplyr::group_by(id, sdh_seq, sdh_grouped) %>%
+    dplyr::mutate(sdh_interval = dplyr::if_else(!is.na(sdh_seq), #note if_else here, as opposed to ifelse will preserve the interval format and not coerce it to numeric
+                                                lubridate::as.interval(data.table::first(start_seq),
+                                                                       data.table::last(end_seq)),
+                                                NA),
+                  sdh_duration_mins = ifelse(!is.na(sdh_seq),
+                                             lubridate::time_length(sdh_interval, unit = "mins"),
+                                             NA),
+                  sdh_nadir = ifelse(!is.na(sdh_seq), min(glucose), NA))
 
 #Add information as to whether there was a change in night status during a single SDH
   combined_cgm <- combined_cgm %>%
-    group_by(id, sdh_seq) %>%
-    mutate(timeofday_change_flag = case_when(!is.na(sdh_seq) & Time_of_day == first(Time_of_day) ~ 0,
-                                             !is.na(sdh_seq) & Time_of_day !=lag(Time_of_day) ~ 1,
-                                             !is.na(sdh_seq) & Time_of_day == lag(Time_of_day) ~ 0,
-                                             is.na(sdh_seq) ~ NA_real_))
+    dplyr::group_by(id, sdh_seq) %>%
+    dplyr::mutate(timeofday_change_flag = dplyr::case_when(!is.na(sdh_seq) & time_of_day == data.table::first(time_of_day) ~ 0,
+                                                           !is.na(sdh_seq) & time_of_day != dplyr::lag(time_of_day) ~ 1,
+                                                           !is.na(sdh_seq) & time_of_day == dplyr::lag(time_of_day) ~ 0,
+                                                           is.na(sdh_seq) ~ NA_real_))
 
 #Indicate whether SDH night status is overlap if group night status is 1
   combined_cgm <- combined_cgm %>%
-    group_by(id) %>%
-    mutate(sdh_night_status = ifelse(!is.na(sdh_seq), Time_of_day, NA)) %>%
-    group_by(id, sdh_seq) %>%
-    mutate(group_night_status = ifelse(!is.na(timeofday_change_flag), sum(timeofday_change_flag), NA)) %>%
+    dplyr::group_by(id) %>%
+    dplyr::mutate(sdh_night_status = ifelse(!is.na(sdh_seq), time_of_day, NA)) %>%
+    dplyr::group_by(id, sdh_seq) %>%
+    dplyr::mutate(group_night_status = ifelse(!is.na(timeofday_change_flag), sum(timeofday_change_flag), NA)) %>%
     #essentially this will flag if no change in status then will be 0s if change in status the sum will be 1 for that sdh!
-    transform(sdh_night_status = ifelse(group_night_status == 0, sdh_night_status, "Overlap"))
+    base::transform(sdh_night_status = ifelse(group_night_status == 0, sdh_night_status, "Overlap"))
 
   #return to a map format with one row per event
   sdh_map <- combined_cgm %>%
-    filter(sdh_grouped==1) %>%
-    group_by(id, sdh_seq, sdh_grouped, sdh_interval, sdh_duration_mins, sdh_nadir, sdh_night_status) %>%
-    summarise() %>%
-    ungroup() %>%
-    group_by(id) %>%
-    mutate(sdh_number = rleid(sdh_seq)) %>%
-    select(id, sdh_number, sdh_interval, sdh_duration_mins, sdh_nadir, sdh_night_status) %>%
-    mutate_if(is.numeric, round, digits = 1)
+    dplyr::filter(sdh_grouped==1) %>%
+    dplyr::group_by(id, sdh_seq, sdh_grouped, sdh_interval, sdh_duration_mins, sdh_nadir, sdh_night_status) %>%
+    dplyr::summarise() %>%
+    dplyr::ungroup() %>%
+    dplyr::group_by(id) %>%
+    dplyr::mutate(sdh_number = data.table::rleid(sdh_seq)) %>%
+    dplyr::select(id, sdh_number, sdh_interval, sdh_duration_mins, sdh_nadir, sdh_night_status) %>%
+    dplyr::mutate_if(is.numeric, round, digits = 1)
 
 
   #Return final output - 1 row per event per individual
