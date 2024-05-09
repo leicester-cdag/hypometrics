@@ -2,22 +2,33 @@
 % Please edit documentation in R/sdhDetection.R
 \name{sdhDetection}
 \alias{sdhDetection}
-\title{sdhDetection}
+\title{Detection and Description of Episodes of Continuous Glucose Monitoring (CGM) Hypoglycaemia}
 \usage{
-sdhDetection(DataFrame, DetectionLimit, DetectionDuration)
+sdhDetection(DataFrame, DetectionLimit = 3.9, DetectionDuration = 15)
 }
 \arguments{
-\item{DataFrame}{A dataframe of CGM in which hypoglycaemic episodes will be detected.
+\item{DataFrame}{A dataframe with CGM data in which hypoglycaemic episodes will be detected.
 Must have columns id, cgm_timestamp, glucose.}
 
-\item{DetectionLimit}{The glucose value used to detect hypoglycaemia}
+\item{DetectionLimit}{Object of type numeric or integer corresponding to
+the glucose value used to detect hypoglycaemia. Default is 3.9 (mmol/L).}
 
-\item{DetectionDuration}{The amount of time an individual needs to be at or below the DetectionLimit for a hypolgycaemic episode to be detected}
+\item{DetectionDuration}{Object of type numeric or integer corresponding to
+the duration at or below the DetectionLimit for a hypolgycaemic episode to be detected.
+Default is 15 (minutes).}
 }
 \value{
 A dataframe with one hypoglycaemic episode per row with characteristics in each column
 }
 \description{
 Function which summarises raw CGM data and produces an output which
-includes key characteristics (e.g nadir, duration) of each hypoglycaemic episode
+includes key characteristics (e.g nadir, duration) of each CGM-detected hypoglycaemic episode.
+}
+\examples{
+\dontrun{
+hypometrics::sdhDetection(DataFrame,
+                          DetectionLimit = 3,
+                          DetectionDuration = 30)
+}
+
 }
