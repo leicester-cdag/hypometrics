@@ -1,19 +1,75 @@
-#' @title sdhDetection
+#' @title Detection and Description of Episodes of Continuous Glucose Monitoring (CGM) Hypoglycaemia
+#'
 #' @description Function which summarises raw CGM data and produces an output which
-#' includes key characteristics (e.g nadir, duration) of each hypoglycaemic episode
+#' includes key characteristics (e.g nadir, duration) of each CGM-detected hypoglycaemic episode
 #'
 #' @param DataFrame A dataframe of CGM in which hypoglycaemic episodes will be detected.
 #' Must have columns id, cgm_timestamp, glucose.
-#' @param DetectionLimit  The glucose value used to detect hypoglycaemia
-#' @param DetectionDuration The amount of time an individual needs to be at or below the DetectionLimit for a hypolgycaemic episode to be detected
+#' @param DetectionLimit  The glucose value used to detect hypoglycaemia. Default is 3.9 mmol/L.
+#' @param DetectionDuration The time duration an individual needs to be at or below the DetectionLimit for a hypolgycaemic episode to be detected.
+#' Default is 15 minutes.
 #'
 #' @return A dataframe with one hypoglycaemic episode per row with characteristics in each column
-#' @export
-#'
 #' @examples
-sdhDetection <- function(DataFrame, DetectionLimit, DetectionDuration){
+#'
+#'
+#' @export
+sdhDetection <- function(DataFrame,
+                         DetectionLimit = 3.9,
+                         DetectionDuration = 15){
 
-  #### Original CGM data in long format with added niformation on time of data and values below threshold####
+  #### Check function inputs ####
+  if(ncol(DataFrame) != 3){
+    stop("Unexpected number of columns for `DataFrame`,
+           `DataFrame` must have exactly three columns.")
+  }
+
+  if(all.equal(colnames(DataFrame), c("id", "cgm_timestamp", "glucose")) != TRUE){
+    stop("Unexpected column names in `DataFrame`. `DataFrame` columns must have
+         the following names: id, cgm_timestamp, glucose.")
+  }
+
+ if(is.character(DataFrame$id) == FALSE){
+   stop("Column `id` is of unexpected type. Must be character.")
+ }
+
+ if(klk){
+    stop("Column `cgm_timestamp` must be of type date-time")
+ }
+
+ if(is.numeric(DataFrame$glucose) == FALSE){
+    stop("Column `glucose` is of unexpected type. Must be numeric")
+
+  }
+
+  if(is.null(DetectionLimit)){
+    stop("DetectionLimit cannot be NULL. Must be populated entry of type numeric or integer.")
+  }
+
+  if(is.na(DetectionLimit)){
+    stop("DetectionLimit cannot be NA. Must be populated entry of type numeric or integer.")
+  }
+
+  if(!class(DetectionLimit) %in% c("numeric", "integer")){
+    stop("DetectionLimit is of unexpected type. Must be numeric or integer.")
+  }
+
+  if(is.null(DetectionDuration)){
+    stop("DetectionDuration cannot be NULL. Must be populated entry of type numeric or integer.")
+  }
+
+  if(is.na(DetectionDuration)){
+    stop("DetectionDuration cannot be NA. Must be populated entry of type numeric or integer.")
+  }
+
+  if(!class(DetectionDuration) %in% c("numeric", "integer")){
+    stop("DetectionDuration is of unexpected type. Must be numeric or integer.")
+  }
+
+
+  #### Start data manipulation ####
+
+  #### Original CGM data in long format with added information on time of data and values below threshold####
   cgm_data_long <- DataFrame %>%
     dplyr::group_by(id) %>%
     dplyr::mutate(time_of_day = ifelse(as.numeric(format(cgm_timestamp, "%H"))<6 & as.numeric(format(cgm_timestamp, "%H"))>=0, "Night", "Day")) %>%
