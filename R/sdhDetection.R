@@ -1,49 +1,53 @@
 #' @title Detection and Description of Episodes of Continuous Glucose Monitoring (CGM) Hypoglycaemia
 #'
 #' @description Function which summarises raw CGM data and produces an output which
-#' includes key characteristics (e.g nadir, duration) of each CGM-detected hypoglycaemic episode
+#' includes key characteristics (e.g nadir, duration) of each CGM-detected hypoglycaemic episode.
 #'
-#' @param DataFrame A dataframe of CGM in which hypoglycaemic episodes will be detected.
+#' @param DataFrame A dataframe with CGM data in which hypoglycaemic episodes will be detected.
 #' Must have columns id, cgm_timestamp, glucose.
-#' @param DetectionLimit  The glucose value used to detect hypoglycaemia. Default is 3.9 mmol/L.
-#' @param DetectionDuration The time duration an individual needs to be at or below the DetectionLimit for a hypolgycaemic episode to be detected.
-#' Default is 15 minutes.
+#' @param DetectionLimit  Object of type numeric or integer corresponding to
+#' the glucose value used to detect hypoglycaemia. Default is 3.9 (mmol/L).
+#' @param DetectionDuration Object of type numeric or integer corresponding to
+#' the duration at or below the DetectionLimit for a hypolgycaemic episode to be detected.
+#' Default is 15 (minutes).
 #'
 #' @return A dataframe with one hypoglycaemic episode per row with characteristics in each column
-#' @examples
 #'
+#' @examples
+#' \dontrun{
+#' hypometrics::sdhDetection(DataFrame,
+#'                           DetectionLimit = 3,
+#'                           DetectionDuration = 30)
+#' }
 #'
 #' @export
+#'
 sdhDetection <- function(DataFrame,
                          DetectionLimit = 3.9,
                          DetectionDuration = 15){
 
-  #### Check function inputs ####
+  #### Check function inputs and data frame columns ####
   if(ncol(DataFrame) != 3){
     stop("Unexpected number of columns for `DataFrame`,
-           `DataFrame` must have exactly three columns.")
+         `DataFrame` must have exactly three columns: `id`, `cgm_timestamp`, `glucose`.")
   }
 
   if(all.equal(colnames(DataFrame), c("id", "cgm_timestamp", "glucose")) != TRUE){
     stop("Unexpected column names in `DataFrame`. `DataFrame` columns must have
-         the following names: id, cgm_timestamp, glucose.")
+         the following names: `id`, `cgm_timestamp`, `glucose`.")
   }
 
  if(is.character(DataFrame$id) == FALSE){
    stop("Column `id` is of unexpected type. Must be character.")
  }
 
- if(klk){
-    stop("Column `cgm_timestamp` must be of type date-time")
+ if(lubridate::is.POSIXct(DataFrame$cgm_timestamp) == FALSE){
+    stop("Column `cgm_timestamp` is of unexpected type. Must be of type date-time.")
  }
 
  if(is.numeric(DataFrame$glucose) == FALSE){
-    stop("Column `glucose` is of unexpected type. Must be numeric")
+    stop("Column `glucose` is of unexpected type. Must be numeric.")
 
-  }
-
-  if(is.null(DetectionLimit)){
-    stop("DetectionLimit cannot be NULL. Must be populated entry of type numeric or integer.")
   }
 
   if(is.na(DetectionLimit)){
@@ -52,10 +56,6 @@ sdhDetection <- function(DataFrame,
 
   if(!class(DetectionLimit) %in% c("numeric", "integer")){
     stop("DetectionLimit is of unexpected type. Must be numeric or integer.")
-  }
-
-  if(is.null(DetectionDuration)){
-    stop("DetectionDuration cannot be NULL. Must be populated entry of type numeric or integer.")
   }
 
   if(is.na(DetectionDuration)){
