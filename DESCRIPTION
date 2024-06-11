@@ -1,10 +1,13 @@
 Package: hypometrics
 Type: Package
-Title: Methods To Analyse CGM and Activity Data
+Title: Methods To Analyse Continuous Glucose Monitoring, Activity, Sleep and Person-Reported Hypoglycaemia Data
 Version: 0.0.9
-Author: Gilberte Martine-Edith 
-Maintainer: Jonah Thomas <jjct1@leicester.ac.uk>
-Description: A series of functions to analyse hypoglycaemia and physicalactivity data. 
+Authors@R: 
+     as.person(c(
+     "Gilberte Martine-Edith <gilberte.martine_edith@kcl.ac.uk> [aut]",
+     "Jonah Thomas <jjct1@leicester.ac.uk> [cre]"
+     ))
+Description: A series of functions to analyse hypoglycaemia and physical activity data. 
 License: What license is it under?
 Encoding: UTF-8
 LazyData: true
