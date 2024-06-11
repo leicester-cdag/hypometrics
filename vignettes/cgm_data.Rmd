@@ -1,0 +1,62 @@
+---
+title: "Continuous Glucose Monitoring (CGM) Data"
+---
+
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+
+---
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{hypometrics: Continuous Glucose Monitoring (CGM) Data}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+<style>
+.nobullet li{
+  list-style-type: none;
+}
+</style>
+
+![](hypometrics_logo2.png)
+
+\
+
+**Continuous Glucose Monitoring (CGM) Data**
+[Physical Activity and Sleep Data](fitbit_data.html)
+[Person-Reported Hypoglycaemia Data](app_data.html)
+
+## Introduction
+
+## Data Cleaning
+
+## Data Checking
+
+## Data Visualising
+
+## Data Linking
+
+\
+
+<center>
+<font size="5">
+[**Next: Physical Activity and Sleep Data**](fitbit_data.html)
+</font>
+</center>
+
+<center>
+[Previous: Home](Add link)
+</center>
+
+
+
+
+
+
