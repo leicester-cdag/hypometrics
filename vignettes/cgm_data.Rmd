@@ -25,15 +25,11 @@ vignette: >
 }
 </style>
 
-![](hypometrics_logo2.png)
-
-\
-
-**Continuous Glucose Monitoring (CGM) Data**
-[Physical Activity and Sleep Data](fitbit_data.html)
-[Person-Reported Hypoglycaemia Data](app_data.html)
+![](hypo_logo.png)
 
 ## Introduction
+
+The `hypometrics` package was developed to manipulate data from CGM devices manufactured by Abbott, specifically the Abbott Freestyle Libre 2 sensor and reader. Future work will involve updating the package so it can function with data from additional CGM devices (e.g. Dexcom).
 
 ## Data Cleaning
 
@@ -43,17 +39,6 @@ vignette: >
 
 ## Data Linking
 
-\
-
-<center>
-<font size="5">
-[**Next: Physical Activity and Sleep Data**](fitbit_data.html)
-</font>
-</center>
-
-<center>
-[Previous: Home](Add link)
-</center>
 
 
 
