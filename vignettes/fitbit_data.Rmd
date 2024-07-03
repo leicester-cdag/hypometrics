@@ -14,7 +14,7 @@ knitr::opts_chunk$set(
 ---
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{hypometrics: Physical Activity and Sleep Data}
+  %\VignetteIndexEntry{Physical Activity and Sleep Data}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---

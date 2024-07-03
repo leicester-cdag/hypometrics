@@ -1,0 +1,42 @@
+url: https://hypometrics.github.io/
+
+navbar:
+  type: default
+  left:
+  - text: Tutorials
+    icon: fa fa-book-reader
+    href: articles/index.html
+    aria-label: Articles
+    menu:
+      - text: Continuous Glucose Monitoring (CGM) Data
+        href: articles/cgm_data.html
+      - text: Physical Activity and Sleep Data
+        href: articles/fitbit_data.html
+      - text: Person-Reported Hypoglycaemia Data
+        href: articles/app_data.html
+      - text: Combining Data
+        href: articles/linking_data.html
+  - text: Functions
+    icon: fa fa-file-code
+    href: reference/index.html
+    aria-label: Reference
+
+articles:
+- title: Tutorials
+  navbar: ~
+  contents:
+  - cgm_data
+  - fitbit_data
+  - app_data
+  - linking_data
+
+reference:
+  - title: Package Index
+  - subtitle: CGM functions
+    desc: |
+      Main functions for analysing CGM data
+    contents:
+      - sdhDetection
+  - subtitle: Data
+    contents:
+      - cgm

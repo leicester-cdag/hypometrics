@@ -39,26 +39,35 @@
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
-<li>
-  <a href="reference/index.html">Reference</a>
-</li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-    Articles
+    <span class="fa fa-book-reader"></span>
+     
+    Tutorials
      
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
-      <a href="articles/app_data.html">Person-Reported Hypoglycaemia Data</a>
-    </li>
-    <li>
       <a href="articles/cgm_data.html">Continuous Glucose Monitoring (CGM) Data</a>
     </li>
     <li>
       <a href="articles/fitbit_data.html">Physical Activity and Sleep Data</a>
     </li>
+    <li>
+      <a href="articles/app_data.html">Person-Reported Hypoglycaemia Data</a>
+    </li>
+    <li>
+      <a href="articles/linking_data.html">Combining Data</a>
+    </li>
   </ul>
+</li>
+<li>
+  <a href="reference/index.html">
+    <span class="fa fa-file-code"></span>
+     
+    Functions
+  </a>
 </li>
       </ul>
 <ul class="nav navbar-nav navbar-right"></ul>
@@ -90,24 +99,23 @@
 <h2 id="what-data-can-i-analyse-using-the-hypometrics-package">What data can I analyse using the <em>hypometrics</em> package?<a class="anchor" aria-label="anchor" href="#what-data-can-i-analyse-using-the-hypometrics-package"></a>
 </h2>
 <p>The <code>hypometrics</code> package offers tools to clean, check, analyse, visualise and link the following types of data:</p>
-<p><strong>1. Continuous Glucose Monitoring Data</strong>: more detail can be found <a href="https://hypometrics.github.io/cgm_data.html/" class="external-link">here</a>.</p>
-<p><strong>2. Physical Activity and Sleep Data</strong>: more detail can be found <a href="https://hypometrics.github.io/fitbit_data.html/" class="external-link">here</a>.</p>
-<p><strong>3. Person-Reported Hypoglycaemia Data</strong>: more detail can be found <a href="https://hypometrics.github.io/app_data.html/" class="external-link">here</a>.</p>
+<p><strong>1. Continuous Glucose Monitoring Data</strong>: more detail can be found <a href="https://hypometrics.github.io/cgm_data.html/">here</a>.</p>
+<p><strong>2. Physical Activity and Sleep Data</strong>: more detail can be found <a href="https://hypometrics.github.io/fitbit_data.html/">here</a>.</p>
+<p><strong>3. Person-Reported Hypoglycaemia Data</strong>: more detail can be found <a href="https://hypometrics.github.io/app_data.html/">here</a>.</p>
 </div>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
-<p>The package is available on <code>CRAN</code> and can be downloaded by running:</p>
-<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"hypometrics"</span><span class="op">)</span></span></code></pre></div>
+<p>The package is available on <code>GitHub</code> and can be installed and downloaded by running:</p>
+<pre><code><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"remotes"</span><span class="op">)</span></span>
+<span><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"hypometrics"</span><span class="op">)</span></span></code></pre>
 <p>Load the package every time you start R:</p>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st">"hypometrics"</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">hypometrics</span><span class="op">)</span></span></code></pre>
 </div>
 <div class="section level2">
 <h2 id="documentation">Documentation<a class="anchor" aria-label="anchor" href="#documentation"></a>
 </h2>
-<p>The package documentation can be found <a href="https://hypometrics.github.io/index.html/" class="external-link"><strong>here</strong></a>.</p>
+<p>The package documentation can be found <a href="https://hypometrics.github.io/index.html/"><strong>here</strong></a>.</p>
 </div>
 <div class="section level2">
 <h2 id="contributing">Contributing<a class="anchor" aria-label="anchor" href="#contributing"></a>

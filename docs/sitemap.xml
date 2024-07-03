@@ -1,33 +1,39 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>/404.html</loc>
+    <loc>https://hypometrics.github.io/404.html</loc>
   </url>
   <url>
-    <loc>/articles/app_data.html</loc>
+    <loc>https://hypometrics.github.io/articles/app_data.html</loc>
   </url>
   <url>
-    <loc>/articles/cgm_data.html</loc>
+    <loc>https://hypometrics.github.io/articles/cgm_data.html</loc>
   </url>
   <url>
-    <loc>/articles/fitbit_data.html</loc>
+    <loc>https://hypometrics.github.io/articles/fitbit_data.html</loc>
   </url>
   <url>
-    <loc>/articles/index.html</loc>
+    <loc>https://hypometrics.github.io/articles/index.html</loc>
   </url>
   <url>
-    <loc>/authors.html</loc>
+    <loc>https://hypometrics.github.io/articles/linking_data.html</loc>
   </url>
   <url>
-    <loc>/index.html</loc>
+    <loc>https://hypometrics.github.io/authors.html</loc>
   </url>
   <url>
-    <loc>/reference/hello.html</loc>
+    <loc>https://hypometrics.github.io/index.html</loc>
   </url>
   <url>
-    <loc>/reference/index.html</loc>
+    <loc>https://hypometrics.github.io/reference/cgm.html</loc>
   </url>
   <url>
-    <loc>/reference/sdhDetection.html</loc>
+    <loc>https://hypometrics.github.io/reference/hello.html</loc>
+  </url>
+  <url>
+    <loc>https://hypometrics.github.io/reference/index.html</loc>
+  </url>
+  <url>
+    <loc>https://hypometrics.github.io/reference/sdhDetection.html</loc>
   </url>
 </urlset>
