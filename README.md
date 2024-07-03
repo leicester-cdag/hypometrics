@@ -20,16 +20,18 @@ The `hypometrics` package offers tools to clean, check, analyse, visualise and l
 
 ## Installation
 
-The package is available on `CRAN` and can be downloaded by running:
+The package is available on `GitHub` and can be installed and downloaded by running:
 
-``` r
-install.packages("hypometrics")
+```
+install.packages("remotes")
+remotes::install_github("hypometrics")
 ```
 Load the package every time you start R:
 
-``` r
-library("hypometrics")
 ```
+library(hypometrics)
+```
+
 
 ## Documentation
 

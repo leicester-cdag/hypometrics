@@ -1,5 +1,13 @@
 ---
 title: "Continuous Glucose Monitoring (CGM) Data"
+output: rmarkdown::html_vignette
+---
+
+---
+vignette: >
+  %\VignetteIndexEntry{Continuous Glucose Monitoring (CGM) Data}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
 ---
 
 
@@ -10,34 +18,51 @@ knitr::opts_chunk$set(
 )
 ```
 
-
----
-output: rmarkdown::html_vignette
-vignette: >
-  %\VignetteIndexEntry{hypometrics: Continuous Glucose Monitoring (CGM) Data}
-  %\VignetteEngine{knitr::rmarkdown}
-  %\VignetteEncoding{UTF-8}
----
-
-<style>
-.nobullet li{
-  list-style-type: none;
-}
-</style>
-
-![](hypo_logo.png)
-
-## Introduction
+## 1. Introduction
 
 The `hypometrics` package was developed to manipulate data from CGM devices manufactured by Abbott, specifically the Abbott Freestyle Libre 2 sensor and reader. Future work will involve updating the package so it can function with data from additional CGM devices (e.g. Dexcom).
 
-## Data Cleaning
+This article describes the CGM-specific functions that were created as part of the `hypometrics` package. 
 
-## Data Checking
+### Setup
 
-## Data Visualising
+To be able to use the CGM functions, firstly install and load `hypometrics`.
 
-## Data Linking
+```
+#Install
+install.packages("remotes")
+remotes::install_github("hypometrics")
+```
+
+```{r, message=FALSE}
+#Load package
+library(hypometrics)
+```
+
+### Example data
+
+Throughout this tutorial, the examples presented will be based on the [`cgm`](https://hypometrics.github.io/reference/cgm.html) dataframe.  
+
+* This dataframe contains data from `r dplyr::n_distinct(cgm$id)` participants who used a CGM device, with one row per CGM timestamp as shown below.
+
+```{r, message=FALSE}
+utils::head(cgm)
+```
+
+## 2. Cleaning CGM data
+
+### Interpolation
+
+## 3. Analysing CGM data
+
+### Hypoglycaemia episode detection
+
+The `sdhDetection()` function allows to automatically detect and report on every episode of CGM-detected hypoglycaemia. The function takes CGM data and returns a list of all episodes of hypoglycaemia including their characteristics such as duration and nadir. The default hypoglycaemia detection limit is 3.9 mmol/L and duration 15 minutes. 
+
+## 4. Checking
+
+## 5. Visualising
+
 
 
 
