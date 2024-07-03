@@ -14,7 +14,7 @@ knitr::opts_chunk$set(
 ---
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{hypometrics: Physical Activity and Sleep Data}
+  %\VignetteIndexEntry{Person-Reported Hypoglycaemia Data}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -25,15 +25,11 @@ vignette: >
 }
 </style>
 
-![](hypometrics_logo2.png)
-
-\
-
-[Continuous Glucose Monitoring (CGM) Data](cgm_data.html)
-[Physical Activity and Sleep Data](fitbit_data.html)
-**Person-Reported Hypoglycaemia Data**
+![](hypo_logo.png)
 
 ## Introduction
+
+As part of the Hypo-METRICS study, the bespoke Hypo-METRICS app was developed via the software platform provided by [uMotif Limited](https://www.umotif.com). The `hypometrics` package reads in data from the original version of the Hypo-METRICS app. The Hypo-METRICS app features have since evolved and future work will ensure that this is reflected in the package. 
 
 ## Data Cleaning
 
@@ -43,10 +39,3 @@ vignette: >
 
 ## Data Linking
 
-\
-
-<center>
-<font size="5">
-[**Previous: Physical Activity and Sleep Data**](fitbit_data.html)
-</font>
-</center>

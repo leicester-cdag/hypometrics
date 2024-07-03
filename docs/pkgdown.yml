@@ -5,5 +5,9 @@ articles:
   app_data: app_data.html
   cgm_data: cgm_data.html
   fitbit_data: fitbit_data.html
-last_built: 2024-06-03T11:49Z
+  linking_data: linking_data.html
+last_built: 2024-07-03T14:40Z
+urls:
+  reference: https://hypometrics.github.io/reference
+  article: https://hypometrics.github.io/articles
 

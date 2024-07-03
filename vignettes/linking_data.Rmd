@@ -1,0 +1,32 @@
+---
+title: "Combining Data"
+---
+
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+
+---
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Combining Data}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+<style>
+.nobullet li{
+  list-style-type: none;
+}
+</style>
+
+![](hypo_logo.png)
+
+
+## Introduction
+
