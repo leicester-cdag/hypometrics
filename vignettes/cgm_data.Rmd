@@ -1,5 +1,13 @@
 ---
 title: "Continuous Glucose Monitoring (CGM) Data"
+output: rmarkdown::html_vignette
+---
+
+---
+vignette: >
+  %\VignetteIndexEntry{Continuous Glucose Monitoring (CGM) Data}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
 ---
 
 
@@ -10,50 +18,52 @@ knitr::opts_chunk$set(
 )
 ```
 
+## 1. Introduction
 
----
-output: rmarkdown::html_vignette
-vignette: >
-  %\VignetteIndexEntry{hypometrics: Continuous Glucose Monitoring (CGM) Data}
-  %\VignetteEngine{knitr::rmarkdown}
-  %\VignetteEncoding{UTF-8}
----
+The `hypometrics` package was developed to manipulate data from CGM devices manufactured by Abbott, specifically the Abbott Freestyle Libre 2 sensor and reader. Future work will involve updating the package so it can function with data from additional CGM devices (e.g. Dexcom).
 
-<style>
-.nobullet li{
-  list-style-type: none;
-}
-</style>
+This article describes the CGM-specific functions that were created as part of the `hypometrics` package. 
 
-![](hypometrics_logo2.png)
+### Setup
 
-\
+To be able to use the CGM functions, firstly install and load `hypometrics`.
 
-**Continuous Glucose Monitoring (CGM) Data**
-[Physical Activity and Sleep Data](fitbit_data.html)
-[Person-Reported Hypoglycaemia Data](app_data.html)
+```
+#Install
+install.packages("remotes")
+remotes::install_github("hypometrics")
+```
 
-## Introduction
+```{r, message=FALSE}
+#Load package
+library(hypometrics)
+```
 
-## Data Cleaning
+### Example data
 
-## Data Checking
+Throughout this tutorial, the examples presented will be based on the [`cgm`](https://hypometrics.github.io/reference/cgm.html) dataframe.  
 
-## Data Visualising
+* This dataframe contains data from `r dplyr::n_distinct(cgm$id)` participants who used a CGM device, with one row per CGM timestamp as shown below.
 
-## Data Linking
+```{r, message=FALSE}
+utils::head(cgm)
+```
 
-\
+## 2. Cleaning CGM data
 
-<center>
-<font size="5">
-[**Next: Physical Activity and Sleep Data**](fitbit_data.html)
-</font>
-</center>
+### Interpolation
 
-<center>
-[Previous: Home](Add link)
-</center>
+## 3. Analysing CGM data
+
+### Hypoglycaemia episode detection
+
+The `sdhDetection()` function allows to automatically detect and report on every episode of CGM-detected hypoglycaemia. The function takes CGM data and returns a list of all episodes of hypoglycaemia including their characteristics such as duration and nadir. The default hypoglycaemia detection limit is 3.9 mmol/L and duration 15 minutes. 
+
+## 4. Checking
+
+## 5. Visualising
+
+
 
 
 

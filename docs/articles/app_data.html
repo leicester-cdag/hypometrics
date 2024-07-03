@@ -39,26 +39,35 @@
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
-<li>
-  <a href="../reference/index.html">Reference</a>
-</li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-    Articles
+    <span class="fa fa-book-reader"></span>
+     
+    Tutorials
      
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
-      <a href="../articles/app_data.html">Person-Reported Hypoglycaemia Data</a>
-    </li>
-    <li>
       <a href="../articles/cgm_data.html">Continuous Glucose Monitoring (CGM) Data</a>
     </li>
     <li>
       <a href="../articles/fitbit_data.html">Physical Activity and Sleep Data</a>
     </li>
+    <li>
+      <a href="../articles/app_data.html">Person-Reported Hypoglycaemia Data</a>
+    </li>
+    <li>
+      <a href="../articles/linking_data.html">Combining Data</a>
+    </li>
   </ul>
+</li>
+<li>
+  <a href="../reference/index.html">
+    <span class="fa fa-file-code"></span>
+     
+    Functions
+  </a>
 </li>
       </ul>
 <ul class="nav navbar-nav navbar-right"></ul>
@@ -89,14 +98,16 @@
   list-style-type: none;
 }
 </style>
-<p><img src="../../../../OneDrive%20-%20King's%20College%20London/Documents/hypometrics/articles/hypometrics_logo2.png"></p>
-<p><br></p>
-<p><a href="cgm_data.html">Continuous Glucose Monitoring (CGM) Data</a>
-<a href="fitbit_data.html">Physical Activity and Sleep Data</a>
-<strong>Person-Reported Hypoglycaemia Data</strong></p>
+<p><img src="../../../../OneDrive%20-%20King's%20College%20London/Documents/hypometrics/articles/hypo_logo.png"></p>
 <div class="section level2">
 <h2 id="introduction">Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
 </h2>
+<p>As part of the Hypo-METRICS study, the bespoke Hypo-METRICS app was
+developed via the software platform provided by <a href="https://www.umotif.com" class="external-link">uMotif Limited</a>. The
+<code>hypometrics</code> package reads in data from the original version
+of the Hypo-METRICS app. The Hypo-METRICS app features have since
+evolved and future work will ensure that this is reflected in the
+package.</p>
 </div>
 <div class="section level2">
 <h2 id="data-cleaning">Data Cleaning<a class="anchor" aria-label="anchor" href="#data-cleaning"></a>
@@ -113,11 +124,6 @@
 <div class="section level2">
 <h2 id="data-linking">Data Linking<a class="anchor" aria-label="anchor" href="#data-linking"></a>
 </h2>
-<p><br></p>
-<center>
-<font size="5"> <a href="fitbit_data.html"><strong>Previous: Physical
-Activity and Sleep Data</strong></a> </font>
-</center>
 </div>
   </div>
 
