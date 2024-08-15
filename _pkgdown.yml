@@ -36,7 +36,12 @@ reference:
     desc: |
       Main functions for analysing CGM data
     contents:
+      - cgmInterpolate
+      - cgmSummarise
+      - checkMissingCGM
       - sdhDetection
+      - sdhSummarise
   - subtitle: Data
     contents:
       - cgm
+      - raw_cgm
