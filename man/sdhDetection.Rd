@@ -11,7 +11,7 @@ sdhDetection(DataFrame, DetectionLimit = 3.9, DetectionDuration = 15)
 Must have columns id, cgm_timestamp, glucose.}
 
 \item{DetectionLimit}{Object of type numeric or integer corresponding to
-the glucose value used to detect hypoglycaemia. Default is 3.9 (mmol/L).}
+the glucose value used to detect hypoglycaemia. Default is 3.9 mmol/L.}
 
 \item{DetectionDuration}{Object of type numeric or integer corresponding to
 the duration at or below the DetectionLimit for a hypolgycaemic episode to be detected.
