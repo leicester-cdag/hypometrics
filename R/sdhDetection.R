@@ -6,7 +6,7 @@
 #' @param DataFrame A dataframe with CGM data in which hypoglycaemic episodes will be detected.
 #' Must have columns id, cgm_timestamp, glucose.
 #' @param DetectionLimit  Object of type numeric or integer corresponding to
-#' the glucose value used to detect hypoglycaemia. Default is 3.9 (mmol/L).
+#' the glucose value used to detect hypoglycaemia. Default is 3.9 mmol/L.
 #' @param DetectionDuration Object of type numeric or integer corresponding to
 #' the duration at or below the DetectionLimit for a hypolgycaemic episode to be detected.
 #' Default is 15 (minutes).
@@ -67,10 +67,12 @@ sdhDetection <- function(DataFrame,
   }
 
 
+  #### Function within the function which will detect hypos for each id ####
+detect <- function(df){
   #### Start data manipulation ####
 
   #### Original CGM data in long format with added information on time of data and values below threshold####
-  cgm_data_long <- DataFrame %>%
+  cgm_data_long <- df %>%
     dplyr::group_by(id) %>%
     dplyr::mutate(time_of_day = ifelse(as.numeric(format(cgm_timestamp, "%H"))<6 & as.numeric(format(cgm_timestamp, "%H"))>=0, "Night", "Day")) %>%
     dplyr::select(id, time_of_day, cgm_timestamp, glucose) %>%
@@ -91,6 +93,7 @@ sdhDetection <- function(DataFrame,
     dplyr::mutate(interval_seq = lubridate::as.interval(start_seq, end_seq),
                   duration_seq= lubridate::time_length(interval_seq, unit = "min")) %>%
     dplyr::select(-last_timestamp)
+
 
   #This will mark adjacent SDH (less than the detection duration apart)
   #as a single group (i.e. as a single event) where applicable based on Hypo-METRICS rules (please refer to manual)
@@ -123,6 +126,7 @@ sdhDetection <- function(DataFrame,
       cgm_data_wide$sdh_grouped[i] <- 0
     }
   }
+
 
   #Return in a long format dataset, the information about whether or not SDH are eligible to be grouped (based on the sdh_grouped variable)
   combined_cgm <- dplyr::full_join(cgm_data_long,
@@ -169,10 +173,26 @@ sdhDetection <- function(DataFrame,
     dplyr::group_by(id) %>%
     dplyr::mutate(sdh_number = data.table::rleid(sdh_seq)) %>%
     dplyr::select(id, sdh_number, sdh_interval, sdh_duration_mins, sdh_nadir, sdh_night_status) %>%
-    dplyr::mutate_if(is.numeric, round, digits = 1)
+    dplyr::ungroup() %>%
+    dplyr::mutate_if(is.numeric, round, digits = 1) %>%
+    dplyr::mutate(sdh_night_status = as.character(sdh_night_status)) #to make sure of consistent variable type for row binding
 
 
   #Return final output - 1 row per event per individual
   return(sdh_map = data.frame(sdh_map))
+
+}
+
+#### Splitting the DataFrame by id ####
+list_participants <- split(DataFrame, DataFrame$id)
+
+#### Calling the function for each data frame containing individual participants data ####
+list_map <- lapply(list_participants, detect)
+
+#### Row binding individual participants data in a single dataframe ####
+final_map <- dplyr::bind_rows(list_map, .id = "id")
+
+#### Return sdh map ####
+return(final_map = data.frame(final_map))
 
 }
