@@ -1,4 +1,4 @@
-pandoc: 3.1.11
+pandoc: '3.2'
 pkgdown: 2.0.7
 pkgdown_sha: ~
 articles:
@@ -6,7 +6,7 @@ articles:
   cgm_data: cgm_data.html
   fitbit_data: fitbit_data.html
   linking_data: linking_data.html
-last_built: 2024-08-14T15:42Z
+last_built: 2024-12-19T15:59Z
 urls:
   reference: https://hypometrics.github.io/reference
   article: https://hypometrics.github.io/articles

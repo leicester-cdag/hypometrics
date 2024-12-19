@@ -241,7 +241,7 @@ values have been linearly interpolated. The added values are 3.28 mmol/L
 <h2 id="checking-cgm-data">3. Checking CGM data<a class="anchor" aria-label="anchor" href="#checking-cgm-data"></a>
 </h2>
 <p>After cleaning the data and before diving into data analysis, the
-<code><a href="../reference/checkMissingCGM.html">checkMissingCGM()</a></code> function enables the evaluation of
+<code>checkMissingCGM()</code> function enables the evaluation of
 missingness in glucose data.</p>
 <div class="section level3">
 <h3 id="sample-level">Sample level<a class="anchor" aria-label="anchor" href="#sample-level"></a>
@@ -249,7 +249,7 @@ missingness in glucose data.</p>
 <p>Firstly, you can explore the number of hours of CGM data available
 per day for all participants included by running:</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/checkMissingCGM.html">checkMissingCGM</a></span><span class="op">(</span><span class="va">cgm</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/cgmCheck.html">cgmCheck</a></span><span class="op">(</span><span class="va">cgm</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 210 × 3</span></span></span>
 <span><span class="co">#&gt;    id    Date       total_cgm_hours</span></span>
 <span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;date&gt;</span>               <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
@@ -273,7 +273,7 @@ data coverage in the previous step, further investigation can be
 conducted by looking at CGM data from individual participants. For
 example:</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">missingness_001</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/checkMissingCGM.html">checkMissingCGM</a></span><span class="op">(</span><span class="va">cgm</span>, CheckAll <span class="op">=</span> <span class="cn">FALSE</span>, StudyID <span class="op">=</span> <span class="st">"001"</span>, AxisLabels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">2.2</span>, <span class="fl">3.9</span>, <span class="fl">10</span>, <span class="fl">20</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">missingness_001</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/cgmCheck.html">cgmCheck</a></span><span class="op">(</span><span class="va">cgm</span>, CheckAll <span class="op">=</span> <span class="cn">FALSE</span>, StudyID <span class="op">=</span> <span class="st">"001"</span>, AxisLabels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">2.2</span>, <span class="fl">3.9</span>, <span class="fl">10</span>, <span class="fl">20</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p>This creates a list which contains a data set with daily breakdown of
 available hours of CGM data for participant ‘001’ and a graph
 highlighting periods of missingness as shown below.</p>
@@ -283,7 +283,7 @@ highlighting periods of missingness as shown below.</p>
 </div>
 </div>
 <div class="section level2">
-<h2 id="analysing-cgm-data">4. Analysing CGM data<a class="anchor" aria-label="anchor" href="#analysing-cgm-data"></a>
+<h2 id="describing-cgm-data">4. Describing CGM data<a class="anchor" aria-label="anchor" href="#describing-cgm-data"></a>
 </h2>
 <div class="section level3">
 <h3 id="continuous-glucose-monitoring-data-summary">Continuous glucose monitoring data summary<a class="anchor" aria-label="anchor" href="#continuous-glucose-monitoring-data-summary"></a>
@@ -411,6 +411,53 @@ Let’s see a summary of SDH data, for a glucose threshold of 3.9 mmol/L
 <div class="section level2">
 <h2 id="visualising-cgm-data">5. Visualising CGM data<a class="anchor" aria-label="anchor" href="#visualising-cgm-data"></a>
 </h2>
+<p>It may be useful to plot CGM data to visually inspect glucose
+concentrations over time. The <code>cgmVisualise</code> allows you to do
+this at three different levels of granularity.</p>
+<div class="section level3">
+<h3 id="overall">Overall<a class="anchor" aria-label="anchor" href="#overall"></a>
+</h3>
+<p>Using the default function parameters, you will obtain an overview of
+glucose data for the entire study period for a selected participant, as
+shown below:</p>
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/cgmVisualise.html">cgmVisualise</a></span><span class="op">(</span><span class="va">cgm</span>, StudyID <span class="op">=</span> <span class="st">"001"</span><span class="op">)</span></span></code></pre></div>
+<p><img src="cgm_data_files/figure-html/unnamed-chunk-14-1.png" width="700"></p>
+<p>The figures shows the glucose trace in blue, the 3.9-10mmol/L range
+is delimited by green lines. Glucose concentrations above 15mmol/L are
+above the orange line whilst glucose below 3 mmol/L would be displayed
+below the red line. The grey area highlights the period from 00:00 to
+06:00 for reference, as it is typically used when examining nocturnal
+hypoglycaemia.</p>
+</div>
+<div class="section level3">
+<h3 id="week-by-week">Week by week<a class="anchor" aria-label="anchor" href="#week-by-week"></a>
+</h3>
+<p>It is also possible to view glucose data on a weekly basis by
+specifying a breakdown by week in the <code>TimeBreak</code> argument of
+the function and which week is of interest using the
+<code>PageNumber</code> argument, as shown below:</p>
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/cgmVisualise.html">cgmVisualise</a></span><span class="op">(</span><span class="va">cgm</span>, StudyID <span class="op">=</span> <span class="st">"001"</span>, TimeBreak <span class="op">=</span> <span class="st">"week"</span>, PageNumber <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span></code></pre></div>
+<p><img src="cgm_data_files/figure-html/unnamed-chunk-15-1.png" width="700"><br></p>
+<p>The number at the top of the figure indicates the week selected for
+visualisation. Please note the function will return an error if the
+picked PageNumber (i.e. here, week number) is out of the data range
+(e.g. PageNumber = 11 when there are only 10 weeks of data).</p>
+</div>
+<div class="section level3">
+<h3 id="day-by-day">Day by day<a class="anchor" aria-label="anchor" href="#day-by-day"></a>
+</h3>
+<p>Lastly, for further granularity, there is an option to visualise this
+data for specific days using the same logic as for the weekly data.</p>
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/cgmVisualise.html">cgmVisualise</a></span><span class="op">(</span><span class="va">cgm</span>, StudyID <span class="op">=</span> <span class="st">"001"</span>, TimeBreak <span class="op">=</span> <span class="st">"day"</span>, PageNumber <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></code></pre></div>
+<p><img src="cgm_data_files/figure-html/unnamed-chunk-16-1.png" width="700"><br></p>
+<p>The number at the top of the figure indicates the day selected for
+visualisation. Please note the function will return an error if the
+picked PageNumber (i.e. here, day number) is out of the data range
+(e.g. PageNumber = 71 when there are only 70 days of data).</p>
+</div>
 </div>
   </div>
 
