@@ -98,7 +98,7 @@ After cleaning the data and before diving into data analysis, the `checkMissingC
 Firstly, you can explore the number of hours of CGM data available per day for all participants included by running: 
 
 ```{r, message=FALSE}
-checkMissingCGM(cgm)
+cgmCheck(cgm)
 ```
 
 ### Individual level
@@ -106,7 +106,7 @@ checkMissingCGM(cgm)
 With the initial identification of days/participants with low CGM data coverage in the previous step, further investigation can be conducted by looking at CGM data from individual participants. For example:
 
 ```{r, message=FALSE}
-missingness_001 <- checkMissingCGM(cgm, CheckAll = FALSE, StudyID = "001", AxisLabels = c(0, 2.2, 3.9, 10, 20))
+missingness_001 <- cgmCheck(cgm, CheckAll = FALSE, StudyID = "001", AxisLabels = c(0, 2.2, 3.9, 10, 20))
 ```
 This creates a list which contains a data set with daily breakdown of available hours of CGM data for participant '001' and a graph highlighting periods of missingness as shown below. 
 
@@ -114,7 +114,7 @@ This creates a list which contains a data set with daily breakdown of available 
 graphics::plot(missingness_001$cgm_na_distribution_plot)
 ```
 
-## 4. Analysing CGM data
+## 4. Describing CGM data
 
 ### Continuous glucose monitoring data summary
 
@@ -152,10 +152,38 @@ sdhSummarise(DataFrame = sdh_map)
 
 ## 5. Visualising CGM data
 
+It may be useful to plot CGM data to visually inspect glucose concentrations over time. The `cgmVisualise` allows you to do this at three different levels of granularity. 
 
+### Overall
 
+Using the default function parameters, you will obtain an overview of glucose data for the entire study period for a selected participant, as shown below:
 
+```{r, message=FALSE, warning=FALSE}
+cgmVisualise(cgm, StudyID = "001")
+```
 
+The figures shows the glucose trace in blue, the 3.9-10mmol/L range is delimited by green lines. Glucose concentrations above 15mmol/L are above the orange line whilst glucose below 3 mmol/L would be displayed below the red line. The grey area highlights the period from 00:00 to 06:00 for reference, as it is typically used when examining nocturnal hypoglycaemia.
 
+### Week by week
+
+It is also possible to view glucose data on a weekly basis by specifying a breakdown by week in the `TimeBreak` argument of the function and which week is of interest using the `PageNumber` argument, as shown below:
+
+```{r, message=FALSE, warning=FALSE}
+cgmVisualise(cgm, StudyID = "001", TimeBreak = "week", PageNumber = 3)
+```
+\
+
+The number at the top of the figure indicates the week selected for visualisation. Please note the function will return an error if the picked PageNumber (i.e. here, week number) is out of the data range (e.g. PageNumber = 11 when there are only 10 weeks of data).
+
+### Day by day
+
+Lastly, for further granularity, there is an option to visualise this data for specific days using the same logic as for the weekly data. 
+
+```{r, message=FALSE, warning=FALSE}
+cgmVisualise(cgm, StudyID = "001", TimeBreak = "day", PageNumber = 2)
+```
+\
+
+The number at the top of the figure indicates the day selected for visualisation. Please note the function will return an error if the picked PageNumber (i.e. here, day number) is out of the data range (e.g. PageNumber = 71 when there are only 70 days of data).
 
 
