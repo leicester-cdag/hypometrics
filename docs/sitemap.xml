@@ -28,10 +28,16 @@
     <loc>https://hypometrics.github.io/reference/cgm.html</loc>
   </url>
   <url>
+    <loc>https://hypometrics.github.io/reference/cgmCheck.html</loc>
+  </url>
+  <url>
     <loc>https://hypometrics.github.io/reference/cgmInterpolate.html</loc>
   </url>
   <url>
     <loc>https://hypometrics.github.io/reference/cgmSummarise.html</loc>
+  </url>
+  <url>
+    <loc>https://hypometrics.github.io/reference/cgmVisualise.html</loc>
   </url>
   <url>
     <loc>https://hypometrics.github.io/reference/checkMissingCGM.html</loc>
