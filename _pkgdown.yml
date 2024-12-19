@@ -34,11 +34,12 @@ reference:
   - title: Package Index
   - subtitle: CGM functions
     desc: |
-      Main functions for analysing CGM data
+      Functions for managing CGM data
     contents:
+      - cgmCheck
       - cgmInterpolate
       - cgmSummarise
-      - checkMissingCGM
+      - cgmVisualise
       - sdhDetection
       - sdhSummarise
   - subtitle: Data
