@@ -10,8 +10,10 @@ navbar:
     menu:
       - text: Continuous Glucose Monitoring (CGM) Data
         href: articles/cgm_data.html
-      - text: Physical Activity and Sleep Data
+      - text: Physical Activity Data
         href: articles/fitbit_data.html
+      - text: Sleep Data
+        href: articles/sleep_data.html
       - text: Person-Reported Hypoglycaemia Data
         href: articles/app_data.html
       - text: Combining Data
@@ -27,6 +29,7 @@ articles:
   contents:
   - cgm_data
   - fitbit_data
+  - sleep_data
   - app_data
   - linking_data
 
@@ -42,7 +45,15 @@ reference:
       - cgmVisualise
       - sdhDetection
       - sdhSummarise
+  - subtitle: Sleep functions
+    desc: |
+      Functions for managing sleep data
+    contents:
+      - sleepCategorise
+      - sleepSummarise
+      - sleepVisualise
   - subtitle: Data
     contents:
       - cgm
       - raw_cgm
+      - raw_sleep
