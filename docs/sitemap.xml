@@ -19,6 +19,9 @@
     <loc>https://hypometrics.github.io/articles/linking_data.html</loc>
   </url>
   <url>
+    <loc>https://hypometrics.github.io/articles/sleep_data.html</loc>
+  </url>
+  <url>
     <loc>https://hypometrics.github.io/authors.html</loc>
   </url>
   <url>
@@ -55,9 +58,21 @@
     <loc>https://hypometrics.github.io/reference/raw_cgm.html</loc>
   </url>
   <url>
+    <loc>https://hypometrics.github.io/reference/raw_sleep.html</loc>
+  </url>
+  <url>
     <loc>https://hypometrics.github.io/reference/sdhDetection.html</loc>
   </url>
   <url>
     <loc>https://hypometrics.github.io/reference/sdhSummarise.html</loc>
+  </url>
+  <url>
+    <loc>https://hypometrics.github.io/reference/sleepCategorise.html</loc>
+  </url>
+  <url>
+    <loc>https://hypometrics.github.io/reference/sleepSummarise.html</loc>
+  </url>
+  <url>
+    <loc>https://hypometrics.github.io/reference/sleepVisualise.html</loc>
   </url>
 </urlset>
