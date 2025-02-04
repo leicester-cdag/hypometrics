@@ -25,3 +25,19 @@
 #'     \item{glucose}{Glucose concentration (mmol/L)}
 #' }
 "raw_cgm"
+
+#' Dataset containing raw sleep data of 2 participants
+#' who used a Fitbit Charge 4
+#'
+#' @format A data frame with one row per sleep event
+#'
+#' @details Dataset containing Fitbit Charge 4 sleep information
+#'
+#' \describe{
+#'     \item{id}{Unique study ID}
+#'     \item{logId}{Unique sleep event ID}
+#'     \item{dateOfSleep}{Date of the sleep event}
+#'     \item{startTime}{Start time of sleep (YYYY-MM-DD HH:MM:SS)}
+#'     \item{endTime}{End time of sleep (YYYY-MM-DD HH:MM:SS)}
+#' }
+"raw_sleep"

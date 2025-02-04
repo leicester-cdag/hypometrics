@@ -14,9 +14,11 @@ The `hypometrics` package offers tools to clean, check, analyse, visualise and l
 
 **1. Continuous Glucose Monitoring Data**: more detail can be found [here](https://hypometrics.github.io/cgm_data.html/).
 
-**2. Physical Activity and Sleep Data**: more detail can be found [here](https://hypometrics.github.io/fitbit_data.html/).
+**2. Physical Activity Data**: more detail can be found [here](https://hypometrics.github.io/fitbit_data.html/).
 
-**3. Person-Reported Hypoglycaemia Data**: more detail can be found [here](https://hypometrics.github.io/app_data.html/).
+**3. Sleep Data**: more detail can be found [here](https://hypometrics.github.io/sleep_data.html/).
+
+**4. Person-Reported Hypoglycaemia Data**: more detail can be found [here](https://hypometrics.github.io/app_data.html/).
 
 ## Installation
 
