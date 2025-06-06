@@ -1,3 +1,97 @@
+#' @title Unzip, Read and Combine Raw Sleep Files Downloaded
+#' From User's Fitbit account
+#'
+#' @description This function enables the unzipping, reading and
+#' combining of raw sleep files following download from user's
+#' Fitbit account.
+#'
+#' @param Unzip Logical string (TRUE/FALSE) which determines whether fitbit folder needs to be
+#' unzipped or not
+#' @param FolderPath Character object indicating path to folder where Fitbit data is stored
+#' @param FileType Character object indicating what type of file is to be read. Can be either
+#' "json" or "csv".
+#' @param StudyID ID of participant for whom activity data will be read.
+#'
+#' @return A dataset containing original Fitbit sleep
+#' data with an additional column with participant's ID.
+#'
+#' @examples
+#'
+#' \dontrun{
+#' hypometrics::sleepRead(Unzip = TRUE,
+#'                        FolderPath = "~/Documents",
+#'                        FileType = "json",
+#'                        StudyID = "001")
+#' }
+#'
+#' @export
+sleepRead <- function(Unzip = FALSE,
+                      FolderPath,
+                      FileType,
+                      StudyID){
+
+  #### Check function arguments ####
+
+  chk::chk_flag(Unzip)
+
+  chk::check_dirs(FolderPath)
+
+  if(!FileType %in% c("json", "csv")){
+    stop("FileType must be `json` or `csv` only.")
+  }
+
+  chk::chk_character(StudyID)
+
+  if(Unzip == TRUE){
+
+    #### Unzip original Fitbit download and create a new unzipped folder ####
+    setwd(FolderPath)
+
+    fitbit_files <- utils::unzip(list.files(pattern = "fitbit.*zip", ignore.case = T),
+                                 list=T,
+                                 exdir = paste0(FolderPath, "/Unzipped Fitbit"))
+
+    setwd(paste0(FolderPath, "/Unzipped Fitbit"))
+    fitbit_files <- list.files(recursive = T)
+
+  }else{
+    #### If unzipped fitbit folder already exists, will directly list the fitbit files ####
+    setwd(paste0(FolderPath, "/Unzipped Fitbit"))
+    fitbit_files <- list.files(recursive = T)
+  }
+
+  if(FileType == "json"){
+
+    #### Extract files of interest from list of all files ####
+    files_of_interest <- fitbit_files[grepl(paste0("sleep.*json"), fitbit_files, ignore.case = T)]
+
+    #### Row bind JSON files ####
+    original_file <- jsonlite::rbind_pages(lapply(files_of_interest, jsonlite::fromJSON)) %>%
+      dplyr::mutate(id = StudyID) %>% # need this step as fitbit individual files do not contain participant's ID
+      dplyr::select(id, dplyr::everything())
+
+
+    ### Return output ####
+    return(original_file)
+
+  } else if(FileType == "csv"){
+
+    #### Extract files of interest from list of all files ####
+    files_of_interest <- fitbit_files[grepl(paste0("sleep.*csv"), fitbit_files, ignore.case = T)]
+
+    #### Row bind csv files ####
+    original_file <- vroom::vroom(files_of_interest) %>%
+      dplyr::mutate(id = StudyID) %>% # need this step as fitbit individual files do not contain participant's ID
+      dplyr::select(id, dplyr::everything())
+
+    #### Return output ####
+    return(original_file)
+  }
+
+
+}
+
+
 #' @title Categorise Sleep Information from Fitbit Raw Data
 #'
 #' @description Function creates 3 separate datasets according to Fitbit sleep data:
@@ -166,7 +260,7 @@ sleepSummarise <- function(DataFrame){
 
 #' @title Visualise Sleeping Patterns
 #'
-#' @description Creates histograms showin the distribution of times when
+#' @description Creates histograms showing the distribution of times when
 #' participant(s) went to bed and got up
 #'
 #' @param DataFrame A dataframe containing Fitbit sleep data.
