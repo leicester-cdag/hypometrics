@@ -20,7 +20,7 @@ Two histogram plots displaying all times recorded by the Fitbit
 when participant(s) went to bed and got up.
 }
 \description{
-Creates histograms showin the distribution of times when
+Creates histograms showing the distribution of times when
 participant(s) went to bed and got up
 }
 \examples{

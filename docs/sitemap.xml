@@ -1,78 +1,33 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>https://hypometrics.github.io/404.html</loc>
-  </url>
-  <url>
-    <loc>https://hypometrics.github.io/articles/app_data.html</loc>
-  </url>
-  <url>
-    <loc>https://hypometrics.github.io/articles/cgm_data.html</loc>
-  </url>
-  <url>
-    <loc>https://hypometrics.github.io/articles/fitbit_data.html</loc>
-  </url>
-  <url>
-    <loc>https://hypometrics.github.io/articles/index.html</loc>
-  </url>
-  <url>
-    <loc>https://hypometrics.github.io/articles/linking_data.html</loc>
-  </url>
-  <url>
-    <loc>https://hypometrics.github.io/articles/sleep_data.html</loc>
-  </url>
-  <url>
-    <loc>https://hypometrics.github.io/authors.html</loc>
-  </url>
-  <url>
-    <loc>https://hypometrics.github.io/index.html</loc>
-  </url>
-  <url>
-    <loc>https://hypometrics.github.io/reference/cgm.html</loc>
-  </url>
-  <url>
-    <loc>https://hypometrics.github.io/reference/cgmCheck.html</loc>
-  </url>
-  <url>
-    <loc>https://hypometrics.github.io/reference/cgmInterpolate.html</loc>
-  </url>
-  <url>
-    <loc>https://hypometrics.github.io/reference/cgmSummarise.html</loc>
-  </url>
-  <url>
-    <loc>https://hypometrics.github.io/reference/cgmVisualise.html</loc>
-  </url>
-  <url>
-    <loc>https://hypometrics.github.io/reference/checkMissingCGM.html</loc>
-  </url>
-  <url>
-    <loc>https://hypometrics.github.io/reference/hello.html</loc>
-  </url>
-  <url>
-    <loc>https://hypometrics.github.io/reference/index.html</loc>
-  </url>
-  <url>
-    <loc>https://hypometrics.github.io/reference/pipe.html</loc>
-  </url>
-  <url>
-    <loc>https://hypometrics.github.io/reference/raw_cgm.html</loc>
-  </url>
-  <url>
-    <loc>https://hypometrics.github.io/reference/raw_sleep.html</loc>
-  </url>
-  <url>
-    <loc>https://hypometrics.github.io/reference/sdhDetection.html</loc>
-  </url>
-  <url>
-    <loc>https://hypometrics.github.io/reference/sdhSummarise.html</loc>
-  </url>
-  <url>
-    <loc>https://hypometrics.github.io/reference/sleepCategorise.html</loc>
-  </url>
-  <url>
-    <loc>https://hypometrics.github.io/reference/sleepSummarise.html</loc>
-  </url>
-  <url>
-    <loc>https://hypometrics.github.io/reference/sleepVisualise.html</loc>
-  </url>
+<urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
+<url><loc>https://hypometrics.github.io/404.html</loc></url>
+<url><loc>https://hypometrics.github.io/articles/activity_data.html</loc></url>
+<url><loc>https://hypometrics.github.io/articles/app_data.html</loc></url>
+<url><loc>https://hypometrics.github.io/articles/cgm_data.html</loc></url>
+<url><loc>https://hypometrics.github.io/articles/index.html</loc></url>
+<url><loc>https://hypometrics.github.io/articles/linking_data.html</loc></url>
+<url><loc>https://hypometrics.github.io/articles/sleep_data.html</loc></url>
+<url><loc>https://hypometrics.github.io/authors.html</loc></url>
+<url><loc>https://hypometrics.github.io/index.html</loc></url>
+<url><loc>https://hypometrics.github.io/reference/activityRead.html</loc></url>
+<url><loc>https://hypometrics.github.io/reference/activityVisualise.html</loc></url>
+<url><loc>https://hypometrics.github.io/reference/cgm.html</loc></url>
+<url><loc>https://hypometrics.github.io/reference/cgmCheck.html</loc></url>
+<url><loc>https://hypometrics.github.io/reference/cgmInterpolate.html</loc></url>
+<url><loc>https://hypometrics.github.io/reference/cgmSummarise.html</loc></url>
+<url><loc>https://hypometrics.github.io/reference/cgmVisualise.html</loc></url>
+<url><loc>https://hypometrics.github.io/reference/checkMissingCGM.html</loc></url>
+<url><loc>https://hypometrics.github.io/reference/hello.html</loc></url>
+<url><loc>https://hypometrics.github.io/reference/index.html</loc></url>
+<url><loc>https://hypometrics.github.io/reference/pipe.html</loc></url>
+<url><loc>https://hypometrics.github.io/reference/raw_cgm.html</loc></url>
+<url><loc>https://hypometrics.github.io/reference/raw_hr.html</loc></url>
+<url><loc>https://hypometrics.github.io/reference/raw_sleep.html</loc></url>
+<url><loc>https://hypometrics.github.io/reference/raw_step.html</loc></url>
+<url><loc>https://hypometrics.github.io/reference/sdhDetection.html</loc></url>
+<url><loc>https://hypometrics.github.io/reference/sdhSummarise.html</loc></url>
+<url><loc>https://hypometrics.github.io/reference/sleepCategorise.html</loc></url>
+<url><loc>https://hypometrics.github.io/reference/sleepRead.html</loc></url>
+<url><loc>https://hypometrics.github.io/reference/sleepSummarise.html</loc></url>
+<url><loc>https://hypometrics.github.io/reference/sleepVisualise.html</loc></url>
 </urlset>
+
