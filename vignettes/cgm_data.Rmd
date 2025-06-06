@@ -152,7 +152,7 @@ sdhSummarise(DataFrame = sdh_map)
 
 ## 5. Visualising CGM data
 
-It may be useful to plot CGM data to visually inspect glucose concentrations over time. The `cgmVisualise` allows you to do this at three different levels of granularity. 
+It may be useful to plot CGM data to visually inspect glucose concentrations over time. The `cgmVisualise()` function allows you to do this at three different levels of granularity. 
 
 ### Overall
 

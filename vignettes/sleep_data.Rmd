@@ -27,7 +27,7 @@ This article describes the sleep-specific functions that were created as part of
 
 ### Setup
 
-To be able to use the CGM functions, firstly install and load `hypometrics`.
+To be able to use the sleep functions, firstly install and load `hypometrics`.
 
 ```
 #Install
@@ -51,7 +51,19 @@ Throughout this tutorial, the examples presented will be based on the [`raw_slee
 utils::head(raw_sleep %>% dplyr::select(1:15))
 ```
 
-## 2. Cleaning sleep data
+## 2. Reading sleep data 
+
+The function `sleepRead()` allows the user to read and combine raw sleep files downloaded directly from their Fitbit account. If the downloaded folder is zipped, there is the option to unzip the folder by setting the `Unzip` argument to TRUE. This will create a new folder in the selected `Folder Path` called `Unzipped Fitbit`. The Fitbit file type to read must be specified using the `FileType` argument, either json or csv. As the individual files do not contain personal identifiers, it might be useful to add an ID column across the files to easily identify participants. It is possible to do this using the `StudyID` argument of the function.
+
+An example of the syntax is shown below: 
+```{r, eval = FALSE}
+hypometrics::sleepRead(Unzip = F,
+                       FolderPath = "C:/Users",
+                       FileType = "json",
+                       StudyID = "005")
+```
+
+## 3. Cleaning sleep data
 
 The `sleepCategorise()` function allows the user to separate the raw sleep data into three distinct datasets that can be used for specific needs. 
 
@@ -82,7 +94,7 @@ sleep_detail <-  sleepCategorise(raw_sleep)
 utils::head(sleep_detail$short_wake_periods)
 ```
 
-## 3. Describing sleep data
+## 4. Describing sleep data
 
 The `sleepSummarise` function allows the user to summarise raw sleep data to obtain a dataset with one row per participant including the number of nights with missing data, average time in bed, asleep or awake.
 
@@ -90,9 +102,9 @@ The `sleepSummarise` function allows the user to summarise raw sleep data to obt
 sleepSummarise(raw_sleep)
 ```
 
-## 4. Visualising sleep data
+## 5. Visualising sleep data
 
-The `sleepSummarise` function allows the user to visualise the distribution of times when participants went to bed and got out of bed, as shown below. The default is to plot the histogram for all times recorded by the Fitbit for all participants. To facilitate interpretation of the sleeping patterns, the function centres the times when going to bed around midnight .
+The `sleepVisualise` function allows the user to visualise the distribution of times when participants went to bed and got out of bed, as shown below. The default is to plot the histogram for all times recorded by the Fitbit for all participants. To facilitate interpretation of the sleeping patterns, the function centres the times when going to bed around midnight .
 
 ```{r, message=FALSE, warning = FALSE}
 sleepVisualise(raw_sleep)
