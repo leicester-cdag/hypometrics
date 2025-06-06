@@ -410,7 +410,7 @@ cgmSummarise <- function(DataFrame,
       dplyr::mutate(nweeks = ndays/7) %>%
       transform(nweeks = as.numeric(nweeks)) %>%
       dplyr::rename(start_date_cgm = start_date, end_date_cgm = end_date, mean_glu = mean, sd_glu = SD,
-                    median_glu = median, Q1_glu = X25, Q3_glu = X75, cv_glu = CV) %>%
+                    median_glu = median, Q1_glu = `25`, Q3_glu = `75`, cv_glu = CV) %>%
       dplyr::mutate_if(is.numeric, round, digits = 1) %>%
       dplyr::select(id, start_date_cgm, end_date_cgm, nweeks, ndays, active_percent, mean_glu, sd_glu, median_glu, Q1_glu, Q3_glu,
                     cv_glu, above_250, above_180, in_range_70_180, below_70, below_54)

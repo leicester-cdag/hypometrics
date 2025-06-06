@@ -41,3 +41,31 @@
 #'     \item{endTime}{End time of sleep (YYYY-MM-DD HH:MM:SS)}
 #' }
 "raw_sleep"
+
+#' Dataset containing raw step count data of 2 participants
+#' who used a Fitbit Charge 4
+#'
+#' @format A data frame with one row per minute
+#'
+#' @details Dataset containing Fitbit Charge 4 step count
+#'
+#' \describe{
+#'     \item{id}{Unique study ID}
+#'     \item{step_timestamp}{Timestamp}
+#'     \item{count}{Step count}
+#' }
+"raw_step"
+
+#' Dataset containing raw heart rate data of 2 participants
+#' who used a Fitbit Charge 4
+#'
+#' @format A data frame with one row per minute
+#'
+#' @details Dataset containing Fitbit Charge 4 heart rate
+#'
+#' \describe{
+#'     \item{id}{Unique study ID}
+#'     \item{hr_timestamp}{Timestamp}
+#'     \item{count}{Step count}
+#' }
+"raw_hr"
