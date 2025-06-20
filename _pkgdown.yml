@@ -15,7 +15,7 @@ navbar:
       - text: Sleep Data
         href: articles/sleep_data.html
       - text: Person-Reported Hypoglycaemia Data
-        href: articles/app_data.html
+        href: articles/umotif_data.html
       - text: Combining Data
         href: articles/linking_data.html
   - text: Functions
@@ -30,7 +30,7 @@ articles:
   - cgm_data
   - activity_data
   - sleep_data
-  - app_data
+  - umotif_data
   - linking_data
 
 reference:
@@ -59,10 +59,22 @@ reference:
       - sleepCategorise
       - sleepSummarise
       - sleepVisualise
+  - subtitle: uMotif functions
+    desc: |
+      Functions for managing uMotif data
+    contents:
+      - umotifRead
+      - umotifClean
+      - umotifVisualise
   - subtitle: Data
     contents:
       - cgm
+      - raw_checkin
       - raw_cgm
+      - raw_eq5d5l
       - raw_hr
+      - raw_motif_segment
+      - raw_promis
       - raw_sleep
       - raw_step
+      - raw_wpai
