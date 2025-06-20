@@ -6,10 +6,12 @@
 <url><loc>https://hypometrics.github.io/articles/index.html</loc></url>
 <url><loc>https://hypometrics.github.io/articles/linking_data.html</loc></url>
 <url><loc>https://hypometrics.github.io/articles/sleep_data.html</loc></url>
+<url><loc>https://hypometrics.github.io/articles/umotif_data.html</loc></url>
 <url><loc>https://hypometrics.github.io/authors.html</loc></url>
 <url><loc>https://hypometrics.github.io/index.html</loc></url>
 <url><loc>https://hypometrics.github.io/reference/activityRead.html</loc></url>
 <url><loc>https://hypometrics.github.io/reference/activityVisualise.html</loc></url>
+<url><loc>https://hypometrics.github.io/reference/assignment.html</loc></url>
 <url><loc>https://hypometrics.github.io/reference/cgm.html</loc></url>
 <url><loc>https://hypometrics.github.io/reference/cgmCheck.html</loc></url>
 <url><loc>https://hypometrics.github.io/reference/cgmInterpolate.html</loc></url>
@@ -20,14 +22,22 @@
 <url><loc>https://hypometrics.github.io/reference/index.html</loc></url>
 <url><loc>https://hypometrics.github.io/reference/pipe.html</loc></url>
 <url><loc>https://hypometrics.github.io/reference/raw_cgm.html</loc></url>
+<url><loc>https://hypometrics.github.io/reference/raw_checkin.html</loc></url>
+<url><loc>https://hypometrics.github.io/reference/raw_eq5d5l.html</loc></url>
 <url><loc>https://hypometrics.github.io/reference/raw_hr.html</loc></url>
+<url><loc>https://hypometrics.github.io/reference/raw_motif_segment.html</loc></url>
+<url><loc>https://hypometrics.github.io/reference/raw_promis.html</loc></url>
 <url><loc>https://hypometrics.github.io/reference/raw_sleep.html</loc></url>
 <url><loc>https://hypometrics.github.io/reference/raw_step.html</loc></url>
+<url><loc>https://hypometrics.github.io/reference/raw_wpai.html</loc></url>
 <url><loc>https://hypometrics.github.io/reference/sdhDetection.html</loc></url>
 <url><loc>https://hypometrics.github.io/reference/sdhSummarise.html</loc></url>
 <url><loc>https://hypometrics.github.io/reference/sleepCategorise.html</loc></url>
 <url><loc>https://hypometrics.github.io/reference/sleepRead.html</loc></url>
 <url><loc>https://hypometrics.github.io/reference/sleepSummarise.html</loc></url>
 <url><loc>https://hypometrics.github.io/reference/sleepVisualise.html</loc></url>
+<url><loc>https://hypometrics.github.io/reference/umotifClean.html</loc></url>
+<url><loc>https://hypometrics.github.io/reference/umotifRead.html</loc></url>
+<url><loc>https://hypometrics.github.io/reference/umotifVisualise.html</loc></url>
 </urlset>
 
