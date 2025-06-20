@@ -7,7 +7,7 @@ Authors@R:
      "Gilberte Martine-Edith <gilberte.martine_edith@kcl.ac.uk> [aut]",
      "Jonah Thomas <jjct1@leicester.ac.uk> [cre]"
      ))
-Description: A series of functions to analyse hypoglycaemia and physical activity data. 
+Description: A series of functions to clean, process, visualise and combine glucose, step count, sleep and hypoglycaemia symptoms data. 
 License: What license is it under?
 Encoding: UTF-8
 LazyData: true
@@ -23,4 +23,6 @@ Depends:
 Imports: 
     dplyr,
     ggplot2,
-    magrittr
+    magrittr,
+    data.table,
+    UpSetR

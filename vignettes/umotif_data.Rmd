@@ -1,0 +1,193 @@
+---
+title: "Person-Reported Hypoglycaemia Data"
+---
+
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+
+---
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Person-Reported Hypoglycaemia Data}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+<style>
+.nobullet li{
+  list-style-type: none;
+}
+</style>
+
+
+## Introduction
+
+As part of the Hypo-METRICS study, the bespoke Hypo-METRICS app was developed via the software platform provided by [uMotif Limited](https://www.umotif.com) which recorded in real-time and retrospectively through daily questionnaires, person-reported hypoglycaemia episodes, their symptoms and impact on daily life. The app also included validated questionnaires such as the Work Productivity and Activity Impairment (WPAI), EuroQol-5 Dimensions-5 Levels (EQ-5D-5L) and Patient-Reported Outcomes Measurement Information System (PROMIS) questionnaires. The `hypometrics` package reads in data from the original version of the Hypo-METRICS app. The Hypo-METRICS app features have since evolved and future work will ensure that this is reflected in the package. 
+
+This article describes the uMotif-specific functions that were created as part of the `hypometrics` package.
+
+
+### Setup
+
+To be able to use the uMotif functions, firstly install and load `hypometrics`.
+
+```
+#Install
+install.packages("remotes")
+remotes::install_github("hypometrics")
+```
+
+
+```{r, message=FALSE}
+#Load package
+library(hypometrics)
+```
+
+### Example data
+
+Throughout this tutorial, the examples presented will be based on the  [`raw_motif_segment`](https://hypometrics.github.io/reference/raw_motif_segment.html), [`raw_checkin`](https:`//hypometrics.github.io/reference/raw_checkin.html), [`raw_promis`](https://hypometrics.github.io/reference/raw_promis.html), [`raw_eq5d5l`](https://hypometrics.github.io/reference/raw_eq5d5l.html) and [`raw_wpai](https://hypometrics.github.io/reference/raw_wpai.html) dataframes. They contain data from `r dplyr::n_distinct(raw_motif_segment$UserId)` participants who used the app.
+
+
+## 2. Reading uMotif data 
+
+The function `uMotifRead()` allows the user to read raw uMotif files downloaded directly from the uMotif data download portal. If the downloaded folder is zipped, there is the option to unzip the folder by setting the `Unzip` argument to TRUE. This will create a new folder in the selected `Folder Path` called `Unzipped uMotif`. The Fitbit file to read must be specified using the `FilePattern` argument, for example the morning check-in as shown below:  
+
+```{r, eval = FALSE}
+hypometrics::uMotifRead(Unzip = F,
+                       FolderPath = "C:/Users",
+                       FilePattern = "morning-checkin")
+```
+
+Other examples of file types could be `evening-checkin` for the daily evening questionnaire, `motif-segment` for the real-time person-reported hypoglycaemic episodes and symptoms or `promis` for the weekly PROMIS questionnaire.
+
+## 3. Cleaning uMotif data
+
+The `umotifClean()` function allows the user to clean umotif data according to the type of file. 
+
+### Real-time person-reported hypoglycaemic episodes 
+
+If the `FileType` argument of the function is set to `"motif"`, the function will turn raw data into a dataset with one raw for each episode of hypoglycaemia episodes per individual, along with the timing of each episode, glucose concentration and intensity of symptoms reported in real-time using the motif flower in the app. For more information regarding how episodes of hypoglycaemia were reported during the Hypo-METRICS study, please refer to this [article](https://onlinelibrary.wiley.com/doi/10.1111/dme.14892). 
+
+
+```{r, message=FALSE, warning=FALSE}
+umotifClean(DataFrame = raw_motif_segment,
+            FileType = "motif") |>
+  print(width=Inf)
+```
+
+### Person-reported hypoglycaemic episodes recorded retrospectively
+
+\
+
+If the `FileType` argument of the function is set to `"checkin"`, the function will turn raw data into a dataset with one raw for each episode of hypoglycaemia episodes per individual, along with the timing of each episode, how participant detected the episode and what course of action was undertaken at the time of the episode. These are episodes reported retrospectively using the daily morning and evening questionnaires. For more information regarding how episodes of hypoglycaemia were reported during the Hypo-METRICS study, please refer to this [article](https://onlinelibrary.wiley.com/doi/10.1111/dme.14892). 
+
+\
+
+```{r, message=FALSE, warning=FALSE}
+umotifClean(DataFrame = raw_checkin,
+            FileType = "checkin") |>
+  print(width=Inf)
+```
+
+### Work Productivity and Activity Impairment (WPAI) data
+
+\
+
+If the `FileType` argument of the function is set to `"wpai"`, the function will calculate WPAI scores based on raw data. These scores give an insight of the impact of hypoglycaemia on work and activity. Higher scores indicate greater impairment and less productivity as a result of hypoglycaemia. Four scores are calculated: percent work time missed due to hypoglycaemia, percent impairment while working due to hypoglycaemia, percent overall work impairment due to hypoglycaemia and percent activity impairment due to hypoglycaemia. Scores are multiplied by 100 to express in percentages. 
+
+\
+
+```{r, message=FALSE, warning=FALSE}
+umotifClean(DataFrame = raw_wpai,
+            FileType = "wpai") |>
+  print(width=Inf)
+```
+
+### EuroQol-5 Dimensions-5 Levels (EQ-5D-5L) data
+
+\
+
+If the `FileType` argument of the function is set to `"eq5d5l"`, the function will recode raw responses to numerical values ranging from 1 to 5. The EQ-5D-5L includes questions on mobility (MB), self-care (SC), usual activities (UA), pain/discomfort (PD) and anxiety/depression (AD). 
+
+\
+
+```{r, message=FALSE, warning=FALSE}
+utils::head(
+  umotifClean(DataFrame = raw_eq5d5l,
+            FileType = "eq5d5l"),
+  n=10)
+```
+
+### Patient-Reported Outcomes Measurement Information System (PROMIS) data
+
+\
+
+If the `FileType` argument of the function is set to `"promis"`, the function will calculate sum scores and associated T scores from raw PROMIS data. For more information about the PROMIS scores, please follow this [link](https://www.healthmeasures.net/images/PROMIS/manuals/PROMIS_Sleep_Disturbance_Scoring_Manual.pdf).
+
+\
+
+```{r, message=FALSE, warning=FALSE}
+umotifClean(DataFrame = raw_promis,
+            FileType = "promis") |>
+  print(width=Inf)
+```
+
+\
+
+## 3. Visualising patient-reported hypoglycaemia symptoms data
+
+\
+
+The `umotifVisualise()` function allows the user to visualise symptoms reported in real-time using the motif flower in the Hypo-METRICS app. Depending on the graph type selected, the user can visualise either the different combinations of symptoms reported or the frequency of symptoms according to glucose concentration.
+
+\
+
+### Combination of symptoms
+
+If the `GraphType` argument of the function is set to `"upset"`, the function will leverage the upset function from the [UpSetR package](https://doi.org/10.1093/bioinformatics/btx364) to build an upset plot showing all possible intersection of symptoms, as shown below. The default of the function is to visualise symptoms for all participants included with the `VisualiseAll` argument set as TRUE. 
+
+```{r, message=FALSE, warning = FALSE}
+umotifVisualise(DataFrame = raw_motif_segment,
+                GraphType = "upset")
+```
+
+\
+
+If the user needs to visualise data for a specific participant, this can be done by changing the argument `VisualiseAll` to FALSE and indicating the participant id of interest in the `UserID` argument, using the syntax below:
+
+```{r, message=FALSE, warning = FALSE, eval=FALSE}
+umotifVisualise(DataFrame = raw_motif_segment,
+                GraphType = "upset",
+                VisualiseAll = FALSE,
+                UserID = "27321")
+```
+
+### Frequency of symptoms by glucose concentration 
+
+If the `GraphType` argument of the function is set to `"heatmap"`, the function will calculate the frequency of each symptom as the number of times a symptom was reported divided by the total number of hypoglycaemic episodes reported at glucose concentration. The calculated frequencies will be presented as a heat map with darker colours indicating a higher symptom frequency. The default of the function is to visualise symptoms for all participants included with the `VisualiseAll` argument set as TRUE. 
+
+```{r, message=FALSE, warning = FALSE}
+umotifVisualise(DataFrame = raw_motif_segment,
+                GraphType = "heatmap")
+```
+
+\
+
+If the user needs to visualise data for a specific participant, this can be done by changing the argument `VisualiseAll` to FALSE and indicating the participant id of interest in the `UserID` argument, using the syntax below:
+
+```{r, message=FALSE, warning = FALSE, eval=FALSE}
+umotifVisualise(DataFrame = raw_motif_segment,
+                GraphType = "heatmap",
+                VisualiseAll = FALSE,
+                UserID = "27321")
+```
+
+
+
+
