@@ -22,7 +22,7 @@ The `hypometrics` package offers tools to clean, check, analyse, visualise and l
 
 **3. Sleep Data**: more detail can be found [here](https://hypometrics.github.io/sleep_data.html/).
 
-**4. Person-Reported Hypoglycaemia Data**: more detail can be found [here](https://hypometrics.github.io/app_data.html/).
+**4. Person-Reported Hypoglycaemia Data**: more detail can be found [here](https://hypometrics.github.io/umotif_data.html/).
 
 ## Installation
 

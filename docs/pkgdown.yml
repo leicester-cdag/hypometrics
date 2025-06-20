@@ -3,11 +3,11 @@ pkgdown: 2.1.3
 pkgdown_sha: ~
 articles:
   activity_data: activity_data.html
-  app_data: app_data.html
   cgm_data: cgm_data.html
   linking_data: linking_data.html
   sleep_data: sleep_data.html
-last_built: 2025-06-06T15:24Z
+  umotif_data: umotif_data.html
+last_built: 2025-06-20T09:13Z
 urls:
   reference: https://hypometrics.github.io/reference
   article: https://hypometrics.github.io/articles
