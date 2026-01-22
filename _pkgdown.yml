@@ -1,3 +1,6 @@
+template:
+  bootstrap: 5
+
 url: https://hypometrics.github.io/
 
 navbar:
@@ -16,7 +19,7 @@ navbar:
         href: articles/sleep_data.html
       - text: Person-Reported Hypoglycaemia Data
         href: articles/umotif_data.html
-      - text: Combining Data
+      - text: Linking Data
         href: articles/linking_data.html
   - text: Functions
     icon: fa fa-file-code
@@ -65,7 +68,19 @@ reference:
     contents:
       - umotifRead
       - umotifClean
-      - umotifVisualise
+      - prhLink
+      - prhSummarise
+      - prhVisualise
+  - subtitle: Linking functions
+    desc: |
+      Functions for linking and visualising CGM data with Fitbit and uMotif data
+    contents:
+      - cgmsleepLink
+      - cgmactivityLink
+      - cgmactivityVisualise
+      - cgmprhLink
+      - cgmprhVisualise
+      - sdhprhLink
   - subtitle: Data
     contents:
       - cgm

@@ -22,8 +22,7 @@ This function enables the cleaning of raw uMotif data according to the type of f
 
 \dontrun{
 hypometrics::umotifClean(DataFrame = raw_checkin,
-                        FileType = "checkin"
-                        )
+                        FileType = "checkin")
 }
 
 }

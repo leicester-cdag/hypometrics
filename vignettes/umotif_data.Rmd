@@ -1,9 +1,16 @@
 ---
 title: "Person-Reported Hypoglycaemia Data"
+output: 
+  html_document:
+   toc: true
+   toc_depth: 4
+vignette: >
+  %\VignetteIndexEntry{Person-Reported Hypoglycaemia Data}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
 ---
 
-
-```{r, include = FALSE}
+```{r setup, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
@@ -11,22 +18,7 @@ knitr::opts_chunk$set(
 ```
 
 
----
-output: rmarkdown::html_vignette
-vignette: >
-  %\VignetteIndexEntry{Person-Reported Hypoglycaemia Data}
-  %\VignetteEngine{knitr::rmarkdown}
-  %\VignetteEncoding{UTF-8}
----
-
-<style>
-.nobullet li{
-  list-style-type: none;
-}
-</style>
-
-
-## Introduction
+## 1. Introduction
 
 As part of the Hypo-METRICS study, the bespoke Hypo-METRICS app was developed via the software platform provided by [uMotif Limited](https://www.umotif.com) which recorded in real-time and retrospectively through daily questionnaires, person-reported hypoglycaemia episodes, their symptoms and impact on daily life. The app also included validated questionnaires such as the Work Productivity and Activity Impairment (WPAI), EuroQol-5 Dimensions-5 Levels (EQ-5D-5L) and Patient-Reported Outcomes Measurement Information System (PROMIS) questionnaires. The `hypometrics` package reads in data from the original version of the Hypo-METRICS app. The Hypo-METRICS app features have since evolved and future work will ensure that this is reflected in the package. 
 
@@ -140,11 +132,68 @@ umotifClean(DataFrame = raw_promis,
 
 \
 
-## 3. Visualising patient-reported hypoglycaemia symptoms data
+
+## 4. Linking Real-Time and Retrospective uMotif Person-Reported Hypoglycaemia (PRH) Data
+
+The `prhLink()` function allows the linkage of real-time (motif flower) and retrospective (check-ins) uMotif PRH data. The user firstly needs to clean umotif data using the `uMotifClean()` function, as shown below:
+
+```{r, message=FALSE, warning=FALSE}
+## Cleaning motif and checkin data 
+motif <- umotifClean(DataFrame = hypometrics::raw_motif_segment,
+                     FileType = "motif")
+checkin <- umotifClean(DataFrame = hypometrics::raw_checkin,
+                       FileType = "checkin")
+
+## Creating the linked PRH dataset
+prhLink(MotifDataFrame = motif,
+        CheckinDataFrame = checkin) %>%
+  dplyr::select(1:4) %>%
+  dplyr::slice(11:20)
+```
+
+The resulting output is a dataset with one row per PRH event. When real-time and retrospective PRH were recorded within one hour of each other, these will appear on the same row as they are considered to be the same event. 
+
+For example, we can see that a PRH was recorded retrospectively using the check-ins at 03:20 on 07/12/20 and it was linked to a PRH recorded at 03:42 on the same day using the motif flower. The check-in PRH at 02:30 on 25/11/2020 was not linked to a motif PRH. The night_status column indicates whether the PRH occurred at night (between 00:00 and 06:00) or day. The output contains additional information such as hypoglycaemia symptoms reported, but for illustrative purposes here, only a limited number of columns are shown. 
+
+If the user has sleep data available, it is possible to add this information to the dataset by running the function and changing the default parameters, as shown below. This will create an additional variable with sleep_status of the PRH as defined using a sleep tracker (here the Fitbit). 
+
+```{r, message=FALSE, warning=FALSE, eval=FALSE}
+## Creating the linked PRH dataset
+prhLink(MotifDataFrame = motif,
+        CheckinDataFrame = checkin,
+        AddSleepStatus = "yes",
+        SleepDataFrame = raw_sleep) 
+```
+
+## 5. Summarising person-reported hypoglycaemia (PRH) data 
+
+It is possible to obtain key PRH metrics using the `prhSummarise()` function. The user will get key information such as the total number of PRHs, the number that were symptomatic, prevented, or the number occurring at day or night. If sleep data is available, the parameter `AddSleepSummary` can be turned to "yes" and the number of PRH when asleep, awake or when sleep information was missing for each PRH and participant will also be calculated.
+
+The function requires the data to be in the format as the output of the `prhLink()` function. 
+
+```{r, message=FALSE, warning=FALSE}
+## Cleaning motif and checkin data 
+motif <- umotifClean(DataFrame = hypometrics::raw_motif_segment,
+                     FileType = "motif")
+checkin <- umotifClean(DataFrame = hypometrics::raw_checkin,
+                       FileType = "checkin")
+
+## Creating the linked PRH dataset
+prh_map <- prhLink(MotifDataFrame = motif,
+                   CheckinDataFrame = checkin) 
+
+## summarising PRH data
+prhSummarise(prh_map)
+```
+
+We can see that participant "002" had a total of 25 PRHs, 23 were symptomatic and 31 occurred during the day.
+
+
+## 6. Visualising person-reported hypoglycaemia symptoms data
 
 \
 
-The `umotifVisualise()` function allows the user to visualise symptoms reported in real-time using the motif flower in the Hypo-METRICS app. Depending on the graph type selected, the user can visualise either the different combinations of symptoms reported or the frequency of symptoms according to glucose concentration.
+The `prhVisualise()` function allows the user to visualise symptoms reported in real-time using the motif flower in the Hypo-METRICS app. Depending on the graph type selected, the user can visualise either the different combinations of symptoms reported or the frequency of symptoms according to glucose concentration.
 
 \
 
@@ -153,8 +202,8 @@ The `umotifVisualise()` function allows the user to visualise symptoms reported 
 If the `GraphType` argument of the function is set to `"upset"`, the function will leverage the upset function from the [UpSetR package](https://doi.org/10.1093/bioinformatics/btx364) to build an upset plot showing all possible intersection of symptoms, as shown below. The default of the function is to visualise symptoms for all participants included with the `VisualiseAll` argument set as TRUE. 
 
 ```{r, message=FALSE, warning = FALSE}
-umotifVisualise(DataFrame = raw_motif_segment,
-                GraphType = "upset")
+prhVisualise(DataFrame = raw_motif_segment,
+             GraphType = "upset")
 ```
 
 \
@@ -162,10 +211,10 @@ umotifVisualise(DataFrame = raw_motif_segment,
 If the user needs to visualise data for a specific participant, this can be done by changing the argument `VisualiseAll` to FALSE and indicating the participant id of interest in the `UserID` argument, using the syntax below:
 
 ```{r, message=FALSE, warning = FALSE, eval=FALSE}
-umotifVisualise(DataFrame = raw_motif_segment,
-                GraphType = "upset",
-                VisualiseAll = FALSE,
-                UserID = "27321")
+prhVisualise(DataFrame = raw_motif_segment,
+             GraphType = "upset",
+             VisualiseAll = FALSE,
+             UserID = "001")
 ```
 
 ### Frequency of symptoms by glucose concentration 
@@ -173,8 +222,8 @@ umotifVisualise(DataFrame = raw_motif_segment,
 If the `GraphType` argument of the function is set to `"heatmap"`, the function will calculate the frequency of each symptom as the number of times a symptom was reported divided by the total number of hypoglycaemic episodes reported at glucose concentration. The calculated frequencies will be presented as a heat map with darker colours indicating a higher symptom frequency. The default of the function is to visualise symptoms for all participants included with the `VisualiseAll` argument set as TRUE. 
 
 ```{r, message=FALSE, warning = FALSE}
-umotifVisualise(DataFrame = raw_motif_segment,
-                GraphType = "heatmap")
+prhVisualise(DataFrame = raw_motif_segment,
+             GraphType = "heatmap")
 ```
 
 \
@@ -182,10 +231,10 @@ umotifVisualise(DataFrame = raw_motif_segment,
 If the user needs to visualise data for a specific participant, this can be done by changing the argument `VisualiseAll` to FALSE and indicating the participant id of interest in the `UserID` argument, using the syntax below:
 
 ```{r, message=FALSE, warning = FALSE, eval=FALSE}
-umotifVisualise(DataFrame = raw_motif_segment,
-                GraphType = "heatmap",
-                VisualiseAll = FALSE,
-                UserID = "27321")
+prhVisualise(DataFrame = raw_motif_segment,
+             GraphType = "heatmap",
+             VisualiseAll = FALSE,
+             UserID = "001")
 ```
 
 
