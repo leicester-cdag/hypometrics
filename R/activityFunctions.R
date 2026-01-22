@@ -226,7 +226,7 @@ activityVisualise <- function(DataFrame,
       #### Plot the data ###
       hr_plot <- DataFrame %>%
         ggplot2::ggplot(ggplot2::aes(x = hr_timestamp, y = heart_rate)) +
-        ggplot2::geom_bar(stat="identity", fill="darkred") +
+        ggplot2::geom_line(ggplot2::aes(y=heart_rate), colour = "darkred") +
         ggplot2::ylab("Heart rate (beats/min)") +
         ggplot2::xlab("Date (DD/MM/YY)") +
         ggplot2::scale_x_datetime(date_labels = "%d/%m/%y",
@@ -272,7 +272,7 @@ activityVisualise <- function(DataFrame,
       #### Plot the data ###
       hr_plot <- DataFrame %>%
         ggplot2::ggplot(ggplot2::aes(x = hr_timestamp, y = heart_rate)) +
-        ggplot2::geom_bar(stat="identity", fill="darkred") +
+        ggplot2::geom_line(ggplot2::aes(y=heart_rate), colour = "darkred") +
         ggforce::facet_grid_paginate(~study_week, ncol=1, nrow=1, page = PageNumber, scales = "free") +
         ggplot2::ylab("Heart rate (beats/min)") +
         ggplot2::xlab("Date (DD/MM/YY HH:MM)") +
@@ -325,7 +325,7 @@ activityVisualise <- function(DataFrame,
       hr_plot <- DataFrame %>%
         ggplot2::ggplot(ggplot2::aes(x =hr_timestamp, y = heart_rate)) +
         ggforce::facet_grid_paginate(~study_day, ncol=1, nrow=1, page = PageNumber, scales = "free") +
-        ggplot2::geom_bar(stat="identity", fill="darkred") +
+        ggplot2::geom_line(ggplot2::aes(y=heart_rate), colour = "darkred") +
         ggplot2::ylab("Step count (n/min)") +
         ggplot2::xlab("Date (DD/MM/YY HH:MM)") +
         ggplot2::scale_x_datetime(date_labels = "%d/%m/%y \n %H:%M",

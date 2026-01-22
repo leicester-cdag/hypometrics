@@ -4,93 +4,65 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <title>Continuous Glucose Monitoring (CGM) Data • hypometrics</title>
-<!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script><!-- bootstrap-toc --><link rel="stylesheet" href="../bootstrap-toc.css">
-<script src="../bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
-<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
-<script src="../pkgdown.js"></script><meta property="og:title" content="Continuous Glucose Monitoring (CGM) Data">
-<!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
-<script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-<![endif]-->
+<script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
+<script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
+<link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
+<script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Continuous Glucose Monitoring (CGM) Data">
 </head>
-<body data-spy="scroll" data-target="#toc">
+<body>
+    <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
 
 
-    <div class="container template-article">
-      <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
-  <div class="container">
-    <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false">
-        <span class="sr-only">Toggle navigation</span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
-      <span class="navbar-brand">
-        <a class="navbar-link" href="../index.html">hypometrics</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.9</span>
-      </span>
-    </div>
+    <nav class="navbar navbar-expand-lg fixed-top bg-light" data-bs-theme="default" aria-label="Site navigation"><div class="container">
 
-    <div id="navbar" class="navbar-collapse collapse">
-      <ul class="nav navbar-nav">
-<li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-    <span class="fa fa-book-reader"></span>
+    <a class="navbar-brand me-2" href="../index.html">hypometrics</a>
 
-    Tutorials
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.9</small>
 
-    <span class="caret"></span>
-  </a>
-  <ul class="dropdown-menu" role="menu">
-<li>
-      <a href="../articles/cgm_data.html">Continuous Glucose Monitoring (CGM) Data</a>
-    </li>
-    <li>
-      <a href="../articles/activity_data.html">Physical Activity Data</a>
-    </li>
-    <li>
-      <a href="../articles/sleep_data.html">Sleep Data</a>
-    </li>
-    <li>
-      <a href="../articles/umotif_data.html">Person-Reported Hypoglycaemia Data</a>
-    </li>
-    <li>
-      <a href="../articles/linking_data.html">Combining Data</a>
-    </li>
+
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div id="navbar" class="collapse navbar-collapse ms-3">
+      <ul class="navbar-nav me-auto">
+<li class="active nav-item dropdown">
+  <button class="nav-link dropdown-toggle" type="button" id="dropdown-tutorials" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true" aria-label="Articles"><span class="fa fa-book-reader"></span> Tutorials</button>
+  <ul class="dropdown-menu" aria-labelledby="dropdown-tutorials">
+<li><a class="dropdown-item" href="../articles/cgm_data.html">Continuous Glucose Monitoring (CGM) Data</a></li>
+    <li><a class="dropdown-item" href="../articles/activity_data.html">Physical Activity Data</a></li>
+    <li><a class="dropdown-item" href="../articles/sleep_data.html">Sleep Data</a></li>
+    <li><a class="dropdown-item" href="../articles/umotif_data.html">Person-Reported Hypoglycaemia Data</a></li>
+    <li><a class="dropdown-item" href="../articles/linking_data.html">Linking Data</a></li>
   </ul>
 </li>
-<li>
-  <a href="../reference/index.html">
-    <span class="fa fa-file-code"></span>
-
-    Functions
-  </a>
-</li>
+<li class="nav-item"><a class="nav-link" href="../reference/index.html" aria-label="Reference"><span class="fa fa-file-code"></span> Functions</a></li>
       </ul>
-<ul class="nav navbar-nav navbar-right"></ul>
+<ul class="navbar-nav">
+<li class="nav-item"><form class="form-inline" role="search">
+ <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../search.json">
+</form></li>
+      </ul>
 </div>
-<!--/.nav-collapse -->
+
+
   </div>
-<!--/.container -->
-</div>
-<!--/.navbar -->
+</nav><div class="container template-article">
 
 
 
-      </header><div class="row">
-  <div class="col-md-9 contents">
-    <div class="page-header toc-ignore">
-      <h1 data-toc-skip>Continuous Glucose Monitoring (CGM) Data</h1>
+
+<div class="row">
+  <main id="main" class="col-md-9"><div class="page-header">
+
+      <h1>Continuous Glucose Monitoring (CGM) Data</h1>
             
       
 
-      <div class="hidden name"><code>cgm_data.Rmd</code></div>
-
+      <div class="d-none name"><code>cgm_data.Rmd</code></div>
     </div>
 
     
@@ -112,7 +84,7 @@ as part of the <code>hypometrics</code> package.</p>
 <code>hypometrics</code>.</p>
 <pre><code><span><span class="co">#Install</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"remotes"</span><span class="op">)</span></span>
-<span><span class="fu">remotes</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"hypometrics"</span><span class="op">)</span></span></code></pre>
+<span><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"hypometrics"</span><span class="op">)</span></span></code></pre>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">#Load package</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">hypometrics</span><span class="op">)</span></span></code></pre></div>
@@ -124,7 +96,7 @@ as part of the <code>hypometrics</code> package.</p>
 <a href="https://hypometrics.github.io/reference/raw_cgm.html"><code>raw_cgm</code></a>
 and <a href="https://hypometrics.github.io/reference/cgm.html"><code>cgm</code></a>
 dataframes.</p>
-<p>Both dataframes contain data from 3 participants who used a CGM
+<p>Both dataframes contain data from 2 participants who used a CGM
 device, with one row per CGM timestamp. The <code>cgm</code> dataframe
 is a cleaner and more granular version of the <code>raw_cgm</code> as it
 includes glucose data that already been interpolated, at the 1-min
@@ -252,7 +224,7 @@ missingness in glucose data.</p>
 per day for all participants included by running:</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/cgmCheck.html">cgmCheck</a></span><span class="op">(</span><span class="va">cgm</span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 210 × 3</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 140 × 3</span></span></span>
 <span><span class="co">#&gt;    id    Date       total_cgm_hours</span></span>
 <span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;date&gt;</span>               <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> 001   2020-10-30            8.12</span></span>
@@ -265,7 +237,7 @@ per day for all participants included by running:</p>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> 001   2020-11-06           23.2 </span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> 001   2020-11-07           24.0 </span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> 001   2020-11-08           24.0 </span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 200 more rows</span></span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 130 more rows</span></span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="individual-level">Individual level<a class="anchor" aria-label="anchor" href="#individual-level"></a>
@@ -281,7 +253,7 @@ available hours of CGM data for participant ‘001’ and a graph
 highlighting periods of missingness as shown below.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">graphics</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">missingness_001</span><span class="op">$</span><span class="va">cgm_na_distribution_plot</span><span class="op">)</span></span></code></pre></div>
-<p><img src="cgm_data_files/figure-html/unnamed-chunk-9-1.png" width="700"></p>
+<p><img src="cgm_data_files/figure-html/unnamed-chunk-9-1.png" alt="" width="700"></p>
 </div>
 </div>
 <div class="section level2">
@@ -303,15 +275,12 @@ in/above/below range can also be adapted depending on user’s needs.</p>
 <span><span class="co">#&gt;    id      start_date_cgm        end_date_cgm nweeks     ndays active_percent</span></span>
 <span><span class="co">#&gt; 1 001 2020-10-30 14:12:00 2021-01-07 23:59:53    9.9 69.4 days           95.6</span></span>
 <span><span class="co">#&gt; 2 002 2020-11-20 14:42:18 2021-01-28 23:56:00    9.9 69.4 days           98.6</span></span>
-<span><span class="co">#&gt; 3 003 2020-11-18 11:25:11 2021-01-26 23:55:38    9.9 69.5 days           99.1</span></span>
 <span><span class="co">#&gt;   mean_glu sd_glu median_glu Q1_glu Q3_glu cv_glu above_13.9 above_10</span></span>
 <span><span class="co">#&gt; 1      6.8    2.8        6.3    4.6    8.4   40.7        1.6     12.7</span></span>
 <span><span class="co">#&gt; 2     10.4    4.1        9.9    7.5   12.8   39.0       18.4     49.2</span></span>
-<span><span class="co">#&gt; 3      9.4    3.1        9.1    7.1   11.4   33.0        9.5     39.2</span></span>
 <span><span class="co">#&gt;   in_range_3.9_10 below_3.9 below_3</span></span>
 <span><span class="co">#&gt; 1            73.4      13.9     2.6</span></span>
-<span><span class="co">#&gt; 2            48.4       2.4     0.2</span></span>
-<span><span class="co">#&gt; 3            59.8       1.0     0.1</span></span></code></pre></div>
+<span><span class="co">#&gt; 2            48.4       2.4     0.2</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="hypoglycaemia-episode-detection">Hypoglycaemia episode detection<a class="anchor" aria-label="anchor" href="#hypoglycaemia-episode-detection"></a>
@@ -374,6 +343,38 @@ threshold, and minimum duration. For example:</p>
 <span><span class="co">#&gt; 8               57.1       2.9              Day</span></span>
 <span><span class="co">#&gt; 9               46.1       2.9              Day</span></span>
 <span><span class="co">#&gt; 10              55.1       2.9            Night</span></span></code></pre></div>
+<p>If sleep data is available, the user can also sleep information to
+the output by changing the default AddSleepStatus parameter to “yes”.
+For this to run, the CGM dataset used must include a sleep_status column
+(this can be obtained using the <code><a href="../reference/cgmsleepLink.html">cgmsleepLink()</a></code> function).
+For example:</p>
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">linked_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/cgmsleepLink.html">cgmsleepLink</a></span><span class="op">(</span>CgmDataFrame <span class="op">=</span> <span class="fu">hypometrics</span><span class="fu">::</span><span class="va"><a href="../reference/cgm.html">cgm</a></span>,</span>
+<span>                            SleepDataFrame <span class="op">=</span> <span class="fu">hypometrics</span><span class="fu">::</span><span class="va"><a href="../reference/raw_sleep.html">raw_sleep</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">utils</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fu"><a href="../reference/sdhDetection.html">sdhDetection</a></span><span class="op">(</span>DataFrame <span class="op">=</span> <span class="va">linked_data</span><span class="op">)</span>, n<span class="op">=</span><span class="fl">10</span><span class="op">)</span></span>
+<span><span class="co">#&gt;     id sdh_number                                     sdh_interval</span></span>
+<span><span class="co">#&gt; 1  001          1 2020-10-30 16:57:34 UTC--2020-10-30 17:47:43 UTC</span></span>
+<span><span class="co">#&gt; 2  001          2 2020-10-30 18:19:47 UTC--2020-10-30 18:53:52 UTC</span></span>
+<span><span class="co">#&gt; 3  001          3 2020-10-31 08:15:50 UTC--2020-10-31 10:12:06 UTC</span></span>
+<span><span class="co">#&gt; 4  001          4 2020-10-31 12:08:22 UTC--2020-10-31 14:01:36 UTC</span></span>
+<span><span class="co">#&gt; 5  001          5 2020-10-31 16:14:57 UTC--2020-10-31 17:27:02 UTC</span></span>
+<span><span class="co">#&gt; 6  001          6 2020-11-01 01:18:09 UTC--2020-11-01 09:48:33 UTC</span></span>
+<span><span class="co">#&gt; 7  001          7 2020-11-01 11:20:48 UTC--2020-11-01 12:13:55 UTC</span></span>
+<span><span class="co">#&gt; 8  001          8 2020-11-01 14:45:15 UTC--2020-11-01 15:38:22 UTC</span></span>
+<span><span class="co">#&gt; 9  001          9 2020-11-02 00:06:33 UTC--2020-11-02 00:26:35 UTC</span></span>
+<span><span class="co">#&gt; 10 001         10 2020-11-02 14:53:48 UTC--2020-11-02 15:42:55 UTC</span></span>
+<span><span class="co">#&gt;    sdh_duration_mins sdh_nadir sdh_night_status</span></span>
+<span><span class="co">#&gt; 1               50.1       2.9              Day</span></span>
+<span><span class="co">#&gt; 2               34.1       3.0              Day</span></span>
+<span><span class="co">#&gt; 3              116.3       2.8              Day</span></span>
+<span><span class="co">#&gt; 4              113.2       2.9              Day</span></span>
+<span><span class="co">#&gt; 5               72.1       2.4              Day</span></span>
+<span><span class="co">#&gt; 6              510.4       2.8          Overlap</span></span>
+<span><span class="co">#&gt; 7               53.1       2.8              Day</span></span>
+<span><span class="co">#&gt; 8               53.1       3.4              Day</span></span>
+<span><span class="co">#&gt; 9               20.0       3.2            Night</span></span>
+<span><span class="co">#&gt; 10              49.1       2.9              Day</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="sensor-detected-hypoglycaemia-data-summary">Sensor-detected hypoglycaemia data summary<a class="anchor" aria-label="anchor" href="#sensor-detected-hypoglycaemia-data-summary"></a>
@@ -390,24 +391,25 @@ This summary can be produced at any threshold of glucose, as it simply
 takes the output of the <code><a href="../reference/sdhDetection.html">sdhDetection()</a></code> function as input.
 Let’s see a summary of SDH data, for a glucose threshold of 3.9 mmol/L
 (the default), using our example dataset.</p>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">## Producing the list of hypoglycaemia episodes for all participants</span></span>
 <span><span class="va">sdh_map</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/sdhDetection.html">sdhDetection</a></span><span class="op">(</span>DataFrame <span class="op">=</span> <span class="va">cgm</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co">## Summarising SDH data</span></span>
 <span><span class="fu"><a href="../reference/sdhSummarise.html">sdhSummarise</a></span><span class="op">(</span>DataFrame <span class="op">=</span> <span class="va">sdh_map</span><span class="op">)</span></span>
-<span><span class="co">#&gt;    id n_sdh3.9 n_sdh3.9_day n_sdh3.9_night n_sdh3.9_overlap</span></span>
-<span><span class="co">#&gt; 1 001      146          115             16               15</span></span>
-<span><span class="co">#&gt; 2 002       40           21             11                8</span></span>
-<span><span class="co">#&gt; 3 003       13           10              2                1</span></span>
+<span><span class="co">#&gt;    id n_sdh3.9 n_sdh3.9_day n_sdh3.9_night n_sdh3.9_overlap_daynight</span></span>
+<span><span class="co">#&gt; 1 001      146          115             16                        15</span></span>
+<span><span class="co">#&gt; 2 002       40           21             11                         8</span></span>
 <span><span class="co">#&gt;   mean_duration_sdh3.9 mean_duration_sdh3.9_day mean_duration_sdh3.9_night</span></span>
 <span><span class="co">#&gt; 1                 88.3                     78.7                       51.8</span></span>
 <span><span class="co">#&gt; 2                 56.2                     44.4                       39.8</span></span>
-<span><span class="co">#&gt; 3                 61.7                     21.3                      170.8</span></span>
-<span><span class="co">#&gt;   mean_duration_sdh3.9_overlap n_longsdh3.9 n_day_with_longsdh3.9</span></span>
-<span><span class="co">#&gt; 1                        200.9           35                    25</span></span>
-<span><span class="co">#&gt; 2                        110.0            3                     3</span></span>
-<span><span class="co">#&gt; 3                        247.1            2                     2</span></span></code></pre></div>
+<span><span class="co">#&gt;   mean_duration_sdh3.9_overlap_daynight n_longsdh3.9 n_day_with_longsdh3.9</span></span>
+<span><span class="co">#&gt; 1                                 200.9           35                    25</span></span>
+<span><span class="co">#&gt; 2                                 110.0            3                     3</span></span></code></pre></div>
+<p>If sleep data is available, the parameter
+<code>AddSleepSummary</code> can be turned to “yes” and the number of SD
+when asleep, awake or when sleep information was missing for each SDH
+and participant will also be calculated.</p>
 </div>
 </div>
 <div class="section level2">
@@ -422,15 +424,18 @@ allows you to do this at three different levels of granularity.</p>
 <p>Using the default function parameters, you will obtain an overview of
 glucose data for the entire study period for a selected participant, as
 shown below:</p>
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/cgmVisualise.html">cgmVisualise</a></span><span class="op">(</span><span class="va">cgm</span>, StudyID <span class="op">=</span> <span class="st">"001"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="cgm_data_files/figure-html/unnamed-chunk-14-1.png" width="700"></p>
-<p>The figures shows the glucose trace in blue, the 3.9-10mmol/L range
-is delimited by green lines. Glucose concentrations above 15mmol/L are
-above the orange line whilst glucose below 3 mmol/L would be displayed
-below the red line. The grey area highlights the period from 00:00 to
-06:00 for reference, as it is typically used when examining nocturnal
+<p><img src="cgm_data_files/figure-html/unnamed-chunk-15-1.png" alt="" width="700"></p>
+<p>The figure shows the glucose trace in blue, the 3.9-10mmol/L range is
+delimited by green lines. The grey area highlights the period from 00:00
+to 06:00 for reference, as it is typically used when examining nocturnal
 hypoglycaemia.</p>
+<p><strong>Note:</strong> if sleep tracker data is available, the user
+can plot this instead by specifying “yes” to the <code>AddSleep</code>
+argument of the function (default is “no”) and the
+<code>DataFrame</code> used must be one where CGM and sleep data are
+linked.</p>
 </div>
 <div class="section level3">
 <h3 id="week-by-week">Week by week<a class="anchor" aria-label="anchor" href="#week-by-week"></a>
@@ -439,9 +444,9 @@ hypoglycaemia.</p>
 specifying a breakdown by week in the <code>TimeBreak</code> argument of
 the function and which week is of interest using the
 <code>PageNumber</code> argument, as shown below:</p>
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/cgmVisualise.html">cgmVisualise</a></span><span class="op">(</span><span class="va">cgm</span>, StudyID <span class="op">=</span> <span class="st">"001"</span>, TimeBreak <span class="op">=</span> <span class="st">"week"</span>, PageNumber <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span></code></pre></div>
-<p><img src="cgm_data_files/figure-html/unnamed-chunk-15-1.png" width="700"><br></p>
+<p><img src="cgm_data_files/figure-html/unnamed-chunk-16-1.png" alt="" width="700"><br></p>
 <p>The number at the top of the figure indicates the week selected for
 visualisation. Please note the function will return an error if the
 picked PageNumber (i.e. here, week number) is out of the data range
@@ -452,38 +457,31 @@ picked PageNumber (i.e. here, week number) is out of the data range
 </h3>
 <p>Lastly, for further granularity, there is an option to visualise this
 data for specific days using the same logic as for the weekly data.</p>
-<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/cgmVisualise.html">cgmVisualise</a></span><span class="op">(</span><span class="va">cgm</span>, StudyID <span class="op">=</span> <span class="st">"001"</span>, TimeBreak <span class="op">=</span> <span class="st">"day"</span>, PageNumber <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></code></pre></div>
-<p><img src="cgm_data_files/figure-html/unnamed-chunk-16-1.png" width="700"><br></p>
+<p><img src="cgm_data_files/figure-html/unnamed-chunk-17-1.png" alt="" width="700"><br></p>
 <p>The number at the top of the figure indicates the day selected for
 visualisation. Please note the function will return an error if the
 picked PageNumber (i.e. here, day number) is out of the data range
 (e.g. PageNumber = 71 when there are only 70 days of data).</p>
 </div>
 </div>
-  </div>
-
-  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
-
-      </div>
-
+  </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
+    </nav></aside>
 </div>
 
 
 
-      <footer><div class="copyright">
-  <p></p>
-<p>Developed by Gilberte Martine-Edith, Jonah Thomas.</p>
+    <footer><div class="pkgdown-footer-left">
+  <p>Developed by Gilberte Martine-Edith, Jonah Thomas.</p>
 </div>
 
-<div class="pkgdown">
-  <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
+<div class="pkgdown-footer-right">
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
 </div>
 
-      </footer>
+    </footer>
 </div>
-
 
 
 

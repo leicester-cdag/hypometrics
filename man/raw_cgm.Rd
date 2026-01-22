@@ -19,7 +19,7 @@ who used a CGM device
 This is a raw dataset where implicit gaps in glucose
 data have not been turned to explicit gaps (i.e. adding
 missing CGM timestamps and corresponding missing glucose value)
-and linear interpolation has not been conducting
+and linear interpolation has not been conducted
 
 \describe{
     \item{id}{Unique study ID}

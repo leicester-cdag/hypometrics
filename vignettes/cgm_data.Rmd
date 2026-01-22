@@ -1,9 +1,9 @@
 ---
 title: "Continuous Glucose Monitoring (CGM) Data"
-output: rmarkdown::html_vignette
----
-
----
+output: 
+  html_document:
+   toc: true
+   toc_depth: 4
 vignette: >
   %\VignetteIndexEntry{Continuous Glucose Monitoring (CGM) Data}
   %\VignetteEngine{knitr::rmarkdown}
@@ -138,6 +138,16 @@ The default parameters can be changed to explore a different glucose threshold, 
 utils::head(sdhDetection(DataFrame = cgm, DetectionLimit = 3, DetectionDuration = 30), n=10)
 ```
 
+
+If sleep data is available, the user can also sleep information to the output by changing the default AddSleepStatus parameter to "yes". For this to run, the CGM dataset used must include a sleep_status column (this can be obtained using the `cgmsleepLink()` function). For example:
+
+```{r, message=FALSE}
+linked_data <- cgmsleepLink(CgmDataFrame = hypometrics::cgm,
+                            SleepDataFrame = hypometrics::raw_sleep)
+
+utils::head(sdhDetection(DataFrame = linked_data), n=10)
+```
+
 ### Sensor-detected hypoglycaemia data summary
 
 Once the list and details of all episodes of hypoglycaemia have been produced, it might be useful to have summarised descriptive data in a single dataset. This can be done using the `sdhSummarise()` function. With one row per participant, the output includes the overall number of hypoglycaemic episodes, the number occuring the night or day, the mean duration of those episodes as well as details on longer episodes of hypoglycaemia. The user can define how a long episode is defined, using the 'LongDuration' argument. The default is 120 minutes. This summary can be produced at any threshold of glucose, as it simply takes the output of the `sdhDetection()` function as input. Let's see a summary of SDH data, for a glucose threshold of 3.9 mmol/L (the default), using our example dataset.
@@ -149,6 +159,8 @@ sdh_map <- sdhDetection(DataFrame = cgm)
 ## Summarising SDH data
 sdhSummarise(DataFrame = sdh_map)
 ```
+
+If sleep data is available, the parameter `AddSleepSummary` can be turned to "yes" and the number of SD when asleep, awake or when sleep information was missing for each SDH and participant will also be calculated.
 
 ## 5. Visualising CGM data
 
@@ -162,7 +174,9 @@ Using the default function parameters, you will obtain an overview of glucose da
 cgmVisualise(cgm, StudyID = "001")
 ```
 
-The figures shows the glucose trace in blue, the 3.9-10mmol/L range is delimited by green lines. Glucose concentrations above 15mmol/L are above the orange line whilst glucose below 3 mmol/L would be displayed below the red line. The grey area highlights the period from 00:00 to 06:00 for reference, as it is typically used when examining nocturnal hypoglycaemia.
+The figure shows the glucose trace in blue, the 3.9-10mmol/L range is delimited by green lines. The grey area highlights the period from 00:00 to 06:00 for reference, as it is typically used when examining nocturnal hypoglycaemia.
+
+**Note:** if sleep tracker data is available, the user can plot this instead by specifying "yes" to the `AddSleep` argument of the function (default is "no") and the `DataFrame` used must be one where CGM and sleep data are linked.
 
 ### Week by week
 
