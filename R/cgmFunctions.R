@@ -453,10 +453,13 @@ cgmSummarise <- function(DataFrame,
 #' the glucose value used to detect hypoglycaemia. Default is 3.9 mmol/L.
 #' @param LongDuration Numeric object indicating the minimum duration used to define a long
 #' episode of sensor detected hypoglycaemia. Default is 120 minutes.
+#' @param AddSleepSummary A character object specifying whether a summary of SDH should be added according to
+#' sleep status. Default is "no". Other option is "yes".
 #'
 #' @details This function goes hand in hand with the \code{\link[hypometrics]{sdhDetection}()} function. Once
 #' the details of each individual hypoglycaemia episode has been produced, this function can be used to summarise
-#' them.
+#' them. If an SDH summary by sleep status is required, the sdhDetection function must have been run with the
+#' AddSleepStatus argument set to "yes".
 #'
 #' @return Data frame with one line per participant with key SDH metrics. This includes the number of episodes
 #' during the day/night, mean duration of episodes, the number long SDH
@@ -466,13 +469,15 @@ cgmSummarise <- function(DataFrame,
 #' \dontrun{
 #' hypometrics::sdhSummarise(DataFrame,
 #'                           DetectionLimit = "3.0",
-#'                           LongDuration = 120)
+#'                           LongDuration = 120,
+#'                           AddSleepSummary = "no")
 #' }
 #'
 #'@export
 sdhSummarise <- function(DataFrame,
                          DetectionLimit = "3.9",
-                         LongDuration = 120){
+                         LongDuration = 120,
+                         AddSleepSummary = "no"){
 
 
   #### Check function arguments and columns included in dataset ####
@@ -483,31 +488,80 @@ sdhSummarise <- function(DataFrame,
 
   chk::chk_numeric(LongDuration)
 
+  chk::chk_character(AddSleepSummary)
+
+
+  ############ Preparing the data ######
+  if(AddSleepSummary == "no"){
+
+    #Setting variable names
+    varnames <- c("id",
+                  paste0("n_sdh", DetectionLimit),
+                  paste0("n_sdh", DetectionLimit, "_day"),
+                  paste0("n_sdh", DetectionLimit, "_night"),
+                  paste0("n_sdh", DetectionLimit, "_overlap_daynight"),
+                  paste0("mean_duration_sdh", DetectionLimit),
+                  paste0("mean_duration_sdh", DetectionLimit, "_day"),
+                  paste0("mean_duration_sdh", DetectionLimit, "_night"),
+                  paste0("mean_duration_sdh", DetectionLimit, "_overlap_daynight"))
+
+    # SDH number and duration summary
+    df_sdh <- DataFrame %>%
+      dplyr::group_by(id) %>%
+      dplyr::summarise(dplyr::n_distinct(sdh_number),
+                       dplyr::n_distinct(sdh_number[sdh_night_status=="Day"]),
+                       dplyr::n_distinct(sdh_number[sdh_night_status=="Night"]),
+                       dplyr::n_distinct(sdh_number[sdh_night_status=="Overlap"]),
+                       mean(sdh_duration_mins, na.rm = T),
+                       mean(sdh_duration_mins[sdh_night_status=="Day"]),
+                       mean(sdh_duration_mins[sdh_night_status=="Night"]),
+                       mean(sdh_duration_mins[sdh_night_status=="Overlap"])) %>%
+      magrittr::set_names(varnames) %>%
+      dplyr::ungroup() %>%
+      dplyr::mutate_if(is.numeric, round, digits = 1)
+
+
+  } else{
   #Setting variable names
   varnames <- c("id",
                 paste0("n_sdh", DetectionLimit),
                 paste0("n_sdh", DetectionLimit, "_day"),
                 paste0("n_sdh", DetectionLimit, "_night"),
-                paste0("n_sdh", DetectionLimit, "_overlap"),
+                paste0("n_sdh", DetectionLimit, "_overlap_daynight"),
+                paste0("n_sdh", DetectionLimit, "_awake"),
+                paste0("n_sdh", DetectionLimit, "_asleep"),
+                paste0("n_sdh", DetectionLimit, "_overlap_awakeasleep"),
+                paste0("n_sdh", DetectionLimit, "_sleepstatus_missing"),
                 paste0("mean_duration_sdh", DetectionLimit),
                 paste0("mean_duration_sdh", DetectionLimit, "_day"),
                 paste0("mean_duration_sdh", DetectionLimit, "_night"),
-                paste0("mean_duration_sdh", DetectionLimit, "_overlap"))
+                paste0("mean_duration_sdh", DetectionLimit, "_overlap_daynight"),
+                paste0("mean_duration_sdh", DetectionLimit, "_awake"),
+                paste0("mean_duration_sdh", DetectionLimit, "_asleep"),
+                paste0("mean_duration_sdh", DetectionLimit, "_overlap_awakeasleep"))
 
   # SDH number and duration summary
   df_sdh <- DataFrame %>%
     dplyr::group_by(id) %>%
-    dplyr::summarise(dplyr::n_distinct(sdh_number),
-                     dplyr::n_distinct(sdh_number[sdh_night_status=="Day"]),
-                     dplyr::n_distinct(sdh_number[sdh_night_status=="Night"]),
-                     dplyr::n_distinct(sdh_number[sdh_night_status=="Overlap"]),
+    dplyr::summarise(dplyr::n(),
+                     sum(sdh_night_status=="Day"),
+                     sum(sdh_night_status=="Night"),
+                     sum(sdh_night_status=="Overlap"),
+                     sum(sdh_sleep_status=="Awake", na.rm=T),
+                     sum(sdh_sleep_status=="Asleep", na.rm=T),
+                     sum(sdh_sleep_status=="Overlap", na.rm=T),
+                     sum(is.na(sdh_sleep_status)),
                      mean(sdh_duration_mins, na.rm = T),
                      mean(sdh_duration_mins[sdh_night_status=="Day"]),
                      mean(sdh_duration_mins[sdh_night_status=="Night"]),
-                     mean(sdh_duration_mins[sdh_night_status=="Overlap"])) %>%
+                     mean(sdh_duration_mins[sdh_night_status=="Overlap"]),
+                     mean(sdh_duration_mins[sdh_sleep_status=="Awake" & !is.na(sdh_sleep_status)]),
+                     mean(sdh_duration_mins[sdh_sleep_status=="Asleep" & !is.na(sdh_sleep_status)]),
+                     mean(sdh_duration_mins[sdh_sleep_status=="Overlap" & !is.na(sdh_sleep_status)])) %>%
     magrittr::set_names(varnames) %>%
     dplyr::ungroup() %>%
     dplyr::mutate_if(is.numeric, round, digits = 1)
+  }
 
   #Set variable names for second dataset
   varnames2 <- c("id",
@@ -544,67 +598,47 @@ sdhSummarise <- function(DataFrame,
 #' @param DetectionDuration Object of type numeric or integer corresponding to
 #' the duration at or below the DetectionLimit for a hypolgycaemic episode to be detected.
 #' Default is 15 (minutes).
+#' @param AddSleepStatus A character object specifying whether sleep status (sleep or awake) should be added for
+#' each SDH. Default is "no". Other option is "yes".
 #'
-#' @return A dataframe with one hypoglycaemic episode per row with characteristics in each column
+#' @return A dataframe with one hypoglycaemic episode per row with characteristics in each column. If user has
+#' CGM and sleep data available, the sleep status can be added for each episode.
 #'
 #' @examples
 #' \dontrun{
 #' hypometrics::sdhDetection(DataFrame,
 #'                           DetectionLimit = 3,
-#'                           DetectionDuration = 30)
+#'                           DetectionDuration = 30,
+#'                           AddSleepStatus = "no")
 #' }
 #'
 #' @export
 #'
 sdhDetection <- function(DataFrame,
                          DetectionLimit = 3.9,
-                         DetectionDuration = 15){
+                         DetectionDuration = 15,
+                         AddSleepStatus = "no"){
 
   #### Check function inputs and data frame columns ####
-  if(ncol(DataFrame) != 3){
-    stop("Unexpected number of columns for `DataFrame`,
-         `DataFrame` must have exactly three columns: `id`, `cgm_timestamp`, `glucose`.")
-  }
+  chk::check_names(DataFrame, names = c("id", "cgm_timestamp", "glucose"))
 
-  if(all.equal(colnames(DataFrame), c("id", "cgm_timestamp", "glucose")) != TRUE){
-    stop("Unexpected column names in `DataFrame`. `DataFrame` columns must have
-         the following names: `id`, `cgm_timestamp`, `glucose`.")
-  }
+  chk::chk_character(DataFrame$id)
 
-  if(is.character(DataFrame$id) == FALSE){
-    stop("Column `id` is of unexpected type. Must be character.")
-  }
+  checkmate::assertPOSIXct(DataFrame$cgm_timestamp)
 
-  if(lubridate::is.POSIXct(DataFrame$cgm_timestamp) == FALSE){
-    stop("Column `cgm_timestamp` is of unexpected type. Must be of type date-time.")
-  }
+  chk::chk_numeric(DataFrame$glucose)
 
-  if(is.numeric(DataFrame$glucose) == FALSE){
-    stop("Column `glucose` is of unexpected type. Must be numeric.")
+  chk::chk_numeric(DetectionLimit)
 
-  }
+  chk::chk_numeric(DetectionDuration)
 
-  if(is.na(DetectionLimit)){
-    stop("DetectionLimit cannot be NA. Must be populated entry of type numeric or integer.")
-  }
-
-  if(!class(DetectionLimit) %in% c("numeric", "integer")){
-    stop("DetectionLimit is of unexpected type. Must be numeric or integer.")
-  }
-
-  if(is.na(DetectionDuration)){
-    stop("DetectionDuration cannot be NA. Must be populated entry of type numeric or integer.")
-  }
-
-  if(!class(DetectionDuration) %in% c("numeric", "integer")){
-    stop("DetectionDuration is of unexpected type. Must be numeric or integer.")
-  }
-
+  chk::chk_character(AddSleepStatus)
 
   #### Function within the function which will detect hypos for each id ####
   detect <- function(df){
     #### Start data manipulation ####
 
+    if(AddSleepStatus == "no"){
     #### Original CGM data in long format with added information on time of data and values below threshold####
     cgm_data_long <- df %>%
       dplyr::group_by(id) %>%
@@ -613,7 +647,17 @@ sdhDetection <- function(DataFrame,
       dplyr::mutate(below_threshold = dplyr::case_when(glucose < DetectionLimit ~ 1,
                                                        glucose >= DetectionLimit ~ 0),
                     seq_event = data.table::rleid(below_threshold))
+    } else{
 
+      cgm_data_long <- df %>%
+        dplyr::group_by(id) %>%
+        dplyr::mutate(time_of_day = ifelse(as.numeric(format(cgm_timestamp, "%H"))<6 & as.numeric(format(cgm_timestamp, "%H"))>=0, "Night", "Day")) %>%
+        dplyr::select(id, time_of_day, cgm_timestamp, glucose, sleep_status) %>%
+        dplyr::mutate(below_threshold = dplyr::case_when(glucose < DetectionLimit ~ 1,
+                                                         glucose >= DetectionLimit ~ 0),
+                      seq_event = data.table::rleid(below_threshold))
+
+}
     #### Transform CGM data to wide format ####
     #Data frame displays the sequence of events i.e. below threshold, above threshold, NA... and how long for
     cgm_data_wide <- cgm_data_long %>%
@@ -681,6 +725,7 @@ sdhDetection <- function(DataFrame,
                                                NA),
                     sdh_nadir = ifelse(!is.na(sdh_seq), min(glucose), NA))
 
+
     #Add information as to whether there was a change in night status during a single SDH
     combined_cgm <- combined_cgm %>%
       dplyr::group_by(id, sdh_seq) %>%
@@ -698,7 +743,8 @@ sdhDetection <- function(DataFrame,
       #essentially this will flag if no change in status then will be 0s if change in status the sum will be 1 for that sdh!
       base::transform(sdh_night_status = ifelse(group_night_status == 0, sdh_night_status, "Overlap"))
 
-    #return to a map format with one row per event
+    if(AddSleepStatus == "no"){
+   #return to a map format with one row per event
     sdh_map <- combined_cgm %>%
       dplyr::filter(sdh_grouped==1) %>%
       dplyr::group_by(id, sdh_seq, sdh_grouped, sdh_interval, sdh_duration_mins, sdh_nadir, sdh_night_status) %>%
@@ -710,6 +756,36 @@ sdhDetection <- function(DataFrame,
       dplyr::ungroup() %>%
       dplyr::mutate_if(is.numeric, round, digits = 1) %>%
       dplyr::mutate(sdh_night_status = as.character(sdh_night_status)) #to make sure of consistent variable type for row binding
+
+    }else if(AddSleepStatus == "yes"){
+      combined_cgm <- combined_cgm %>%
+        dplyr::group_by(id, sdh_seq) %>%
+        dplyr::mutate(sleepstatus_change_flag = dplyr::case_when(!is.na(sdh_seq) & sleep_status == data.table::first(sleep_status) ~ 0,
+                                                          !is.na(sdh_seq) & sleep_status != dplyr::lag(sleep_status) ~ 1,
+                                                          !is.na(sdh_seq) & sleep_status == dplyr::lag(sleep_status) ~ 0,
+                                                          is.na(sdh_seq) ~ NA_real_))
+
+      combined_cgm <- combined_cgm %>%
+        dplyr::mutate(sdh_sleep_status = ifelse(!is.na(sdh_seq), sleep_status, NA)) %>%
+        dplyr::group_by(sdh_seq) %>%
+        dplyr::mutate(group_sleep_status = ifelse(!is.na(sleepstatus_change_flag), sum(sleepstatus_change_flag), NA)) %>%
+        #essentially this will flag if no change in status then will be 0s if change in status the sum will be 1 for that sdh!
+        transform(sdh_sleep_status = ifelse(group_sleep_status == 0, sdh_sleep_status, "Overlap"))
+
+      sdh_map <- combined_cgm %>%
+        dplyr::filter(sdh_grouped==1) %>%
+        dplyr::group_by(id, sdh_seq, sdh_grouped, sdh_interval, sdh_duration_mins, sdh_nadir, sdh_night_status, sdh_sleep_status) %>%
+        dplyr::summarise() %>%
+        dplyr::ungroup() %>%
+        dplyr::group_by(id) %>%
+        dplyr::mutate(sdh_number = data.table::rleid(sdh_seq)) %>%
+        dplyr::select(id, sdh_number, sdh_interval, sdh_duration_mins, sdh_nadir, sdh_night_status, sdh_sleep_status) %>%
+        dplyr::ungroup() %>%
+        dplyr::mutate_if(is.numeric, round, digits = 1) #%>%
+        #dplyr::mutate(sdh_night_status = as.character(sdh_night_status)) #to make sure of consistent variable type for row binding
+
+ }
+
 
 
     #Return final output - 1 row per event per individual
@@ -744,12 +820,16 @@ sdhDetection <- function(DataFrame,
 #' plots will be produced according to TimeBreak.
 #' @param PageNumber Vector indicating which page (i.e. week/day) number selected for
 #' visualisation as plot is faceted according to TimeBreak.
+#' @param AddSleep Character object for the user to specify whether the CGM plot will have added day/night
+#' visualisation ("no" - default) or sleep/awake visualisation ("yes"). If set to "yes", the function requires a CGM dataset
+#' with a sleep_status (Awake vs asleep) column as input
 #'
 #' @details
 #' This functions plots CGM data over time with grey shaded area corresponding to the time period
 #' between 00:00 and 06:00 as typically used to describe nocturnal hypoglycaemia. The function
 #' offers the options to look at the  glucose data over the entire study period, for a specific week or
-#' specific date.
+#' specific date. It also offers the option to plot data with corresponding sleep status (awake vs asleep)
+#' if sleep tracker data is available. Where sleep data is missing, the area is coloured grey.
 #'
 #' @return A graphical representation showing glucose trace over time with shaded area
 #' representing night time.
@@ -759,19 +839,22 @@ sdhDetection <- function(DataFrame,
 #' hypometrics::cgmVisualise(DataFrame,
 #'                           StudyID = "001",
 #'                           TimeBreak = "day",
-#'                           PageNumber = 7)
+#'                           PageNumber = 7,
+#'                           AddSleep = "no")
 #' }
 #'
 #' @export
 cgmVisualise <- function(DataFrame,
                          StudyID,
                          TimeBreak = "no",
-                         PageNumber = NA_real_){
+                         PageNumber = NA_real_,
+                         AddSleep = "no"){
 
 
   #### Check function arguments and data frame columns ####
-
+if(AddSleep=="no"){
   chk::check_names(DataFrame, names = c("id", "cgm_timestamp", "glucose"))
+} else { chk::check_names(DataFrame, names = c("id", "cgm_timestamp", "glucose", "sleep_status")) }
 
   chk::chk_character(DataFrame$id)
 
@@ -779,11 +862,14 @@ cgmVisualise <- function(DataFrame,
 
   chk::chk_numeric(DataFrame$glucose)
 
+  if(AddSleep=="yes"){chk::chk_character(DataFrame$sleep_status)}
+
   chk::chk_character(TimeBreak)
 
   chk::chk_numeric(PageNumber)
 
   #### Data Prep ####
+  if(AddSleep=="no"){
   cgm_data <- DataFrame %>%
     dplyr::filter(id == StudyID) %>%
     dplyr::mutate(time_of_day = ifelse(as.numeric(format(cgm_timestamp, "%H"))<6 & as.numeric(format(cgm_timestamp, "%H"))>=0, "Night", "Day"),
@@ -794,17 +880,30 @@ cgmVisualise <- function(DataFrame,
                                                      by = "week")),
                   study_week = match(as.Date(week_start), unique(as.Date(week_start))))
 
-  #### Plot CGM data with Day vs Night status and Glucose thresholds ####
+
+  } else if(AddSleep=="yes"){
+
+    cgm_data <- DataFrame %>%
+      dplyr::filter(id == StudyID) %>%
+      dplyr::mutate(time_of_day = factor(sleep_status, levels = c("Awake", "Asleep")),
+                    study_day =  match(as.Date(cgm_timestamp), unique(as.Date(cgm_timestamp))),
+                    week_start = cut((as.Date(cgm_timestamp)),
+                                     breaks = seq.Date(min((as.Date(cgm_timestamp))),
+                                                       max((as.Date(cgm_timestamp))) + 7,
+                                                       by = "week")),
+                    study_week = match(as.Date(week_start), unique(as.Date(week_start))))
+
+
+}
+  #### Plot CGM data with Day vs Night or Sleep vs Awake status and Glucose thresholds ####
   if(TimeBreak == "no"){
     cgm_plot <-
       ggplot2::ggplot(cgm_data, ggplot2::aes(x=cgm_timestamp, y=glucose)) +
       ggplot2::geom_rect(ggplot2::aes(xmin = cgm_timestamp, xmax = dplyr::lead(cgm_timestamp), ymin = -Inf, ymax = Inf, fill=time_of_day), alpha=0.5) +
-      ggplot2::scale_fill_manual(values = c("transparent", "grey")) +
+      ggplot2::scale_fill_manual(values = c("transparent", "darkgrey")) +
       ggplot2::geom_line(ggplot2::aes(y=glucose), color = "blue4", size=0.5) +
       ggplot2::geom_hline(ggplot2::aes(yintercept = 3.9), colour="green4", size=0.5) +
       ggplot2::geom_hline(ggplot2::aes(yintercept = 10), colour="green4", size=0.5) +
-      ggplot2::geom_hline(ggplot2::aes(yintercept = 3.0), colour="red", size=0.5, alpha=1) +
-      ggplot2::geom_hline(ggplot2::aes(yintercept = 15), colour="orange", size=0.5, alpha=2) +
       ggplot2::ylab("Glucose concentration (mmol/L)") +
       ggplot2::xlab("Date (DD/MM/YY)") +
       ggplot2::scale_x_datetime(date_labels = "%d/%m/%y",
@@ -825,12 +924,10 @@ cgmVisualise <- function(DataFrame,
       ggplot2::ggplot(cgm_data, ggplot2::aes(x=cgm_timestamp, y=glucose)) +
       ggforce::facet_grid_paginate(~study_week, ncol=1, nrow=1, page = PageNumber, scales = "free") +
       ggplot2::geom_rect(ggplot2::aes(xmin = cgm_timestamp, xmax = dplyr::lead(cgm_timestamp), ymin = -Inf, ymax = Inf, fill=time_of_day), alpha=0.5) +
-      ggplot2::scale_fill_manual(values = c("transparent", "grey")) +
+      ggplot2::scale_fill_manual(values = c("transparent", "darkgrey")) +
       ggplot2::geom_line(ggplot2::aes(y=glucose), color = "blue4", size=0.5) +
       ggplot2::geom_hline(ggplot2::aes(yintercept = 3.9), colour="green4", size=0.5) +
       ggplot2::geom_hline(ggplot2::aes(yintercept = 10), colour="green4", size=0.5) +
-      ggplot2::geom_hline(ggplot2::aes(yintercept = 3.0), colour="red", size=0.5, alpha=1) +
-      ggplot2::geom_hline(ggplot2::aes(yintercept = 15), colour="orange", size=0.5, alpha=2) +
       ggplot2::ylab("Glucose concentration (mmol/L)") +
       ggplot2::xlab("Date (DD/MM/YY HH:MM)") +
       ggplot2::scale_x_datetime(date_labels = "%d/%m/%y \n %H:%M",
@@ -852,13 +949,11 @@ cgmVisualise <- function(DataFrame,
     cgm_plot <-
       ggplot2::ggplot(cgm_data, ggplot2::aes(x=cgm_timestamp, y=glucose)) +
       ggforce::facet_grid_paginate(~study_day, ncol=1, nrow=1, page = PageNumber, scales = "free") +
-      ggplot2::geom_rect(ggplot2::aes(xmin = cgm_timestamp, xmax = dplyr::lead(cgm_timestamp), ymin = -Inf, ymax = Inf, fill=time_of_day), alpha=1.5) +
-      ggplot2::scale_fill_manual(values = c("transparent", "grey")) +
+      ggplot2::geom_rect(ggplot2::aes(xmin = cgm_timestamp, xmax = dplyr::lead(cgm_timestamp), ymin = -Inf, ymax = Inf, fill=time_of_day), alpha=0.5) +
+      ggplot2::scale_fill_manual(values = c("transparent", "darkgrey")) +
       ggplot2::geom_line(ggplot2::aes(y=glucose), color = "blue4", size=0.5) +
       ggplot2::geom_hline(ggplot2::aes(yintercept = 3.9), colour="green4", size=0.5) +
       ggplot2::geom_hline(ggplot2::aes(yintercept = 10), colour="green4", size=0.5) +
-      ggplot2::geom_hline(ggplot2::aes(yintercept = 3.0), colour="red", size=0.5, alpha=1) +
-      ggplot2::geom_hline(ggplot2::aes(yintercept = 15), colour="orange", size=0.5, alpha=2) +
       ggplot2::ylab("Glucose concentration (mmol/L)") +
       ggplot2::xlab("Date (DD/MM/YY HH:MM)") +
       ggplot2::scale_x_datetime(date_labels = "%d/%m/%y \n %H:%M",

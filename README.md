@@ -10,7 +10,7 @@ The building blocks of what is now the `hypometrics` package were developed in a
 
 ## What data can I analyse using the *hypometrics* package?
 
-The `hypometrics` package offers tools to clean, check, analyse, visualise and link the following types of data: 
+The `hypometrics` package offers tools to clean, check, analyse and visualise the following types of data: 
 
 **1. Continuous Glucose Monitoring Data**: more detail can be found [here](https://hypometrics.github.io/cgm_data.html/).
 
@@ -19,6 +19,8 @@ The `hypometrics` package offers tools to clean, check, analyse, visualise and l
 **3. Sleep Data**: more detail can be found [here](https://hypometrics.github.io/sleep_data.html/).
 
 **4. Person-Reported Hypoglycaemia Data**: more detail can be found [here](https://hypometrics.github.io/umotif_data.html/).
+
+Importantly, the package also allows the **linkage and integration** of the above described data, as shown [here](https://hypometrics.github.io/linking_data.html/).
 
 ## Installation
 

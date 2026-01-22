@@ -1,7 +1,14 @@
 ---
-title: "Combining Data"
+title: "Linking CGM, Activity, Sleep and Person-Reported Hypoglycaemia Data"
+output: 
+  html_document:
+   toc: true
+   toc_depth: 4
+vignette: >
+  %\VignetteIndexEntry{Linking Data}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
 ---
-
 
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
@@ -11,22 +18,252 @@ knitr::opts_chunk$set(
 ```
 
 
----
-output: rmarkdown::html_vignette
-vignette: >
-  %\VignetteIndexEntry{Combining Data}
-  %\VignetteEngine{knitr::rmarkdown}
-  %\VignetteEncoding{UTF-8}
----
+## 1. Introduction
 
-<style>
-.nobullet li{
-  list-style-type: none;
-}
-</style>
+The `hypometrics` package was built to handle glucose, person-reported hypoglycaemia, physical activity and sleep data both individually and in combination. This tutorial describes functions that allows the user to link these data and visualise the linked outputs.
 
-![](hypo_logo.png)
+### Setup
+
+To be able to use the step count and heart rate functions, firstly install and load `hypometrics`.
+
+```
+#Install
+install.packages("remotes")
+remotes::install_github("hypometrics")
+```
+
+```{r, message=FALSE}
+#Load package
+library(hypometrics)
+```
 
 
-## Introduction
+## 2. Linking CGM and sleep data
+
+The function `cgmsleepLink()` allows the user to link CGM data with sleep data from an activity tracker, here the Fitbit Charge 4. Thus, using this function, the user would be able to determine whether the participant was asleep or awake at the time of a hypoglycaemic event for example.  The function requires the CGM dataframe in a format such as the one described in the [CGM data tutorial](https://hypometrics.github.io/cgm_data.html/) and a sleep data frame such as the one described in the [Sleep data tutorial](https://hypometrics.github.io/sleep_data.html/).
+
+The output of that function is a data frame in a long format with a sleep status (either asleep, awake or NA i.e. missing) for each CGM timestamp and glucose value, as shown below.
+
+```{r, message=FALSE, warning=FALSE}
+hypometrics::cgmsleepLink(CgmDataFrame = hypometrics::cgm,
+                          SleepDataFrame = hypometrics::raw_sleep) %>%
+  dplyr::slice(1213:1223)
+```
+
+
+## 3. Linking CGM and activity data
+
+The function `cgmactivityLink()` allows the user to link CGM data with step count and heart rate data from an activity tracker, here the Fitbit Charge 4. Thus, using this function, the user would be able to determine number of steps or heart rate before the onset of a hypoglycaemic event for example.
+
+The user has two options using the `DataType` parameter of the function: to link CGM data with step count data (i.e. DataType = "stepcount") or with heart rate data (i.e., DataType = "heartrate"). CGM, step count and heart rate data must be in the same format as previously described for the function to run smoothly. 
+
+The function works out the number of step/heart rate timestamps between two consecutive CGM timestamps and either returns the exact step count/heart rate (if a single timestamp is detected) or an average (if multiple timestamps fit within each CGM timestamp). The latter would be when for example, the heart rate data is more granular than the CGM data.
+
+The output of the function is a dataset where for each CGM timestamp and glucose value, there is a corresponding step count/heart rate value if data is available or missing value if no step count/heart rate timestamps fitted within the CGM timestamps.
+
+### CGM linked with step count data:
+```{r, message=FALSE, warning=FALSE}
+hypometrics::cgmactivityLink(CgmDataFrame = hypometrics::cgm,
+                             ActivityDataFrame = hypometrics::raw_step,
+                             DataType = "stepcount") %>%
+  dplyr::slice(23:32)
+```
+
+
+### CGM linked with heart data: 
+```{r, message=FALSE, warning=FALSE}
+hypometrics::cgmactivityLink(CgmDataFrame = hypometrics::cgm,
+                             ActivityDataFrame = hypometrics::raw_hr,
+                             DataType = "heartrate") 
+```
+
+
+## 4. Visualising CGM and activity data
+
+To visualise CGM data linked with step count or heart rate data, the function `cgmactivityVisualise()` can be used. Similarly to the `cgmVisualise()` function, this function allows the user to visualise CGM and activity data over time at three different levels of granularity. For the function to run, the `DataFrame` used must be containing CGM data linked with step count or heart rate data (e.g. output of the `cgmactivityLink()` function). 
+
+### Overall
+
+Using the default function parameters, you will obtain an overview of glucose and activity data for the entire study period for a selected participant.  
+
+To visualise CGM and step count data, the user needs to specify "stepcount" for the `DataType` argument, as shown below: 
+
+```{r, message=FALSE, warning=FALSE}
+## Creating the linked CGM and step count dataset
+linked_data <- hypometrics::cgmactivityLink(CgmDataFrame = hypometrics::cgm,
+                             ActivityDataFrame = hypometrics::raw_step,
+                             DataType = "stepcount") 
+
+##Visualising the linked data
+cgmactivityVisualise(DataFrame = linked_data,
+                     StudyID = "001",
+                     DataType = "stepcount")
+```
+
+The figures shows the glucose trace in dark blue (the 3.9-10mmol/L range is delimited by green lines) and the step count bars in cadet blue. By default, the function will produce a figure with a light grey area highlighting the period from 00:00 to 06:00, as it is typically used when examining nocturnal hypoglycaemia. 
+
+To visualise CGM and heart rate data, the user needs to specify "heartrate" for the `DataType` argument, as shown below: 
+
+```{r, message=FALSE, warning=FALSE}
+## Creating the linked CGM and heart rate dataset
+linked_data <- hypometrics::cgmactivityLink(CgmDataFrame = hypometrics::cgm,
+                             ActivityDataFrame = hypometrics::raw_hr,
+                             DataType = "heartrate") 
+
+##Visualising the linked data
+cgmactivityVisualise(DataFrame = linked_data,
+                     StudyID = "001",
+                     DataType = "heartrate")
+```
+
+The figure shows the glucose trace in dark blue (the 3.9-10mmol/L range is delimited by green lines) and heart rate trace in dark red. By default, the function will produce a figure with a light grey area highlighting the period from 00:00 to 06:00, as it is typically used when examining nocturnal hypoglycaemia. 
+
+
+**Note:** if sleep tracker data is available, the user can plot this instead by specifying "yes" to the `AddSleep` argument of the function (default is "no") and the `DataFrame` used must be one where CGM and sleep data are linked.
+
+### Week by week
+
+It is also possible to view glucose and activity data on a weekly basis by specifying a breakdown by week in the `TimeBreak` argument of the function and which week is of interest using the `PageNumber` argument.The number at the top of the figure indicates the week selected for visualisation. Please note the function will return an error if the picked PageNumber (i.e. here, week number) is out of the data range (e.g. PageNumber = 11 when there are only 10 weeks of data).
+
+To visualise CGM and step count data, the user needs to further specify "stepcount" for the `DataType` argument, as shown below: 
+
+```{r, message=FALSE, warning=FALSE, eval=FALSE}
+## Visualising the linked dataset
+cgmactivityVisualise(DataFrame = linked_data,
+                     StudyID = "001",
+                     TimeBreak = "week",
+                     PageNumber = 5,
+                     DataType = "stepcount")
+```
+
+If the user requires a CGM and heart rate visualisation instead, the DataType parameter would need to be changed to "heartrate".
+
+### Day by day
+
+Lastly, for further granularity, there is an option to visualise this data for specific days using the same logic as for the weekly data. 
+
+To visualise CGM and step count data, the user needs to further specify "stepcount" for the `DataType` argument, as shown below: 
+
+```{r, message=FALSE, warning=FALSE, eval=FALSE}
+## Visualising the linked dataset
+cgmactivityVisualise(DataFrame = linked_data,
+                     StudyID = "001",
+                     TimeBreak = "day",
+                     PageNumber = 6,
+                     DataType = "stepcount")
+```
+
+If the user requires a CGM and heart rate visualisation instead, the DataType parameter would need to be changed to "heartrate".
+
+## 5. Linking CGM and Person-Reported Hypoglycaemia data
+
+The function `cgmprhLink()` allows the user to link CGM data with person-reported hypoglycaemia data from the Hypo-METRICS app. Thus, using this function, the user would be able to determine how sensor-detected hypoglycaemia (CGM) align with person-reported hypoglycaemia, for example.
+
+For the function to run smoothly, the user needs firstly to build a PRH map in the wide format containing at least an ID and PRH timestamp column. This can be obtained by firstly running `umotifClean()` function followed by the `prhLink()` function, as shown below:
+
+```{r, message=FALSE, warning=FALSE}
+## Cleaning motif and checkin data 
+motif <- umotifClean(DataFrame = hypometrics::raw_motif_segment,
+                     FileType = "motif")
+checkin <- umotifClean(DataFrame = hypometrics::raw_checkin,
+                       FileType = "checkin")
+
+## Creating the linked PRH dataset
+prh_map <- prhLink(MotifDataFrame = motif,
+                   CheckinDataFrame = checkin)
+
+##Creating the linked CGM PRH data
+cgmprhLink(CgmDataFrame = hypometrics::cgm,
+           PrhDataFrame = prh_map) %>%
+  dplyr::slice(32857:32867)
+```
+
+The output shows a PRH timestamp on the same row as the closest CGM timestamp: the participant reported a hypoglycaemia episode using the Hypo-METRICS app at 20:00 which aligns with CGM data as at the time (19:59), the glucose value (3.7 mmmol/L) was indeed below the hypoglycaemia threshold of 3.9 mmol/L. 
+
+## 6. Linking Sensor-Detected and Person-Reported Hypoglycaemia data
+
+The function `sdhprhLink()` allows the integration of sensor-detected hypoglycaemia (SDH) data with person-reported hypoglycaemia data. In other words, episodes of SDH are mapped out against episodes of PRH according to timing of episodes and the user is able to assess the overlap between the two event types.  
+
+As a pre-requisite of this function, the user would need to use the `sdhDetection()`, `umotifClean()` and `prhLink()` functions to produce the relevant SDH and PRH maps, as shown below: 
+
+```{r, message=FALSE, warning=FALSE}
+## Cleaning PRH data
+motif <- umotifClean(DataFrame = hypometrics::raw_motif_segment,
+                     FileType = "motif")
+checkin <- umotifClean(DataFrame = hypometrics::raw_checkin,
+                       FileType = "checkin")
+
+## Creating the SDH and PRH maps
+sdh_map <- sdhDetection(DataFrame = hypometrics::cgm)
+prh_map <- prhLink(MotifDataFrame = motif,
+                   CheckinDataFrame = checkin)
+
+##Creating the linked SDH PRH data
+sdhprhLink(SdhDataFrame = sdh_map, 
+           PrhDataFrame = prh_map) %>%
+  dplyr::slice(27:37) %>% 
+  dplyr::select(id, sdh_interval, motif_prh_timestamp, sdh_duration_mins, sdh_nadir, symptomatic_prh)
+```
+
+The output contains all the information available in the individual SDH and PRH maps including symptoms reported and whether event occurred during the day or night, but for illustrative purposes here, only a limited number of columns are shown. We can see that at 21:57 on 09/11/2020 a PRH episode matched (i.e. within +/- 1 hour) an SDH episode that occurred between 21:02 and 21:36. The duration of this episode was 34.1 minutes with a nadir of 3.1 mmol/L. The participant reported symptoms for this episode of hypoglycaemia as indicated by the *symptomatic_prh* column.  
+
+## 7. Visualising CGM and Person-Reported Hypoglycaemia data
+
+To visualise CGM data linked with person-reported hypoglycaemia data, the function `cgmprhVisualise()` can be used. Similarly to the `cgmVisualise()` function, this function allows the user to visualise CGM and hypoglycaemia data over time at three different levels of granularity. For the function to run, the `DataFrame` used must be containing CGM data linked with hypoglycaemia data (e.g. output of the `cgmprhLink()` function). 
+
+### Overall
+
+Using the default function parameters, you will obtain an overview of glucose and hypoglycaemia data for the entire study period for a selected participant.  
+
+
+```{r, message=FALSE, warning=FALSE}
+## Cleaning motif and checkin data 
+motif <- umotifClean(DataFrame = hypometrics::raw_motif_segment,
+                     FileType = "motif")
+checkin <- umotifClean(DataFrame = hypometrics::raw_checkin,
+                       FileType = "checkin")
+
+## Creating the linked PRH dataset
+prh_map <- prhLink(MotifDataFrame = motif,
+                   CheckinDataFrame = checkin)
+
+##Creating the linked CGM PRH data
+linked_data <- cgmprhLink(CgmDataFrame = hypometrics::cgm,
+                          PrhDataFrame = prh_map)
+
+##Visualising the linked data
+cgmprhVisualise(DataFrame = linked_data,
+                StudyID = "001")
+```
+
+The red dots over the blue glucose trace indicate date and times when participants reported episodes of hypoglycaemia.By default, the function will produce a figure with a light grey area highlighting the period from 00:00 to 06:00, as it is typically used when examining nocturnal hypoglycaemia. 
+
+**Note:** if sleep tracker data is available, the user can plot this instead by specifying "yes" to the `AddSleep` argument of the function (default is "no") and the `DataFrame` used must be one where CGM and sleep data are linked.
+
+The user can also have a closer look at how person-reported hypoglycaemia episodes align with sensor-detected hypoglycaemia by visualising specific weeks/days as explained in the sections below. 
+
+### Week by week
+
+It is also possible to view glucose and hypoglycaemia data on a weekly basis  by specifying a breakdown by week in the `TimeBreak` argument of the function and which week is of interest using the `PageNumber` argument.The number at the top of the figure indicates the week selected for visualisation. Please note the function will return an error if the picked PageNumber (i.e. here, week number) is out of the data range (e.g. PageNumber = 11 when there are only 10 weeks of data).
+
+```{r, message=FALSE, warning=FALSE, eval=FALSE}
+##Visualising the linked data
+cgmprhVisualise(DataFrame = linked_data,
+                StudyID = "001",
+                TimeBreak = "week",
+                PageNumber = 2)
+```
+
+### Day by day
+
+Lastly, for further granularity, there is an option to visualise this data for specific days using the same logic as for the weekly data. 
+
+```{r, message=FALSE, warning=FALSE, eval=FALSE}
+## Visualising the linked dataset
+cgmprhVisualise(DataFrame = linked_data,
+                StudyID = "001",
+                TimeBreak = "day",
+                PageNumber = 2)
+```
+
 

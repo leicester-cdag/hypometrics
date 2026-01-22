@@ -4,7 +4,7 @@ Title: Methods To Analyse Continuous Glucose Monitoring, Activity, Sleep and Per
 Version: 0.0.9
 Authors@R: 
      as.person(c(
-     "Gilberte Martine-Edith <gilberte.martine_edith@kcl.ac.uk> [aut]",
+     "Gilberte Martine-Edith <gme6@leicester.ac.uk> [aut]",
      "Jonah Thomas <jjct1@leicester.ac.uk> [cre]"
      ))
 Description: A series of functions to clean, process, visualise and combine glucose, step count, sleep and hypoglycaemia symptoms data. 
@@ -15,7 +15,7 @@ Suggests:
     knitr,
     rmarkdown,
     testthat (>= 3.0.0)
-VignetteBuilder: knitr
+VignetteBuilder: knitr, rmarkdown
 Config/testthat/edition: 3
 RoxygenNote: 7.3.2
 Depends: 
