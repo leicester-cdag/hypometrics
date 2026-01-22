@@ -4,7 +4,12 @@
 \alias{sdhSummarise}
 \title{Key Sensor-Detected Hypoglycaemia Metrics}
 \usage{
-sdhSummarise(DataFrame, DetectionLimit = "3.9", LongDuration = 120)
+sdhSummarise(
+  DataFrame,
+  DetectionLimit = "3.9",
+  LongDuration = 120,
+  AddSleepSummary = "no"
+)
 }
 \arguments{
 \item{DataFrame}{A dataframe object, output of the \code{\link[hypometrics]{sdhDetection}()} function.
@@ -15,6 +20,9 @@ the glucose value used to detect hypoglycaemia. Default is 3.9 mmol/L.}
 
 \item{LongDuration}{Numeric object indicating the minimum duration used to define a long
 episode of sensor detected hypoglycaemia. Default is 120 minutes.}
+
+\item{AddSleepSummary}{A character object specifying whether a summary of SDH should be added according to
+sleep status. Default is "no". Other option is "yes".}
 }
 \value{
 Data frame with one line per participant with key SDH metrics. This includes the number of episodes
@@ -27,13 +35,15 @@ Summarise sensor-detected hypoglycaemia (SDH) data for the chosen glucose thresh
 \details{
 This function goes hand in hand with the \code{\link[hypometrics]{sdhDetection}()} function. Once
 the details of each individual hypoglycaemia episode has been produced, this function can be used to summarise
-them.
+them. If an SDH summary by sleep status is required, the sdhDetection function must have been run with the
+AddSleepStatus argument set to "yes".
 }
 \examples{
 \dontrun{
 hypometrics::sdhSummarise(DataFrame,
                           DetectionLimit = "3.0",
-                          LongDuration = 120)
+                          LongDuration = 120,
+                          AddSleepSummary = "no")
 }
 
 }

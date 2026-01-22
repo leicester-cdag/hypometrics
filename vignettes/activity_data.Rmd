@@ -1,9 +1,9 @@
 ---
 title: "Physical Activity Data"
----
-
----
-output: rmarkdown::html_vignette
+output: 
+  html_document:
+   toc: true
+   toc_depth: 4
 vignette: >
   %\VignetteIndexEntry{Physical Activity Data}
   %\VignetteEngine{knitr::rmarkdown}
