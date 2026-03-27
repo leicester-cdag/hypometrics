@@ -32,20 +32,20 @@ The `hypometrics` package offers tools to clean, check, analyse and
 visualise the following types of data:
 
 **1. Continuous Glucose Monitoring Data**: more detail can be found
-[here](https://leicester-cdag.github.io/hypometrics/articles/cgm_data.html/).
+[here](https://leicester-cdag.github.io/hypometrics/articles/cgm_data.html).
 
 **2. Physical Activity Data**: more detail can be found
-[here](https://leicester-cdag.github.io/hypometrics/articles/activity_data.html/).
+[here](https://leicester-cdag.github.io/hypometrics/articles/activity_data.html).
 
 **3. Sleep Data**: more detail can be found
-[here](https://leicester-cdag.github.io/hypometrics/articles/sleep_data.html/).
+[here](https://leicester-cdag.github.io/hypometrics/articles/sleep_data.html).
 
 **4. Person-Reported Hypoglycaemia Data**: more detail can be found
-[here](https://leicester-cdag.github.io/hypometrics/articles/umotif_data.html/).
+[here](https://leicester-cdag.github.io/hypometrics/articles/umotif_data.html).
 
 Importantly, the package also allows the **linkage and integration** of
 the above described data, as shown
-[here](https://leicester-cdag.github.io/hypometrics/articles/linking_data.html/).
+[here](https://leicester-cdag.github.io/hypometrics/articles/linking_data.html).
 
 ## Installation
 
@@ -62,7 +62,7 @@ Load the package every time you start R:
 ## Documentation
 
 The package documentation can be found
-[**here**](https://leicester-cdag.github.io/hypometrics/index.html/).
+[**here**](https://leicester-cdag.github.io/hypometrics/index.html).
 
 ## Contributing
 
