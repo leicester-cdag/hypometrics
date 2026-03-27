@@ -3,7 +3,7 @@ template:
 params:
 logo: "logo.png"
 url: https://leicester-cdag.github.io/hypometrics/
-
+destination: docs
 navbar:
   type: default
   left:
