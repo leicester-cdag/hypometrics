@@ -3,48 +3,52 @@
 \docType{data}
 \name{raw_checkin}
 \alias{raw_checkin}
-\title{Dataset containing raw morning questionnaire data of 2 participants
-who used the Hypo-METRICS app on the uMotif platform}
+\title{Simulated Daily Check‑In Dataset}
 \format{
-A data frame with one row per questionnaire completed
+A tibble with the following character columns:
+\describe{
+  \item{userid}{Participant ID (\code{"P01"}, \code{"P02"}).}
+  \item{stage}{\code{"Registration"} or \code{"Day‑2"}–\code{"Day‑14"}.}
+  \item{localTimestamp}{Timestamp of check-in questionnaire completion.}
+  \item{AM_forfirsthypoAtwhattimedidthishappen.}
+  \item{AM_forfirsthypoHowdidyoudetectyourhypoorahypothatwasabouttohappen.}
+  \item{AM_forfirsthypoWhathappened.}
+}
 }
 \usage{
 raw_checkin
 }
 \description{
-Dataset containing raw morning questionnaire data of 2 participants
-who used the Hypo-METRICS app on the uMotif platform
+`raw_checkin` contains fully simulated daily “morning check‑in” questionnaire
+data for two synthetic participants (`P01`, `P02`) across a 14‑day follow‑up.
+The dataset includes registration‑day entries followed by daily morning
+check‑ins through \code{"Day‑14"}.
 }
 \details{
-Dataset containing timing of hypoglycaemic events reported
-in the daily app questionnaires
+This dataset is **entirely synthetic** and is intended for testing and
+demonstrating multi‑modal data integration.
 
-\describe{
-    \item{userid}{Unique uMotif ID}
-    \item{stage}{Study day when questionnaire was completed}
-    \item{localTimestamp}{Timestamp of the submission of the questionnaire}
-    \item{AM_forfirsthypoAtwhattimedidthishappen}{Timestamp of the first hypo since last questionnaire}
-    \item{AM_forsecondhypoAtwhattimedidthishappen}{Timestamp of the second hypo since last questionnaire}
-    \item{AM_forthirdhypoAtwhattimedidthishappen}{Timestamp of the third hypo since last questionnaire}
-    \item{AM_forfourthhypoAtwhattimedidthishappen}{Timestamp of the fourth hypo since last questionnaire}
-    \item{AM_forfifthhypoAtwhattimedidthishappen}{Timestamp of the fifth hypo since last questionnaire}
-    \item{AM_forfirsthypoIdontknowatwhattimedidthishappen}{Whether participant does not know when first hypo occurred}
-    \item{AM_forsecondhypoIdontknowatwhattimedidthishappen}{Whether participant does not know when second hypo occurred}
-    \item{AM_forthirdhypoIdontknowatwhattimedidthishappen}{Whether participant does not know when third hypo occurred}
-    \item{AM_forfourthhypoIdontknowatwhattimedidthishappen}{Whether participant does not know when fourth hypo occurred}
-    \item{AM_forfirsthypoHowdidyoudetectyourhypoorahypothatwasabouttohappen}{How did participant detect first hypo}
-    \item{AM_forsecondhypoHowdidyoudetectyourhypoorahypothatwasabouttohappen}{How did participant detect first hypo}
-    \item{AM_forthirdhypoHowdidyoudetectyourhypoorahypothatwasabouttohappen}{How did participant detect first hypo}
-    \item{AM_forfourthhypoHowdidyoudetectyourhypoorahypothatwasabouttohappen}{How did participant detect first hypo}
-    \item{AM_forfifthhypoHowdidyoudetectyourhypoorahypothatwasabouttohappen}{How did participant detect first hypo}
-    \item{AM_forfirsthypoHowdidyoudetectyourhypoorahypothatwasabouttohappenotherpleasespecify}{Other hypo detection - please specify}
-    \item{AM_forfirsthypoHowdidyoudetectyourhypoorahypothatwasabouttohappenotherpleasespecify}{Other hypo detection - please specify}
-    \item{AM_forfirsthypoHowdidyoudetectyourhypoorahypothatwasabouttohappenotherpleasespecify}{Other hypo detection - please specify}
-    \item{AM_forfirsthypoWhathappened}{What happened for first hypo}
-    \item{AM_forsecondhypoWhathappened}{What happened for second hypo}
-    \item{AM_forthirdhypoWhathappened}{What happened for third hypo}
-    \item{AM_forfourthhypoWhathappened}{What happened for fourth hypo}
-    \item{AM_forfifthypoWhathappened}{What happened for fifth hypo}
+
+
+\strong{Generation script}
+
+This dataset is produced reproducibly using:
+
+\preformatted{
+data-raw/simulate_raw_checkin.R
 }
+}
+\examples{
+data(raw_checkin, package = "hypometrics")
+
+# Structure
+dplyr::glimpse(raw_checkin)
+
+# View registration entries
+raw_checkin \%>\% dplyr::filter(stage == "Registration")
+
+# Rows containing hypo times
+raw_checkin \%>\%
+  dplyr::filter(AM_forfirsthypoAtwhattimedidthishappen != "")
 }
 \keyword{datasets}

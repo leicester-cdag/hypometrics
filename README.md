@@ -1,4 +1,4 @@
-# hypometrics <img src="man/figures/logo1.png" align="right" alt="" />
+# hypometrics <img src="man/figures/logo.png" align="right" width="160"/>
 
 ## What is the *hypometrics* package?
 
@@ -12,15 +12,15 @@ The building blocks of what is now the `hypometrics` package were developed in a
 
 The `hypometrics` package offers tools to clean, check, analyse and visualise the following types of data: 
 
-**1. Continuous Glucose Monitoring Data**: more detail can be found [here](https://hypometrics.github.io/cgm_data.html/).
+**1. Continuous Glucose Monitoring Data**: more detail can be found [here](https://leicester-cdag.github.io/hypometrics/articles/cgm_data.html/).
 
-**2. Physical Activity Data**: more detail can be found [here](https://hypometrics.github.io/activity_data.html/).
+**2. Physical Activity Data**: more detail can be found [here](https://leicester-cdag.github.io/hypometrics/articles/activity_data.html/).
 
-**3. Sleep Data**: more detail can be found [here](https://hypometrics.github.io/sleep_data.html/).
+**3. Sleep Data**: more detail can be found [here](https://leicester-cdag.github.io/hypometrics/articles/sleep_data.html/).
 
-**4. Person-Reported Hypoglycaemia Data**: more detail can be found [here](https://hypometrics.github.io/umotif_data.html/).
+**4. Person-Reported Hypoglycaemia Data**: more detail can be found [here](https://leicester-cdag.github.io/hypometrics/articles/umotif_data.html/).
 
-Importantly, the package also allows the **linkage and integration** of the above described data, as shown [here](https://hypometrics.github.io/linking_data.html/).
+Importantly, the package also allows the **linkage and integration** of the above described data, as shown [here](https://leicester-cdag.github.io/hypometrics/articles/linking_data.html/).
 
 ## Installation
 
@@ -28,7 +28,7 @@ The package is available on `GitHub` and can be installed and downloaded by runn
 
 ```
 install.packages("remotes")
-remotes::install_github("hypometrics")
+remotes::install_github("leicester-cdag/hypometrics")
 ```
 Load the package every time you start R:
 
@@ -40,7 +40,7 @@ library(hypometrics)
 ## Documentation
 
 The package documentation can be found
-[**here**](https://hypometrics.github.io/index.html/).
+[**here**](https://leicester-cdag.github.io/hypometrics/index.html/).
 
 ## Contributing
 

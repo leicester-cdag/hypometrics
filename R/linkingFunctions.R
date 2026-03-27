@@ -44,7 +44,7 @@ cgmsleepLink <- function(CgmDataFrame,
     #### Prep raw sleep data ####
     sleep_overview <- sleep_dataset %>%
       #Removing more granular data on sleep stages and short wake periods
-      dplyr::select(-levels.data, -levels.shortData) %>%
+      #dplyr::select(-levels.data, -levels.shortData) %>%
       #Arranging in chronological order
       dplyr::arrange(startTime) %>%
       #Changing to right date or datetime formats

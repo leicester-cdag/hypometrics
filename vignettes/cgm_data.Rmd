@@ -11,6 +11,7 @@ vignette: >
 ---
 
 
+
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
@@ -31,7 +32,7 @@ To be able to use the CGM functions, firstly install and load `hypometrics`.
 ```
 #Install
 install.packages("remotes")
-remotes::install_github("hypometrics")
+remotes::install_github("leicester-cdag/hypometrics")
 ```
 
 ```{r, message=FALSE}
@@ -39,55 +40,56 @@ remotes::install_github("hypometrics")
 library(hypometrics)
 ```
 
-### Example data
+### Simulated data
 
-Throughout this tutorial, the examples presented will be based on the [`raw_cgm`](https://hypometrics.github.io/reference/raw_cgm.html) and [`cgm`](https://hypometrics.github.io/reference/cgm.html) dataframes.  
+Throughout this tutorial, the examples presented will be based on the simulated [`raw_cgm`] and [`cgm`] datasets.  
 
-Both dataframes contain data from `r dplyr::n_distinct(cgm$id)` participants who used a CGM device, with one row per CGM timestamp. The `cgm` dataframe is a cleaner and more granular version of the `raw_cgm` as it includes glucose data that already been interpolated, at the 1-min level. Further information on data interpolation is provided in the next section. 
+These datasets include two synthetic participants, P01 and P02, with one row per CGM timestamp. The `cgm` dataframe is a cleaner version of the `raw_cgm` as it includes CGM data that has been interpolated. Further information on data interpolation is provided in the next section. 
 
-* A preview of the `cgm` dataframe is shown below:
+* A preview of the `raw_cgm` dataframe is shown below:
 
 ```{r, message=FALSE}
-utils::head(cgm)
+utils::head(raw_cgm)
 ```
+
 
 ## 2. Cleaning CGM data
 
 ### From implicit to explicit gaps in CGM data
 
-The [`raw_cgm`](https://hypometrics.github.io/reference/raw_cgm.html) dataset has gaps in the CGM timestamps which are implicit. For example, as shown below, there is a gap between 17:00 and 17:20 but the missing CGM timestamps and glucose values are not explicitly included in the dataset. This means that gaps in the data are not particularly obvious to the user. 
+The [`raw_cgm`] dataset has gaps in the CGM timestamps which are implicit. For example, as shown below, there is a gap between 18:27 and 18:42 but the missing CGM timestamps and glucose values are not explicitly included in the dataset. This means that gaps in the data are not particularly obvious to the user. 
 
 ```{r, message=FALSE}
-raw_cgm %>% dplyr::slice(26:36)
+raw_cgm %>% dplyr::slice(120:130)
 ```
 
 \
 
-The `cgmInterpolate()` function addresses this by turning these implicit gaps into explicit gaps. In that case, it will add 17:05, 17:10 and 17:15 as timestamps with the corresponding glucose values marked as missing (i.e. NA), as shown below. The 'Interpolate' argument is set to FALSE as the aim here is solely to produce explicit gaps, not to interpolate glucose values. The 'MinGap' argument determines the minimum data gap considered and it is set to 600 seconds (or 10 min) so at least 1 CGM timestamp can be added. The desired granularity of data is 5 minutes so the 'Granularity' argument is set to 300 seconds.
+The `cgmInterpolate()` function addresses this by turning these implicit gaps into explicit gaps. In that case, it will add 18:32 and 18:37 as timestamps with the corresponding glucose values marked as missing (i.e. NA), as shown below. The 'Interpolate' argument is set to FALSE as the aim here is solely to produce explicit gaps, not to interpolate glucose values. The 'MinGap' argument determines the minimum data gap considered and it is set to 600 seconds (or 10 min) so at least 1 CGM timestamp can be added. The desired granularity of data is 5 minutes so the 'Granularity' argument is set to 300 seconds.
 
 \
 
 ```{r, message=FALSE}
-cgm_explicit_gaps <- cgmInterpolate(raw_cgm, Interpolate = FALSE, MinGap = 600, Granularity = 300)
+cgm_explicit_gaps <- hypometrics::cgmInterpolate(raw_cgm, Interpolate = FALSE, MinGap = 600, Granularity = 300)
 
-cgm_explicit_gaps %>% dplyr::slice(31:41)
+cgm_explicit_gaps %>% dplyr::slice(133:140)
 ```
 
 \
 
 ### Interpolation of CGM data
 
-There might be instances where, following turning implicit gaps into explicit gaps, missing glucose values need to be interpolated. This can be done by simply changing the 'Interpolate' argument of the same function to TRUE. This will allow the linear interpolation of glucose data using the `stats::approx()` function. The 'MaxGap' argument here becomes essential as it determines what is the maximum gap for which glucose values should be interpolated. For example, if set at 1800 seconds (the default in the function), any glucose values in a gap longer than 30 minutes will not be interpolated and left as NA. It is up to the user to determine what the 'MaxGap' should be depending on their analysis. Let's see what the linear interpolation looks like below, still based on our 17:00 to 17:20 gap example from earlier.
+There might be instances where, following turning implicit gaps into explicit gaps, missing glucose values need to be interpolated. This can be done by simply changing the 'Interpolate' argument of the same function to TRUE. This will allow the linear interpolation of glucose data using the `stats::approx()` function. The 'MaxGap' argument here becomes essential as it determines what is the maximum gap for which glucose values should be interpolated. For example, if set at 1800 seconds (the default in the function), any glucose values in a gap longer than 30 minutes will not be interpolated and left as NA. It is up to the user to determine what the 'MaxGap' should be depending on their analysis. Let's see what the linear interpolation looks like below, still based on our 18:27 to 18:42 gap example from earlier.
 
 
 ```{r, message=FALSE}
-cgm_explicit_gaps_and_interpolation <- cgmInterpolate(raw_cgm, Interpolate = TRUE, MinGap = 600, Granularity = 300, MaxGap = 1800)
+cgm_explicit_gaps_and_interpolation <- 
+  hypometrics::cgmInterpolate(raw_cgm, Interpolate = TRUE, MinGap = 600, Granularity = 300, MaxGap = 1800)
 
-cgm_explicit_gaps_and_interpolation %>% dplyr::slice(31:41)
+cgm_explicit_gaps_and_interpolation %>% dplyr::slice(133:140)
 ```
 
-
-We can see here that as the gap was less than 30 minutes, glucose values have been linearly interpolated. The added values are 3.28 mmol/L (at 17:05), 3.15 mmol/L (at 17:10) and 3.02 mmol/L (at 17:15).
+We can see here that as the gap was less than 30 minutes, glucose values have been linearly interpolated. The added values are 4.91 mmol/L (at 18:37) and 4.87 mmol/L (at 18:42).
 
 ## 3. Checking CGM data
 
@@ -98,7 +100,7 @@ After cleaning the data and before diving into data analysis, the `checkMissingC
 Firstly, you can explore the number of hours of CGM data available per day for all participants included by running: 
 
 ```{r, message=FALSE}
-cgmCheck(cgm)
+hypometrics::cgmCheck(cgm)
 ```
 
 ### Individual level
@@ -106,12 +108,12 @@ cgmCheck(cgm)
 With the initial identification of days/participants with low CGM data coverage in the previous step, further investigation can be conducted by looking at CGM data from individual participants. For example:
 
 ```{r, message=FALSE}
-missingness_001 <- cgmCheck(cgm, CheckAll = FALSE, StudyID = "001", AxisLabels = c(0, 2.2, 3.9, 10, 20))
+missingness_P01 <- cgmCheck(cgm, CheckAll = FALSE, StudyID = "P01", AxisLabels = c(0, 2.2, 3.9, 10, 20))
 ```
-This creates a list which contains a data set with daily breakdown of available hours of CGM data for participant '001' and a graph highlighting periods of missingness as shown below. 
+This creates a list which contains a data set with daily breakdown of available hours of CGM data for participant 'P01' and a graph highlighting periods of missingness can be produced using the code below.
 
-```{r, message=FALSE, warning=FALSE}
-graphics::plot(missingness_001$cgm_na_distribution_plot)
+```{r, message=FALSE, warning=FALSE, eval = FALSE}
+graphics::plot(missingness_P01$cgm_na_distribution_plot)
 ```
 
 ## 4. Describing CGM data
@@ -131,21 +133,24 @@ The `sdhDetection()` function allows to automatically detect and report on every
 ```{r, message=FALSE}
 utils::head(sdhDetection(DataFrame = cgm), n=10)
 ```
+We can see in the table above that P02 experienced 7 episodes of hypoglycaemia below 3.9 mmol/L of a minimum duration of 15 minutes. P01 did not experience any hypoglycaemia episodes with those characteristics.
+
 
 The default parameters can be changed to explore a different glucose threshold, and minimum duration. For example: 
 
 ```{r, message=FALSE}
-utils::head(sdhDetection(DataFrame = cgm, DetectionLimit = 3, DetectionDuration = 30), n=10)
+utils::head(sdhDetection(DataFrame = cgm, DetectionLimit = 3, DetectionDuration = 10), n=10)
 ```
-
+After changing the default parameters, we see that P01 experienced one episode of hypoglycaemia below 3 mmol/L for a duration of 10 minutes. 
 
 If sleep data is available, the user can also sleep information to the output by changing the default AddSleepStatus parameter to "yes". For this to run, the CGM dataset used must include a sleep_status column (this can be obtained using the `cgmsleepLink()` function). For example:
 
-```{r, message=FALSE}
-linked_data <- cgmsleepLink(CgmDataFrame = hypometrics::cgm,
+```{r, message=FALSE, eval = F}
+linked_data <- cgmsleepLink(CgmDataFrame = cgm,
                             SleepDataFrame = hypometrics::raw_sleep)
 
-utils::head(sdhDetection(DataFrame = linked_data), n=10)
+utils::head(sdhDetection(DataFrame = linked_data,
+                         AddSleepStatus = "yes"), n=10)
 ```
 
 ### Sensor-detected hypoglycaemia data summary
@@ -171,7 +176,7 @@ It may be useful to plot CGM data to visually inspect glucose concentrations ove
 Using the default function parameters, you will obtain an overview of glucose data for the entire study period for a selected participant, as shown below:
 
 ```{r, message=FALSE, warning=FALSE}
-cgmVisualise(cgm, StudyID = "001")
+cgmVisualise(cgm, StudyID = "P02")
 ```
 
 The figure shows the glucose trace in blue, the 3.9-10mmol/L range is delimited by green lines. The grey area highlights the period from 00:00 to 06:00 for reference, as it is typically used when examining nocturnal hypoglycaemia.
@@ -183,21 +188,21 @@ The figure shows the glucose trace in blue, the 3.9-10mmol/L range is delimited 
 It is also possible to view glucose data on a weekly basis by specifying a breakdown by week in the `TimeBreak` argument of the function and which week is of interest using the `PageNumber` argument, as shown below:
 
 ```{r, message=FALSE, warning=FALSE}
-cgmVisualise(cgm, StudyID = "001", TimeBreak = "week", PageNumber = 3)
+cgmVisualise(cgm, StudyID = "P01", TimeBreak = "week", PageNumber = 2)
 ```
 \
 
-The number at the top of the figure indicates the week selected for visualisation. Please note the function will return an error if the picked PageNumber (i.e. here, week number) is out of the data range (e.g. PageNumber = 11 when there are only 10 weeks of data).
+The number at the top of the figure indicates the week selected for visualisation. Please note the function will return an error if the picked PageNumber (i.e. here, week number) is out of the data range (e.g. PageNumber = 5 when there are only 4 weeks of data).
 
 ### Day by day
 
 Lastly, for further granularity, there is an option to visualise this data for specific days using the same logic as for the weekly data. 
 
 ```{r, message=FALSE, warning=FALSE}
-cgmVisualise(cgm, StudyID = "001", TimeBreak = "day", PageNumber = 2)
+cgmVisualise(cgm, StudyID = "P02", TimeBreak = "day", PageNumber = 10)
 ```
 \
 
-The number at the top of the figure indicates the day selected for visualisation. Please note the function will return an error if the picked PageNumber (i.e. here, day number) is out of the data range (e.g. PageNumber = 71 when there are only 70 days of data).
+The number at the top of the figure indicates the day selected for visualisation. Please note the function will return an error if the picked PageNumber (i.e. here, day number) is out of the data range (e.g. PageNumber = 15 when there are only 14 days of data).
 
 

@@ -3,25 +3,82 @@
 \docType{data}
 \name{raw_step}
 \alias{raw_step}
-\title{Dataset containing raw step count data of 2 participants
-who used a Fitbit Charge 4}
+\title{Simulated Minute‑Level Step Count Data}
 \format{
-A data frame with one row per minute
+A tibble with three columns:
+\describe{
+  \item{id}{Character participant ID (\code{"P01"}, \code{"P02"}).}
+  \item{step_timestamp}{POSIXct timestamp in UTC, at 1‑minute resolution.}
+  \item{count}{Whole‑number step count per minute.}
+}
 }
 \usage{
 raw_step
 }
 \description{
-Dataset containing raw step count data of 2 participants
-who used a Fitbit Charge 4
+`raw_step` contains **synthetic Fitbit‑style step count data** for two
+simulated participants (`P01` and `P02`). The dataset spans **two weeks**
+at **1‑minute resolution**. It includes **exercise sessions**,
+**sleep‑related inactivity**, and **Fitbit‑like missingness patterns**,
+providing a realistic structure for testing algorithms that process wearable activity data.
 }
 \details{
-Dataset containing Fitbit Charge 4 step count
+\strong{Participants}
 
-\describe{
-    \item{id}{Unique study ID}
-    \item{step_timestamp}{Timestamp}
-    \item{count}{Step count}
+\itemize{
+  \item \code{"P01"} — starts at \code{"2026‑01‑01 07:17:00"} (UTC)
+  \item \code{"P02"} — starts at \code{"2026‑01‑02 15:52:00"} (UTC)
 }
+
+Each participant has exactly **14 days** of simulated minute‑level data.
+
+
+\strong{Activity patterns}
+
+\itemize{
+  \item \strong{Daytime activity:} mild random movement with realistic variability.
+  \item \strong{Sleep inactivity:} step counts drop to near‑zero between 23:00–06:00.
+  \item \strong{Exercise sessions:} intermittent bouts with ramp‑up,
+    sustained high counts, and gradual cooldown.
+  \item \strong{Noise:} stochastic variation representing device and behavioural variation.
+}
+
+
+\strong{Missingness model (Fitbit‑like)}
+
+Step counts include NA values introduced using:
+
+\itemize{
+  \item \emph{tiny micro‑gaps} (1–2 minute sensor losses),
+  \item \emph{longer dropouts} (10–60 minutes).
+}
+
+These patterns mimic real‑world wrist‑worn accelerometer behaviour during
+motion artifacts, device removal, or Bluetooth disconnection.
+
+
+\strong{Generation script}
+
+This dataset is produced reproducibly by the script:
+
+\preformatted{
+  data-raw/simulate_raw_step.R
+}
+}
+\examples{
+data(raw_step, package = "hypometrics")
+
+# Structure
+dplyr::glimpse(raw_step)
+
+# First few rows for P01
+dplyr::filter(raw_step, id == "P01") \%>\% head()
+
+# Missingness percentage per participant
+raw_step \%>\%
+  dplyr::group_by(id) \%>\%
+  dplyr::summarise(
+    pct_missing = mean(is.na(count)) * 100
+  )
 }
 \keyword{datasets}

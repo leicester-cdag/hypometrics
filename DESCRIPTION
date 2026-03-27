@@ -1,25 +1,35 @@
 Package: hypometrics
 Type: Package
 Title: Methods To Analyse Continuous Glucose Monitoring, Activity, Sleep and Person-Reported Hypoglycaemia Data
-Version: 0.0.9
-Authors@R: 
-     as.person(c(
-     "Gilberte Martine-Edith <gme6@leicester.ac.uk> [aut]",
-     "Jonah Thomas <jjct1@leicester.ac.uk> [cre]"
-     ))
-Description: A series of functions to clean, process, visualise and combine glucose, step count, sleep and hypoglycaemia symptoms data. 
+Version: 0.1.0
+Authors@R: c(
+    person(
+     given = "Gilberte",
+     family = "Martine-Edith",
+     email = "gme6@leicester.ac.uk",
+     role = c("aut", "cre")
+     ),
+    person(
+     "Jonah", 
+     "Thomas", 
+     role = "ctb")
+     )
+Description: A series of functions to clean, process, visualise and combine glucose, activity, sleep and hypoglycaemia symptoms data. 
 License: What license is it under?
 Encoding: UTF-8
 LazyData: true
+URL: https://github.com/Leicester-CDAG/hypometrics,
+     https://leicester-cdag.github.io/hypometrics/
+BugReports: https://github.com/Leicester-CDAG/hypometrics/issues
 Suggests: 
     knitr,
     rmarkdown,
     testthat (>= 3.0.0)
 VignetteBuilder: knitr, rmarkdown
 Config/testthat/edition: 3
-RoxygenNote: 7.3.2
+RoxygenNote: 7.3.3
 Depends: 
-    R (>= 2.10)
+    R (>= 3.5)
 Imports: 
     dplyr,
     ggplot2,

@@ -3,28 +3,61 @@
 \docType{data}
 \name{raw_cgm}
 \alias{raw_cgm}
-\title{Dataset containing raw glucose data of 2 participants
-who used a CGM device}
+\title{Simulated Continuous Glucose Monitoring (CGM) Dataset}
 \format{
-A data frame with one row per CGM timestamp
+A tibble with three columns:
+\describe{
+  \item{id}{Character ID for the participant (\code{"P01"} or \code{"P02"}).}
+
+  \item{cgm_timestamp}{POSIXct timestamp in UTC at nominal 5‑minute cadence,
+                       with implicit gaps due to simulated missingness.}
+
+  \item{glucose}{Numeric synthetic glucose‑like value in mmol/L.}
+}
 }
 \usage{
 raw_cgm
 }
 \description{
-Dataset containing raw glucose data of 2 participants
-who used a CGM device
+`raw_cgm` contains fully synthetic continuous glucose monitoring (CGM)
+measurements generated at a 5‑minute sampling rate over a 14‑day period
+for two simulated participants (`P01` and `P02`).
+The dataset is designed to reflect realistic day‑to‑day variability in
+glucose‑like numerical signals, including higher‑value excursions,
+lower‑value dips, circadian changes, meal‑related peaks, overnight
+reductions, and stochastic variability.
 }
 \details{
-This is a raw dataset where implicit gaps in glucose
-data have not been turned to explicit gaps (i.e. adding
-missing CGM timestamps and corresponding missing glucose value)
-and linear interpolation has not been conducted
+\strong{Participants}
 
-\describe{
-    \item{id}{Unique study ID}
-    \item{cgm_timestamp}{Timestamp indicated on CGM device}
-    \item{glucose}{Glucose concentration (mmol/L)}
+\itemize{
+  \item \code{"P01"} — CGM begins at \code{"2026‑01‑01 07:17:00"} (UTC)
+  \item \code{"P02"} — CGM begins at \code{"2026‑01‑02 15:52:00"} (UTC)
 }
+
+Each participant is simulated for exactly **14 days** with a **5‑minute**
+sampling interval (288 points per day before missingness).
+
+
+\strong{Generation script}
+
+This dataset is produced reproducibly using:
+
+\preformatted{
+  data-raw/simulate_raw_cgm.R
+}
+}
+\examples{
+data(raw_cgm, package = "hypometrics")
+
+# Inspect structure
+dplyr::glimpse(raw_cgm)
+
+# Example: plot first 48 hours of P01
+raw_cgm \%>\%
+  dplyr::filter(id == "P01") \%>\%
+  dplyr::arrange(cgm_timestamp) \%>\%
+  dplyr::slice(1:600) \%>\%
+  with(plot(cgm_timestamp, glucose, type = "l"))
 }
 \keyword{datasets}

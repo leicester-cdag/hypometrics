@@ -32,7 +32,7 @@ To be able to use the sleep functions, firstly install and load `hypometrics`.
 ```
 #Install
 install.packages("remotes")
-remotes::install_github("hypometrics")
+remotes::install_github("leicester-cdag/hypometrics")
 ```
 
 
@@ -41,14 +41,14 @@ remotes::install_github("hypometrics")
 library(hypometrics)
 ```
 
-### Example data
+### Simulated data
 
-Throughout this tutorial, the examples presented will be based on the [`raw_sleep`](https://hypometrics.github.io/reference/raw_sleep.html) dataframe. It contains data from `r dplyr::n_distinct(raw_sleep$id)` participants who used a Fitbit Charge 4 device, with one row per sleep event recorded. 
+Throughout this tutorial, the examples presented will be based on the [`raw_sleep`](https://leicester-cdag.github.io/hypometrics/reference/raw_sleep.html) simulated dataset. 
 
-* A preview of the first 15 columns of the `raw_sleep` dataframe is shown below:
+* A preview of the `raw_sleep` dataframe is shown below:
 
 ```{r, message=FALSE}
-utils::head(raw_sleep %>% dplyr::select(1:15))
+utils::head(raw_sleep)
 ```
 
 ## 2. Reading sleep data 
@@ -60,7 +60,7 @@ An example of the syntax is shown below:
 hypometrics::sleepRead(Unzip = F,
                        FolderPath = "C:/Users",
                        FileType = "json",
-                       StudyID = "005")
+                       StudyID = "P02")
 ```
 
 ## 3. Cleaning sleep data
@@ -72,26 +72,8 @@ The `sleepCategorise()` function allows the user to separate the raw sleep data 
 The `sleep_overview` is a dataset containing overall sleep information including sleep start and end times as well as the number of minutes awake, time spent in bed and duration of sleep as shown below. Each sleep event is tagged with a specific logId (internal to Fitbit). The logId can be used to identify specific sleep events and merge sleep information across the three datasets. The first 8 columns of the `sleep_overview` dataset are shown below.
 
 ```{r, message=FALSE, warning=FALSE}
-sleep_detail <-  sleepCategorise(raw_sleep)
-utils::head(sleep_detail$sleep_overview %>% dplyr::select(1:8))
-```
-
-### Sleep stages
-
-The `sleep_stages` is a dataset containing a breakdown of the time spent (in seconds) in each sleep stage for each sleep event recorded by the Fitbit. 
-
-```{r, message=FALSE}
-sleep_detail <-  sleepCategorise(raw_sleep)
-utils::head(sleep_detail$sleep_stages)
-```
-
-### Short wake periods
-
-The `short_Wake_periods` is a dataset containing a breakdown of short wake periods (time expressed in seconds) for each sleep event recorded by the Fitbit. Short wake periods are less than 3 minutes and considered to be short physiological awakenings not included in full sleep stages. More information can be found [here](https://www.fitabase.com/resources/knowledge-base/learn-about-fitbit-data/sleep-stage-data/#:~:text=Nuance%20to%20sleep%20stages,not%20considered%20full%20sleep%20stages.).
-
-```{r, message=FALSE}
-sleep_detail <-  sleepCategorise(raw_sleep)
-utils::head(sleep_detail$short_wake_periods)
+sleepCategorise(raw_sleep) %>%
+  dplyr::slice(1:6)
 ```
 
 ## 4. Describing sleep data
@@ -104,16 +86,16 @@ sleepSummarise(raw_sleep)
 
 ## 5. Visualising sleep data
 
-The `sleepVisualise` function allows the user to visualise the distribution of times when participants went to bed and got out of bed, as shown below. The default is to plot the histogram for all times recorded by the Fitbit for all participants. To facilitate interpretation of the sleeping patterns, the function centres the times when going to bed around midnight .
+The `sleepVisualise` function allows the user to visualise the distribution of times when participants went to bed and got out of bed, as shown below. The default is to plot the histogram for all times recorded by the Fitbit for all participants. To facilitate interpretation of the sleeping patterns, the function centres the times when going to bed around midnight.
 
-```{r, message=FALSE, warning = FALSE}
+```{r, message=FALSE, warning = FALSE, eval = FALSE}
 sleepVisualise(raw_sleep)
 ```
 
 If the user needs to visualise data for a specific participant, this can be done by changing the argument `VisualiseAll` to FALSE and indicating the participant id of interest in the `StudyID` argument, as shown below:
 
 ```{r, message=FALSE, warning = FALSE}
-sleepVisualise(raw_sleep, VisualiseAll = FALSE, StudyID = "001")
+sleepVisualise(raw_sleep, VisualiseAll = FALSE, StudyID = "P02")
 ```
 
 

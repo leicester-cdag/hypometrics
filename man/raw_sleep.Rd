@@ -3,27 +3,69 @@
 \docType{data}
 \name{raw_sleep}
 \alias{raw_sleep}
-\title{Dataset containing raw sleep data of 2 participants
-who used a Fitbit Charge 4}
+\title{Simulated Fitbit Sleep Dataset}
 \format{
-A data frame with one row per sleep event
+A tibble with the following columns:
+\describe{
+
+  \item{id}{Character participant ID: \code{"P01"} or \code{"P02"}.}
+
+  \item{logId}{Unique 10‑digit numeric identifier for the sleep log.}
+
+  \item{dateOfSleep}{Character date (YYYY‑MM‑DD) representing the date of sleep.}
+
+  \item{startTime}{POSIXct datetime marking the start of the sleep period.}
+
+  \item{endTime}{POSIXct datetime marking the end of the sleep period.}
+
+}
 }
 \usage{
 raw_sleep
 }
 \description{
-Dataset containing raw sleep data of 2 participants
-who used a Fitbit Charge 4
+`raw_sleep` provides a fully simulated set of sleep data for two
+synthetic participants (`P01` and `P02`). Each record represents a single
+night of sleep, with realistic bedtimes and wake times, unique nightly
+identifiers, and occasional missing nights to mirror imperfect real‑world
+device collection.
 }
 \details{
-Dataset containing Fitbit Charge 4 sleep information
+The dataset is intended solely for
+demonstration, examples, and testing within the `hypometrics` package.
 
-\describe{
-    \item{id}{Unique study ID}
-    \item{logId}{Unique sleep event ID}
-    \item{dateOfSleep}{Date of the sleep event}
-    \item{startTime}{Start time of sleep (YYYY-MM-DD HH:MM:SS)}
-    \item{endTime}{End time of sleep (YYYY-MM-DD HH:MM:SS)}
+
+
+\strong{Participants and date coverage}
+
+\itemize{
+  \item \code{"P01"} — first night: \code{"2026‑01‑01"}
+  \item \code{"P02"} — first night: \code{"2026‑01‑02"}
 }
+
+Each participant is simulated for **13 consecutive nights**, after which
+**2–3 randomly selected nights are removed completely** to mimic missing
+Fitbit‑style nights of sleep.
+
+\strong{Generation script}
+
+The dataset is generated reproducibly from:
+
+\preformatted{
+data-raw/simulate_raw_sleep.R
+}
+}
+\examples{
+data(raw_sleep, package = "hypometrics")
+
+# View structure
+dplyr::glimpse(raw_sleep)
+
+# Sleep duration for the first few nights
+raw_sleep \%>\%
+  dplyr::mutate(duration_hours =
+      as.numeric(difftime(endTime, startTime, units = "hours"))) \%>\%
+  head()
+
 }
 \keyword{datasets}

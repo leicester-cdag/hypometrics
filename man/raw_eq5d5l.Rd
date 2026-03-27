@@ -3,30 +3,82 @@
 \docType{data}
 \name{raw_eq5d5l}
 \alias{raw_eq5d5l}
-\title{Dataset containing raw EQ5D5L questionnaire data of 2 participants
-who used the Hypo-METRICS app on the uMotif platform}
+\title{Simulated EQ‑5D‑5L Health Status Dataset}
 \format{
-A data frame with one row per questionnaire submitted
+A tibble with the following variables:
+\describe{
+  \item{userid}{Character participant ID (\code{"P01"}, \code{"P02"}).}
+  \item{stage}{Assessment stage (\code{"Registration"}, \code{"Day-7"}, \code{"Day-14"}).}
+  \item{localTimestamp}{Character ISO‑8601 timestamp including milliseconds and timezone.}
+  \item{SC}{Self‑Care domain level (\code{"SC1"}–\code{"SC5"}).}
+  \item{AD}{Anxiety/Depression domain level (\code{"AD1"}–\code{"AD5"}).}
+  \item{UA}{Usual Activities domain level (\code{"UA1"}–\code{"UA5"}).}
+  \item{MB}{Mobility domain level (\code{"MB1"}–\code{"MB5"}).}
+  \item{PD}{Pain/Discomfort domain level (\code{"PD1"}–\code{"PD5"}).}
+}
 }
 \usage{
 raw_eq5d5l
 }
 \description{
-Dataset containing raw EQ5D5L questionnaire data of 2 participants
-who used the Hypo-METRICS app on the uMotif platform
+`raw_eq5d5l` contains a fully synthetic version of the EQ‑5D‑5L instrument
+for two simulated participants (`P01` and `P02`) across three study stages:
+\code{"Registration"}, \code{"Day-7"}, and \code{"Day-14"}.
+The dataset includes ISO‑8601 timestamped assessments and categorical responses
+for each of the five EQ‑5D‑5L dimensions.
 }
 \details{
-Dataset containing responses to daily EQ5D5L questionnaire  on scale from 1 to 5
+This dataset is simulated and intended for demonstrating workflows and examples
+within the `hypometrics` package.
 
-\describe{
-    \item{userid}{Unique uMotif ID}
-    \item{stage}{Study day when questionnaire was completed}
-    \item{localTimestamp}{Timestamp of the submission of the questionnaire}
-    \item{SC}{Self Care}
-    \item{AD}{Anxiety/depression}
-    \item{UA}{Usual activities}
-    \item{MB}{Mobility}
-    \item{PD}{Pain/discomfort}
+
+
+\strong{Participants and timing}
+
+\itemize{
+  \item \code{"P01"} — Registration time: \code{"2026-01-01 07:17:00"} (UTC)
+  \item \code{"P02"} — Registration time: \code{"2026-01-02 15:52:00"} (UTC)
 }
+
+Follow‑up assessments occur exactly **7** and **14** days after Registration
+for each participant.
+
+\strong{EQ‑5D‑5L dimensions (each with 5 levels)}
+
+Each EQ‑5D‑5L domain is represented using the 5‑level structure, encoded as:
+
+\itemize{
+  \item \code{SC1}–\code{SC5}: **Self‑Care**
+  \item \code{AD1}–\code{AD5}: **Anxiety/Depression**
+  \item \code{UA1}–\code{UA5}: **Usual Activities**
+  \item \code{MB1}–\code{MB5}: **Mobility**
+  \item \code{PD1}–\code{PD5}: **Pain / Discomfort**
+}
+
+
+\strong{Generation script}
+
+This dataset is produced reproducibly using:
+
+\preformatted{
+data-raw/simulate_raw_eq5d5l.R
+}
+}
+\examples{
+data(raw_eq5d5l, package = "hypometrics")
+
+# Inspect structure
+dplyr::glimpse(raw_eq5d5l)
+
+# Show values for P01
+raw_eq5d5l \%>\% dplyr::filter(userid == "P01")
+
+# Summarise EQ-5D-5L domains by participant and stage
+raw_eq5d5l \%>\%
+  dplyr::group_by(userid, stage) \%>\%
+  dplyr::summarise(
+    across(c(SC, AD, UA, MB, PD), ~ dplyr::n_distinct(.x)),
+    .groups = "drop"
+  )
 }
 \keyword{datasets}

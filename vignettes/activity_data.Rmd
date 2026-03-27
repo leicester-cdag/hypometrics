@@ -31,7 +31,7 @@ To be able to use the step count and heart rate functions, firstly install and l
 ```
 #Install
 install.packages("remotes")
-remotes::install_github("hypometrics")
+remotes::install_github("leicester-cdag/hypometrics")
 ```
 
 
@@ -40,9 +40,9 @@ remotes::install_github("hypometrics")
 library(hypometrics)
 ```
 
-### Example data
+### Simulated data
 
-Throughout this tutorial, the examples presented will be based on the [`raw_step`](https://hypometrics.github.io/reference/raw_step.html) and [`raw_hr`](https://hypometrics.github.io/reference/raw_hr.html) dataframes. They both contain data from `r dplyr::n_distinct(raw_step$id)` participants who used a Fitbit Charge 4 device. 
+Throughout this tutorial, the examples presented will be based on the [`raw_step`](https://leicester-cdag.github.io/hypometrics/reference/raw_step.html) and [`raw_hr`](https://leicester-cdag.github.io/hypometrics/reference/raw_hr.html) datasets.  
 
 * A preview of the `raw_step` dataframe is shown below:
 
@@ -66,13 +66,13 @@ hypometrics::activityRead(Unzip = F,
                           FolderPath = "C:/Users",
                           FileType = "json",
                           FilePattern = "steps-",
-                          StudyID = "002")
+                          StudyID = "P02")
 
 hypometrics::activityRead(Unzip = F,
                           FolderPath = "C:/Users",
                           FileType = "csv",
                           FilePattern = "active zone minutes",
-                          StudyID = "001")
+                          StudyID = "P01")
 
 ```
 
@@ -88,16 +88,16 @@ To visualise step count data, the following syntax is used:
 ```{r, message=FALSE, warning=FALSE}
 hypometrics::activityVisualise(DataFrame = raw_step,
                                DataType = "stepcount",
-                               StudyID = "001")
+                               StudyID = "P01")
 ```
 
 \
 
 To visualise heart rate data, the following syntax is used: 
-```{r, message=FALSE, warning=FALSE}
+```{r, message=FALSE, warning=FALSE, eval = FALSE}
 hypometrics::activityVisualise(DataFrame = raw_hr,
                                DataType = "heartrate",
-                               StudyID = "001")
+                               StudyID = "P01")
 ```
 
 
@@ -106,28 +106,28 @@ hypometrics::activityVisualise(DataFrame = raw_hr,
 It is also possible to view activity data on a weekly basis by specifying a breakdown by week using the `TimeBreak` argument of the function and which week is of interest using the `PageNumber` argument.
 
 To visualise step count data, the following syntax can be used:
-```{r, message=FALSE, warning=FALSE}
+```{r, message=FALSE, warning=FALSE, eval = FALSE}
 hypometrics::activityVisualise(DataFrame = raw_step,
                                DataType = "stepcount",
                                TimeBreak = "week",
-                               PageNumber = 2,
-                               StudyID = "001")
+                               PageNumber = 1,
+                               StudyID = "P01")
 ```
 
 \
 
 To visualise heart rate data, the following syntax can be used:
-```{r, message=FALSE, warning=FALSE}
+```{r, message=FALSE, warning=FALSE, eval = FALSE}
 hypometrics::activityVisualise(DataFrame = raw_hr,
                                DataType = "heartrate",
                                TimeBreak = "week",
-                               PageNumber = 9,
-                               StudyID = "001")
+                               PageNumber = 1,
+                               StudyID = "P01")
 ```
 
 \
 
-The number at the top of the figure indicates the week selected for visualisation. Please note the function will return an error if the picked PageNumber (i.e. here, week number) is out of the data range (e.g. PageNumber = 11 when there are only 10 weeks of data).
+The number at the top of the figure indicates the week selected for visualisation. Please note the function will return an error if the picked PageNumber (i.e. here, week number) is out of the data range (e.g. PageNumber = 5 when there are only 4 weeks of data).
 
 ### Day by day
 
@@ -135,28 +135,28 @@ Lastly, for further granularity, there is an option to visualise activity data f
 
 
 To visualise step count data, the following syntax can be used:
-```{r, message=FALSE, warning=FALSE}
+```{r, message=FALSE, warning=FALSE, eval=FALSE}
 hypometrics::activityVisualise(DataFrame = raw_step,
                                DataType = "stepcount",
                                TimeBreak = "day",
-                               PageNumber = 14,
-                               StudyID = "002")
+                               PageNumber = 5,
+                               StudyID = "P02")
 ```
 
 \
 
 To visualise heart rate data, the following syntax can be used:
-```{r, message=FALSE, warning=FALSE}
+```{r, message=FALSE, warning=FALSE, eval = FALSE}
 hypometrics::activityVisualise(DataFrame = raw_hr,
                                DataType = "heartrate",
                                TimeBreak = "day",
-                               PageNumber = 14,
-                               StudyID = "002")
+                               PageNumber = 10,
+                               StudyID = "P01")
 ```
 
 \
 
-The number at the top of the figure indicates the day selected for visualisation. Please note the function will return an error if the picked PageNumber (i.e. here, day number) is out of the data range (e.g. PageNumber = 71 when there are only 70 days of data).
+The number at the top of the figure indicates the day selected for visualisation. Please note the function will return an error if the picked PageNumber (i.e. here, day number) is out of the data range (e.g. PageNumber = 15 when there are only 14 days of data).
 
 
 

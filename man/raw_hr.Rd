@@ -3,25 +3,81 @@
 \docType{data}
 \name{raw_hr}
 \alias{raw_hr}
-\title{Dataset containing raw heart rate data of 2 participants
-who used a Fitbit Charge 4}
+\title{Simulated Fitbit‑Style Heart Rate Data}
 \format{
-A data frame with one row per minute
+A tibble with three columns:
+\describe{
+  \item{id}{Character participant ID ("P01", "P02").}
+  \item{hr_timestamp}{POSIXct timestamp at 1‑minute resolution (UTC).}
+  \item{heart_rate}{Heart rate in beats per minute (integer).}
+}
 }
 \usage{
 raw_hr
 }
 \description{
-Dataset containing raw heart rate data of 2 participants
-who used a Fitbit Charge 4
+`raw_hr` contains *synthetic Fitbit‑style heart rate (HR) data* for two
+simulated participants (`P01` and `P02`). The dataset spans **two weeks**
+at **1‑minute resolution**, with **realistic physiological patterns**,
+**exercise sessions**, **sleep‑related HR depressions**, and
+**Fitbit‑like missingness** (periodic NA values).
 }
 \details{
-Dataset containing Fitbit Charge 4 heart rate
+This dataset is designed for demonstration and testing of HR‑related
+processing and visualisation tools within the `hypometrics` package.
 
-\describe{
-    \item{id}{Unique study ID}
-    \item{hr_timestamp}{Timestamp}
-    \item{count}{Step count}
+
+The dataset includes:
+
+\strong{Participants}
+\itemize{
+  \item \code{"P01"} — HR start: \code{"2026‑01‑01 07:17:00"} (UTC)
+  \item \code{"P02"} — HR start: \code{"2026‑01‑02 15:52:00"} (UTC)
 }
+
+\strong{Simulation features}
+\itemize{
+  \item 1‑minute HR sampling for 14 days per participant
+  \item Circadian rhythm (afternoon HR peak, overnight depression)
+  \item Sleep HR lowering (smaller noise, lower baseline)
+  \item Stochastic noise resembling optical HR sensors
+  \item Exercise bouts with HR rise → plateau → recovery
+  \item Fitbit‑style missingness:
+        1–2 minute random gaps, occasional long dropouts with NA heart rate
+  \item HR values are rounded to whole‑number bpm
+}
+
+\strong{Relation to CGM data}
+
+The HR timeline is aligned with the simulated CGM dataset [`raw_cgm`]:
+for each participant, HR starts exactly when CGM monitoring begins and
+continues for the same two‑week duration.
+
+\strong{Generation script}
+
+The data are reproducibly generated using:
+
+\preformatted{
+  data-raw/simulate_raw_hr.R
+}
+}
+\examples{
+data(raw_hr, package = "hypometrics")
+
+# Inspect structure
+dplyr::glimpse(raw_hr)
+
+# Check first few HR values for P01
+dplyr::filter(raw_hr, id == "P01") \%>\% head()
+
+# Distribution of HR
+hist(raw_hr$heart_rate, breaks = 40, main = "Simulated HR Distribution")
+
+# Missingness rate per participant
+raw_hr \%>\%
+  dplyr::group_by(id) \%>\%
+  dplyr::summarise(
+    pct_missing = mean(is.na(heart_rate)) * 100
+  )
 }
 \keyword{datasets}

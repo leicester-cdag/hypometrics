@@ -1,7 +1,8 @@
 template:
   bootstrap: 5
-
-url: https://hypometrics.github.io/
+params:
+logo: "logo.png"
+url: https://leicester-cdag.github.io/hypometrics/
 
 navbar:
   type: default

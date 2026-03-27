@@ -149,7 +149,8 @@ umotifClean <- function(DataFrame,
 
     #Clean timing of hypo
     checkin_time_clean <- DataFrame %>%
-      transform(localTimestamp = as.POSIXct(localTimestamp, format = "%Y-%m-%dT%H:%M:%OS", tz="UTC")) %>%
+      #transform(localTimestamp = as.POSIXct(localTimestamp, format = "%Y-%m-%dT%H:%M:%OS", tz="UTC")) %>%
+      dplyr::mutate(localTimestamp = lubridate::ymd_hms(localTimestamp)) %>%
       #Add :00 to hypo time reported where missing e.g. "03:" becomes "03:00" to have consistent HH:MM format
       dplyr::mutate(dplyr::across(dplyr::contains("Atwhattimedidthishappen"), ~ sub("^(\\d{2}):$", "\\1:00", .x)),
                     dplyr::across(dplyr::contains("Atwhattimedidthishappen"), ~ sub("^:(\\d{2})$", "00:\\1", .x)),

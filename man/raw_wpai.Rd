@@ -3,31 +3,74 @@
 \docType{data}
 \name{raw_wpai}
 \alias{raw_wpai}
-\title{Dataset containing raw WPAI questionnaire data of 2 participants
-who used the Hypo-METRICS app on the uMotif platform}
+\title{Simulated WPAI (Work Productivity and Activity Impairment) Dataset}
 \format{
-A data frame with one row per questionnaire submitted
+A tibble with the following variables:
+\describe{
+  \item{userid}{Character: participant ID (\code{"P01"} or \code{"P02"}).}
+  \item{stage}{Character: one of \code{"Registration"}, \code{"Day-7"}, \code{"Day-14"}.}
+  \item{localTimestamp}{Character ISO‑8601 timestamp with milliseconds and timezone.}
+  \item{areyoucurrentlyemployedworkingforpay}{Character (\code{"yes"}, \code{"no"}).}
+  \item{duringthepastsevendayshowmanyhoursdidyoumissfromworkbecauseofproblemsassociatedwithyourhypoglycaemia}{Numeric 0–3.}
+  \item{duringthepastsevendayshowmanyhoursdidyoumissfromworkbecauseofanyotherreasonsuchasvacationholidaystimeofftoparticipateinthisstudy}{Numeric 0–50.}
+  \item{duringthepastsevendayshowmanyhoursdidyouactuallywork}{Numeric 0–70.}
+  \item{duringthepastsevendayshowmuchdidhypoglycaemiaaffectyourproductivitywhileyouwereworking}{Numeric 1–3.}
+  \item{duringthepastsevendayshowmuchdidhypoglycaemiaaffectyourabilitytodoyourregulardailyactivitiesotherthanworkatajob}{Numeric 0–3.}
+}
 }
 \usage{
 raw_wpai
 }
 \description{
-Dataset containing raw WPAI questionnaire data of 2 participants
-who used the Hypo-METRICS app on the uMotif platform
+`raw_wpai` contains a fully simulated version of the
+**WPAI questionnaire**, completed by two synthetic participants
+(`P01` and `P02`) at three study stages:
+\code{"Registration"}, \code{"Day-7"}, and \code{"Day-14"}.
+It includes employment status, work hours missed, hours worked,
+and perceived hypoglycaemia-related impacts on productivity and
+daily activities.
 }
 \details{
-Dataset containing responses to weekly WPAI questionnaire
+The dataset is intended for demonstrating how WPAI survey data can be
+integrated with CGM, HR, step count, and PROMIS data within the
+`hypometrics` workflow.
 
-\describe{
-    \item{userid}{Unique uMotif ID}
-    \item{stage}{Study day when questionnaire was completed}
-    \item{localTimestamp}{Timestamp of the submission of the questionnaire}
-    \item{areyoucurrentlyemployedworkingforpay}{No/Yes}
-    \item{duringthepastsevendayshowmanyhoursdidyouactuallywork}{Number field}
-    \item{duringthepastsevendayshowmuchdidhypoglycaemiaaffectyourabilitytodoyourregulardailyactivitiesotherthanworkatajob}{Number field}
-    \item{duringthepastsevendayshowmuchdidhypoglycaemiaaffectyourproductivitywhileyouwereworking}{Number field}
-    \item{duringthepastsevendayshowmanyhoursdidyoumissfromworkbecauseofanyotherreasonsuchasvacationholidaystimeofftoparticipateinthisstudy}{Scale 0-10}
-    \item{duringthepastsevendayshowmanyhoursdidyoumissfromworkbecauseofproblemsassociatedwithyourhypoglycaemia}{Scale 0-10}
+
+
+\strong{Participants}
+
+\itemize{
+  \item \code{"P01"} — Registration timestamp: \code{"2026-01-01 07:17:00"} UTC
+  \item \code{"P02"} — Registration timestamp: \code{"2026-01-02 15:52:00"} UTC
 }
+
+Follow‑up stages occur exactly **7** and **14** days after Registration.
+
+\strong{Generation script}
+
+This synthetic dataset is produced using:
+
+\preformatted{
+data-raw/simulate_raw_wpai.R
+}
+}
+\examples{
+data(raw_wpai, package = "hypometrics")
+
+# Explore structure
+dplyr::glimpse(raw_wpai)
+
+# View all stages for P01
+raw_wpai \%>\% dplyr::filter(userid == "P01")
+
+# Summarise WPAI impacts
+raw_wpai \%>\%
+  dplyr::group_by(userid, stage) \%>\%
+  dplyr::summarise(
+    hrs_missed_hypo = mean(duringthepastsevendayshowmanyhoursdidyoumissfromworkbecauseofproblemsassociatedwithyourhypoglycaemia),
+    hrs_missed_other = mean(duringthepastsevendayshowmanyhoursdidyoumissfromworkbecauseofanyotherreasonsuchasvacationholidaystimeofftoparticipateinthisstudy),
+    hrs_worked = mean(duringthepastsevendayshowmanyhoursdidyouactuallywork),
+    .groups = "drop"
+  )
 }
 \keyword{datasets}

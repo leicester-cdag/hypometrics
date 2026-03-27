@@ -3,27 +3,56 @@
 \docType{data}
 \name{raw_motif_segment}
 \alias{raw_motif_segment}
-\title{Dataset containing raw umotif data of 2 participants
-who used the Hypo-METRICS app on the uMotif platform}
+\title{Simulated uMotif Segment Dataset}
 \format{
-A data frame with one row per motif segment per participant
+A tibble with the following variables:
+\describe{
+  \item{UserId}{Character ID for the participant (\code{"P01"}, \code{"P02"}).}
+  \item{uMotifTime}{Character timestamp in \code{"YYYY-MM-DD HH:MM:SS"} format.}
+  \item{SegmentId}{Integer segment code: \code{1–10} for P01, \code{11–20} for P02.}
+  \item{Value}{Integer value (1–5).}
+}
 }
 \usage{
 raw_motif_segment
 }
 \description{
-Dataset containing raw umotif data of 2 participants
-who used the Hypo-METRICS app on the uMotif platform
+`raw_motif_segment` contains a synthetic version of a uMotif-style
+“Segment” dataset for two simulated participants (`P01`, `P02`).
+Each participant contributes multiple uMotif timestamps, and for each
+timestamp, a set of Segment IDs and associated values is recorded.
 }
 \details{
-Dataset containing details on person-reported hypoglycaemic events
+\strong{Participants}
 
-\describe{
-    \item{UserId}{Unique uMotif ID}
-    \item{uMotifTime}{Timestamp of the submission of the hypo episode on the app}
-    \item{SegmentID}{Motif segment ID/code e.g. 1 for "Hypo time", 2 for "Glucose level"}
-    \item{Value}{Code for response to segment e.g. 1 for "Now" or "<2mmol/L",
-    2 for "15 min ago" or "2-2.9mmol/L"}
+* \code{"P01"} — uMotif timeline beginning at \code{"2026-01-01 07:17:00"} UTC
+  with exactly **3 uMotif timestamps** over a 14‑day period.
+
+* \code{"P02"} — uMotif timeline beginning at \code{"2026-01-02 15:52:00"} UTC
+  with exactly **5 uMotif timestamps** over a 14‑day period.
+
+
+\strong{Generation script}
+
+The dataset is produced using the reproducible script:
+
+\preformatted{
+data-raw/simulate_raw_motif_segment.R
 }
+}
+\examples{
+data(raw_motif_segment, package = "hypometrics")
+
+# Inspect structure
+dplyr::glimpse(raw_motif_segment)
+
+# Values for P01 at the hypoglycaemia-aligned timestamp
+raw_motif_segment \%>\%
+  dplyr::filter(UserId == "P01") \%>\%
+  dplyr::filter(SegmentId == 1)
+
+# Values for P02 at hypoglycaemia-aligned timestamps
+raw_motif_segment \%>\%
+  dplyr::filter(UserId == "P02", SegmentId == 11)
 }
 \keyword{datasets}

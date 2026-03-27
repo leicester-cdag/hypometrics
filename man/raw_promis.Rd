@@ -3,34 +3,161 @@
 \docType{data}
 \name{raw_promis}
 \alias{raw_promis}
-\title{Dataset containing raw promis questionnaire data of 2 participants
-who used the Hypo-METRICS app on the uMotif platform}
+\title{Simulated PROMIS Sleep Assessment Dataset}
 \format{
-A data frame with one row per questionnaire submitted
+A tibble with the following columns:
+\describe{
+  \item{userid}{Character string identifying the participant (\code{"P01"}, \code{"P02"}).}
+  \item{stage}{Character variable: one of \code{"Registration"}, \code{"Day-7"}, \code{"Day-14"}.}
+  \item{localTimestamp}{Character ISO‑8601 timestamp with milliseconds and UTC offset.}
+  \item{Sleep115}{Integer (1–5) PROMIS item response.}
+  \item{Sleep116}{Integer (1–5) PROMIS item response.}
+  \item{Sleep90}{Integer (1–5) PROMIS item response.}
+  \item{Sleep110}{Integer (1–5) PROMIS item response.}
+  \item{Sleep44}{Integer (1–5) PROMIS item response.}
+  \item{Sleep87}{Integer (1–5) PROMIS item response.}
+  \item{Sleep108}{Integer (1–5) PROMIS item response.}
+  \item{Sleep109}{Integer (1–5) PROMIS item response.}
+}
+
+A tibble with the following variables:
+\describe{
+  \item{userid}{Character ID for the participant (\code{"P01"}, \code{"P02"}).}
+  \item{stage}{Character: \code{"Registration"}, \code{"Day-7"}, \code{"Day-14"}.}
+  \item{localTimestamp}{Character ISO‑8601 timestamp with milliseconds and UTC offset.}
+  \item{Sleep115}{Integer 1–5: satisfaction with sleep.}
+  \item{Sleep116}{Integer 1–5: refreshing quality of sleep.}
+  \item{Sleep90}{Integer 1–5: trouble sleeping.}
+  \item{Sleep110}{Integer 1–5: perceived adequacy of sleep.}
+  \item{Sleep44}{Integer 1–5: difficulty falling asleep.}
+  \item{Sleep87}{Integer 1–5: trouble staying asleep.}
+  \item{Sleep108}{Integer 1–5: restless sleep.}
+  \item{Sleep109}{Integer 1–5: overall sleep quality.}
+}
 }
 \usage{
 raw_promis
+
+raw_promis
 }
 \description{
-Dataset containing raw promis questionnaire data of 2 participants
-who used the Hypo-METRICS app on the uMotif platform
+`raw_promis` contains simulated PROMIS Sleep-related questionnaire data
+collected from two synthetic participants (`P01`, `P02`) at three study
+stages: **Registration**, **Day‑7**, and **Day‑14**.
+The dataset is fully synthetic, designed for demonstration, examples, and testing
+of PROMIS‑related processing workflows in the `hypometrics` package.
+
+`raw_promis` contains **synthetic PROMIS Sleep questionnaire data** for two
+simulated participants across three study stages: \code{"Registration"},
+\code{"Day-7"}, and \code{"Day-14"}.
+The dataset includes eight PROMIS Sleep item responses (1–5 Likert scale)
+alongside participant identifiers and timestamped assessments.
 }
 \details{
-Dataset containing responses to promis questionnaire on Likert scale
-from 1 to 5.
+\strong{Participants}
+
+\itemize{
+  \item \code{"P01"} — first assessment at \code{"2026‑01‑01 07:17:00"} UTC
+  \item \code{"P02"} — first assessment at \code{"2026‑01‑02 15:52:00"} UTC
+}
+
+Follow-up timestamps occur exactly 7 days and 14 days after the Registration
+timestamp for each participant.
+
+
+\strong{PROMIS Items}
+
+The dataset includes 8 PROMIS Sleep items commonly used in PROMIS Sleep Disturbance
+and PROMIS Sleep-Related Impairment instruments.
+Each item is a Likert response with values from **1 to 5**:
+
+\itemize{
+  \item \code{Sleep115}
+  \item \code{Sleep116}
+  \item \code{Sleep90}
+  \item \code{Sleep110}
+  \item \code{Sleep44}
+  \item \code{Sleep87}
+  \item \code{Sleep108}
+  \item \code{Sleep109}
+}
+
+\strong{Generation script}
+
+This dataset is created using the reproducible script:
+
+\preformatted{
+  data-raw/simulate_raw_promis.R
+}
+
+This dataset is fully simulated and intended for demonstration, package
+examples, and testing workflows within `hypometrics`.
+
+
+
+\strong{Participants and timing}
+
+\itemize{
+  \item \code{"P01"} — Registration at \code{"2026-01-01 07:17:00"} UTC
+  \item \code{"P02"} — Registration at \code{"2026-01-02 15:52:00"} UTC
+}
+
+Follow‑up assessments occur exactly **7** and **14** days after registration.
+\strong{PROMIS Sleep Items (all 1–5 Likert responses)}
+
+Each variable corresponds to a validated PROMIS Sleep item:
 
 \describe{
-    \item{userid}{Unique uMotif ID}
-    \item{stage}{Study day when questionnaire was completed}
-    \item{localTimestamp}{Timestamp of the submission of the questionnaire}
-    \item{Sleep115}{I was satisfied with my sleep}
-    \item{Sleep116}{My sleep was refreshing}
-    \item{Sleep90}{I had trouble sleeping}
-    \item{Sleep110}{I got enough sleep}
-    \item{Sleep44}{I had difficulty falling asleep}
-    \item{Sleep87}{I had trouble staying asleep}
-    \item{Sleep108}{My sleep was restless}
-    \item{Sleep109}{My sleep quality was...}
+  \item{Sleep115}{\emph{"I was satisfied with my sleep"}.}
+  \item{Sleep116}{\emph{"My sleep was refreshing"}.}
+  \item{Sleep90}{\emph{"I had trouble sleeping"}.}
+  \item{Sleep110}{\emph{"I got enough sleep"}.}
+  \item{Sleep44}{\emph{"I had difficulty falling asleep"}.}
+  \item{Sleep87}{\emph{"I had trouble staying asleep"}.}
+  \item{Sleep108}{\emph{"My sleep was restless"}.}
+  \item{Sleep109}{\emph{"My sleep quality was …"}
+                  (standard PROMIS item stem).}
 }
+
+
+\strong{Generation script}
+
+This dataset is reproducibly generated by:
+
+\preformatted{
+data-raw/simulate_raw_promis.R
+}
+}
+\examples{
+data(raw_promis, package = "hypometrics")
+
+# View structure
+dplyr::glimpse(raw_promis)
+
+# Filter P01 data
+raw_promis \%>\% dplyr::filter(userid == "P01")
+
+# PROMIS summary
+raw_promis \%>\%
+  dplyr::group_by(userid, stage) \%>\%
+  dplyr::summarise(
+    across(dplyr::starts_with("Sleep"), mean),
+    .groups = "drop"
+  )
+data(raw_promis, package = "hypometrics")
+
+# Inspect structure
+dplyr::glimpse(raw_promis)
+
+# Filter for P01 only
+raw_promis \%>\% dplyr::filter(userid == "P01")
+
+# Summarise item means by stage
+raw_promis \%>\%
+  dplyr::group_by(userid, stage) \%>\%
+  dplyr::summarise(
+    across(dplyr::starts_with("Sleep"), mean),
+    .groups = "drop"
+  )
 }
 \keyword{datasets}

@@ -114,37 +114,37 @@ sleepRead <- function(Unzip = FALSE,
 sleepCategorise <- function(DataFrame){
 
   #### Check function inputs and data frame columns ####
-  chk::check_names(DataFrame, names = c("id", "logId", "dateOfSleep", "startTime", "endTime",
-                                        "levels.data", "levels.shortData"))
+  chk::check_names(DataFrame, names = c("id", "logId", "dateOfSleep", "startTime", "endTime"))
 
   chk::chk_character(DataFrame$id)
 
+  #Add in as an option
   #### Sleep stages ####
-    sleep_stages <- DataFrame %>%
-      tidyr::unnest(cols=c(levels.data)) %>%
-      dplyr::select(id, logId, dateOfSleep, dateTime, level, seconds) %>%
-      #Changing to right date or datetime formats
-      transform(dateOfSleep = as.Date(dateOfSleep),
-                dateTime = lubridate::ymd_hms(dateTime)) %>%
-      #Arranging in chronological order
-      dplyr::arrange(id, dateTime)
+    # sleep_stages <- DataFrame %>%
+    #   tidyr::unnest(cols=c(levels.data)) %>%
+    #   dplyr::select(id, logId, dateOfSleep, dateTime, level, seconds) %>%
+    #   #Changing to right date or datetime formats
+    #   transform(dateOfSleep = as.Date(dateOfSleep),
+    #             dateTime = lubridate::ymd_hms(dateTime)) %>%
+    #   #Arranging in chronological order
+    #   dplyr::arrange(id, dateTime)
 
   #### Short wake periods during the night ####
-    short_wake_periods <- DataFrame %>%
-      dplyr::mutate_if(is.list, purrr::simplify_all) %>%  # https://stackoverflow.com/questions/38860380/unnesting-a-list-of-lists-in-a-data-frame-column
-      tidyr::unnest(levels.shortData) %>%
-      dplyr::select(id, logId, dateOfSleep, dateTime, level, seconds) %>%
-    #Changing to right date or datetime formats
-    transform(dateOfSleep = as.Date(dateOfSleep),
-              dateTime = lubridate::ymd_hms(dateTime)) %>%
-    #Arranging in chronological order
-    dplyr::arrange(id, dateTime)
+    # short_wake_periods <- DataFrame %>%
+    #   dplyr::mutate_if(is.list, purrr::simplify_all) %>%  # https://stackoverflow.com/questions/38860380/unnesting-a-list-of-lists-in-a-data-frame-column
+    #   tidyr::unnest(levels.shortData) %>%
+    #   dplyr::select(id, logId, dateOfSleep, dateTime, level, seconds) %>%
+    # #Changing to right date or datetime formats
+    # transform(dateOfSleep = as.Date(dateOfSleep),
+    #           dateTime = lubridate::ymd_hms(dateTime)) %>%
+    # #Arranging in chronological order
+    # dplyr::arrange(id, dateTime)
 
   #### Sleep summary ####
     sleep_overview <- DataFrame %>%
       dplyr::group_by(id) %>%
       #Removing more granular data on sleep stages and short wake periods
-      dplyr::select(-levels.data, -levels.shortData) %>%
+      #dplyr::select(-levels.data, -levels.shortData) %>%
       #Arranging in chronological order
       dplyr::arrange(startTime) %>%
       #Changing to right date or datetime formats
@@ -173,10 +173,10 @@ sleepCategorise <- function(DataFrame){
       dplyr::ungroup()
 
   #### Return outputs ####
-return(list(sleep_stages = data.frame(sleep_stages),
-            short_wake_periods = data.frame(short_wake_periods),
-            sleep_overview = data.frame(sleep_overview)))
-
+# return(list(sleep_stages = data.frame(sleep_stages),
+#             short_wake_periods = data.frame(short_wake_periods),
+#             sleep_overview = data.frame(sleep_overview)))
+ return(sleep_overview)
 
 }
 
@@ -210,7 +210,7 @@ sleepSummarise <- function(DataFrame){
   sleep_overview <- DataFrame %>%
     dplyr::group_by(id) %>%
     #Removing more granular data on sleep stages and short wake periods
-    dplyr::select(-levels.data, -levels.shortData) %>%
+    #dplyr::select(-levels.data, -levels.shortData) %>%
     #Arranging in chronological order
     dplyr::arrange(startTime) %>%
     #Changing to right date or datetime formats
@@ -300,7 +300,7 @@ sleepVisualise <- function(DataFrame,
   sleep_overview <- DataFrame %>%
     dplyr::group_by(id) %>%
     #Removing more granular data on sleep stages and short wake periods
-    dplyr::select(-levels.data, -levels.shortData) %>%
+    #dplyr::select(-levels.data, -levels.shortData) %>%
     #Arranging in chronological order
     dplyr::arrange(startTime) %>%
     #Changing to right date or datetime formats

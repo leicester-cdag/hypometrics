@@ -32,7 +32,7 @@ To be able to use the uMotif functions, firstly install and load `hypometrics`.
 ```
 #Install
 install.packages("remotes")
-remotes::install_github("hypometrics")
+remotes::install_github("leicester-cdag/hypometrics")
 ```
 
 
@@ -41,9 +41,9 @@ remotes::install_github("hypometrics")
 library(hypometrics)
 ```
 
-### Example data
+### Simulated data
 
-Throughout this tutorial, the examples presented will be based on the  [`raw_motif_segment`](https://hypometrics.github.io/reference/raw_motif_segment.html), [`raw_checkin`](https:`//hypometrics.github.io/reference/raw_checkin.html), [`raw_promis`](https://hypometrics.github.io/reference/raw_promis.html), [`raw_eq5d5l`](https://hypometrics.github.io/reference/raw_eq5d5l.html) and [`raw_wpai](https://hypometrics.github.io/reference/raw_wpai.html) dataframes. They contain data from `r dplyr::n_distinct(raw_motif_segment$UserId)` participants who used the app.
+Throughout this tutorial, the examples presented will be based on the  [`raw_motif_segment`](https://leicester-cdag.github.io/hypometrics/reference/raw_motif_segment.html), [`raw_checkin`](https://leicester-cdag.github.io/hypometrics/reference/raw_checkin.html), [`raw_promis`](https://leicester-cdag.github.io/hypometrics/reference/raw_promis.html), [`raw_eq5d5l`](https://leicester-cdag.github.io/hypometrics/reference/raw_eq5d5l.html) and [`raw_wpai](https://leicester-cdag.github.io/hypometrics/reference/raw_wpai.html) datasets. 
 
 
 ## 2. Reading uMotif data 
@@ -69,8 +69,7 @@ If the `FileType` argument of the function is set to `"motif"`, the function wil
 
 ```{r, message=FALSE, warning=FALSE}
 umotifClean(DataFrame = raw_motif_segment,
-            FileType = "motif") |>
-  print(width=Inf)
+            FileType = "motif")
 ```
 
 ### Person-reported hypoglycaemic episodes recorded retrospectively
@@ -83,8 +82,7 @@ If the `FileType` argument of the function is set to `"checkin"`, the function w
 
 ```{r, message=FALSE, warning=FALSE}
 umotifClean(DataFrame = raw_checkin,
-            FileType = "checkin") |>
-  print(width=Inf)
+            FileType = "checkin") 
 ```
 
 ### Work Productivity and Activity Impairment (WPAI) data
@@ -97,8 +95,7 @@ If the `FileType` argument of the function is set to `"wpai"`, the function will
 
 ```{r, message=FALSE, warning=FALSE}
 umotifClean(DataFrame = raw_wpai,
-            FileType = "wpai") |>
-  print(width=Inf)
+            FileType = "wpai") 
 ```
 
 ### EuroQol-5 Dimensions-5 Levels (EQ-5D-5L) data
@@ -110,10 +107,8 @@ If the `FileType` argument of the function is set to `"eq5d5l"`, the function wi
 \
 
 ```{r, message=FALSE, warning=FALSE}
-utils::head(
-  umotifClean(DataFrame = raw_eq5d5l,
-            FileType = "eq5d5l"),
-  n=10)
+umotifClean(DataFrame = raw_eq5d5l,
+            FileType = "eq5d5l")
 ```
 
 ### Patient-Reported Outcomes Measurement Information System (PROMIS) data
@@ -126,8 +121,7 @@ If the `FileType` argument of the function is set to `"promis"`, the function wi
 
 ```{r, message=FALSE, warning=FALSE}
 umotifClean(DataFrame = raw_promis,
-            FileType = "promis") |>
-  print(width=Inf)
+            FileType = "promis")
 ```
 
 \
@@ -148,12 +142,10 @@ checkin <- umotifClean(DataFrame = hypometrics::raw_checkin,
 prhLink(MotifDataFrame = motif,
         CheckinDataFrame = checkin) %>%
   dplyr::select(1:4) %>%
-  dplyr::slice(11:20)
+  dplyr::slice(1:10)
 ```
 
-The resulting output is a dataset with one row per PRH event. When real-time and retrospective PRH were recorded within one hour of each other, these will appear on the same row as they are considered to be the same event. 
-
-For example, we can see that a PRH was recorded retrospectively using the check-ins at 03:20 on 07/12/20 and it was linked to a PRH recorded at 03:42 on the same day using the motif flower. The check-in PRH at 02:30 on 25/11/2020 was not linked to a motif PRH. The night_status column indicates whether the PRH occurred at night (between 00:00 and 06:00) or day. The output contains additional information such as hypoglycaemia symptoms reported, but for illustrative purposes here, only a limited number of columns are shown. 
+The resulting output is a dataset with one row per PRH event. When real-time and retrospective PRH were recorded within one hour of each other, these will appear on the same row as they are considered to be the same event. Here, there are no such instances. The night_status column indicates whether the PRH occurred at night (between 00:00 and 06:00) or day. The output contains additional information such as hypoglycaemia symptoms reported, but for illustrative purposes here, only a limited number of columns are shown. 
 
 If the user has sleep data available, it is possible to add this information to the dataset by running the function and changing the default parameters, as shown below. This will create an additional variable with sleep_status of the PRH as defined using a sleep tracker (here the Fitbit). 
 
@@ -186,7 +178,7 @@ prh_map <- prhLink(MotifDataFrame = motif,
 prhSummarise(prh_map)
 ```
 
-We can see that participant "002" had a total of 25 PRHs, 23 were symptomatic and 31 occurred during the day.
+We can see that participant "P02" had a total of 10 PRHs, 7 were symptomatic and 6 occurred during the day.
 
 
 ## 6. Visualising person-reported hypoglycaemia symptoms data
@@ -214,7 +206,7 @@ If the user needs to visualise data for a specific participant, this can be done
 prhVisualise(DataFrame = raw_motif_segment,
              GraphType = "upset",
              VisualiseAll = FALSE,
-             UserID = "001")
+             UserID = "P02")
 ```
 
 ### Frequency of symptoms by glucose concentration 
@@ -234,7 +226,7 @@ If the user needs to visualise data for a specific participant, this can be done
 prhVisualise(DataFrame = raw_motif_segment,
              GraphType = "heatmap",
              VisualiseAll = FALSE,
-             UserID = "001")
+             UserID = "P02")
 ```
 
 

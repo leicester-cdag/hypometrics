@@ -6,6 +6,11 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <title>Continuous Glucose Monitoring (CGM) Data • hypometrics</title>
+<!-- favicons --><link rel="icon" type="image/png" sizes="96x96" href="../favicon-96x96.png">
+<link rel="icon" type="”image/svg+xml”" href="../favicon.svg">
+<link rel="apple-touch-icon" sizes="180x180" href="../apple-touch-icon.png">
+<link rel="icon" sizes="any" href="../favicon.ico">
+<link rel="manifest" href="../site.webmanifest">
 <script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
 <script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
@@ -20,7 +25,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">hypometrics</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.9</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -45,6 +50,7 @@
 <li class="nav-item"><form class="form-inline" role="search">
  <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../search.json">
 </form></li>
+<li class="nav-item"><a class="external-link nav-link" href="https://github.com/Leicester-CDAG/hypometrics/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
       </ul>
 </div>
 
@@ -57,11 +63,10 @@
 
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
-
-      <h1>Continuous Glucose Monitoring (CGM) Data</h1>
+      <img src="../logo.png" class="logo" alt=""><h1>Continuous Glucose Monitoring (CGM) Data</h1>
             
       
-
+      <small class="dont-index">Source: <a href="https://github.com/Leicester-CDAG/hypometrics/blob/HEAD/vignettes/cgm_data.Rmd" class="external-link"><code>vignettes/cgm_data.Rmd</code></a></small>
       <div class="d-none name"><code>cgm_data.Rmd</code></div>
     </div>
 
@@ -84,38 +89,33 @@ as part of the <code>hypometrics</code> package.</p>
 <code>hypometrics</code>.</p>
 <pre><code><span><span class="co">#Install</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"remotes"</span><span class="op">)</span></span>
-<span><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"hypometrics"</span><span class="op">)</span></span></code></pre>
+<span><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"leicester-cdag/hypometrics"</span><span class="op">)</span></span></code></pre>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">#Load package</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">hypometrics</span><span class="op">)</span></span></code></pre></div>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/Leicester-CDAG/hypometrics" class="external-link">hypometrics</a></span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level3">
-<h3 id="example-data">Example data<a class="anchor" aria-label="anchor" href="#example-data"></a>
+<h3 id="simulated-data">Simulated data<a class="anchor" aria-label="anchor" href="#simulated-data"></a>
 </h3>
 <p>Throughout this tutorial, the examples presented will be based on the
-<a href="https://hypometrics.github.io/reference/raw_cgm.html"><code>raw_cgm</code></a>
-and <a href="https://hypometrics.github.io/reference/cgm.html"><code>cgm</code></a>
-dataframes.</p>
-<p>Both dataframes contain data from 2 participants who used a CGM
-device, with one row per CGM timestamp. The <code>cgm</code> dataframe
-is a cleaner and more granular version of the <code>raw_cgm</code> as it
-includes glucose data that already been interpolated, at the 1-min
-level. Further information on data interpolation is provided in the next
-section.</p>
+simulated [<code>raw_cgm</code>] and [<code>cgm</code>] datasets.</p>
+<p>These datasets include two synthetic participants, P01 and P02, with
+one row per CGM timestamp. The <code>cgm</code> dataframe is a cleaner
+version of the <code>raw_cgm</code> as it includes CGM data that has
+been interpolated. Further information on data interpolation is provided
+in the next section.</p>
 <ul>
-<li>A preview of the <code>cgm</code> dataframe is shown below:</li>
+<li>A preview of the <code>raw_cgm</code> dataframe is shown below:</li>
 </ul>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">utils</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">cgm</span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 6 × 3</span></span></span>
-<span><span class="co">#&gt;   id    cgm_timestamp       glucose</span></span>
-<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dttm&gt;</span>                <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> 001   2020-10-30 <span style="color: #949494;">14:12:00</span>    4.1 </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> 001   2020-10-30 <span style="color: #949494;">14:13:10</span>    3.3 </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> 001   2020-10-30 <span style="color: #949494;">14:14:10</span>    3.38</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> 001   2020-10-30 <span style="color: #949494;">14:15:10</span>    3.47</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span> 001   2020-10-30 <span style="color: #949494;">14:16:10</span>    3.55</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span> 001   2020-10-30 <span style="color: #949494;">14:17:10</span>    3.63</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu">utils</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">raw_cgm</span><span class="op">)</span></span>
+<span><span class="co">#&gt;    id       cgm_timestamp glucose</span></span>
+<span><span class="co">#&gt; 1 P01 2026-01-01 07:22:00    6.46</span></span>
+<span><span class="co">#&gt; 2 P01 2026-01-01 07:27:00    6.00</span></span>
+<span><span class="co">#&gt; 3 P01 2026-01-01 07:32:00    7.06</span></span>
+<span><span class="co">#&gt; 4 P01 2026-01-01 07:37:00    7.63</span></span>
+<span><span class="co">#&gt; 5 P01 2026-01-01 07:42:00    6.99</span></span>
+<span><span class="co">#&gt; 6 P01 2026-01-01 07:47:00    6.81</span></span></code></pre></div>
 </div>
 </div>
 <div class="section level2">
@@ -124,55 +124,51 @@ section.</p>
 <div class="section level3">
 <h3 id="from-implicit-to-explicit-gaps-in-cgm-data">From implicit to explicit gaps in CGM data<a class="anchor" aria-label="anchor" href="#from-implicit-to-explicit-gaps-in-cgm-data"></a>
 </h3>
-<p>The <a href="https://hypometrics.github.io/reference/raw_cgm.html"><code>raw_cgm</code></a>
-dataset has gaps in the CGM timestamps which are implicit. For example,
-as shown below, there is a gap between 17:00 and 17:20 but the missing
-CGM timestamps and glucose values are not explicitly included in the
-dataset. This means that gaps in the data are not particularly obvious
-to the user.</p>
+<p>The [<code>raw_cgm</code>] dataset has gaps in the CGM timestamps
+which are implicit. For example, as shown below, there is a gap between
+18:27 and 18:42 but the missing CGM timestamps and glucose values are
+not explicitly included in the dataset. This means that gaps in the data
+are not particularly obvious to the user.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">raw_cgm</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/slice.html" class="external-link">slice</a></span><span class="op">(</span><span class="fl">26</span><span class="op">:</span><span class="fl">36</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">raw_cgm</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/slice.html" class="external-link">slice</a></span><span class="op">(</span><span class="fl">120</span><span class="op">:</span><span class="fl">130</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 11 × 3</span></span></span>
 <span><span class="co">#&gt;    id    cgm_timestamp       glucose</span></span>
 <span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dttm&gt;</span>                <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> 001   2020-10-30 <span style="color: #949494;">16:23:00</span>     7.4</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> 001   2020-10-30 <span style="color: #949494;">16:28:00</span>     7.1</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> 001   2020-10-30 <span style="color: #949494;">16:34:00</span>     6.8</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> 001   2020-10-30 <span style="color: #949494;">16:48:00</span>     5.3</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> 001   2020-10-30 <span style="color: #949494;">16:54:00</span>     4.5</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> 001   2020-10-30 <span style="color: #949494;">17:00:00</span>     3.4</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> 001   2020-10-30 <span style="color: #949494;">17:20:00</span>     2.9</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> 001   2020-10-30 <span style="color: #949494;">17:25:00</span>     2.9</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> 001   2020-10-30 <span style="color: #949494;">17:34:00</span>     2.9</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> 001   2020-10-30 <span style="color: #949494;">17:42:00</span>     3.2</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">11</span> 001   2020-10-30 <span style="color: #949494;">17:47:00</span>     3.8</span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> P01   2026-01-01 <span style="color: #949494;">17:57:00</span>    5.11</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> P01   2026-01-01 <span style="color: #949494;">18:07:00</span>    4.98</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> P01   2026-01-01 <span style="color: #949494;">18:17:00</span>    4.1 </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> P01   2026-01-01 <span style="color: #949494;">18:22:00</span>    4.91</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> P01   2026-01-01 <span style="color: #949494;">18:27:00</span>    4.98</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> P01   2026-01-01 <span style="color: #949494;">18:42:00</span>    4.87</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> P01   2026-01-01 <span style="color: #949494;">18:47:00</span>    5.43</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> P01   2026-01-01 <span style="color: #949494;">18:52:00</span>    5.77</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> P01   2026-01-01 <span style="color: #949494;">18:57:00</span>    5.19</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> P01   2026-01-01 <span style="color: #949494;">19:07:00</span>    4.54</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">11</span> P01   2026-01-01 <span style="color: #949494;">19:17:00</span>    4.19</span></span></code></pre></div>
 <p><br></p>
 <p>The <code><a href="../reference/cgmInterpolate.html">cgmInterpolate()</a></code> function addresses this by turning
-these implicit gaps into explicit gaps. In that case, it will add 17:05,
-17:10 and 17:15 as timestamps with the corresponding glucose values
-marked as missing (i.e. NA), as shown below. The ‘Interpolate’ argument
-is set to FALSE as the aim here is solely to produce explicit gaps, not
-to interpolate glucose values. The ‘MinGap’ argument determines the
-minimum data gap considered and it is set to 600 seconds (or 10 min) so
-at least 1 CGM timestamp can be added. The desired granularity of data
-is 5 minutes so the ‘Granularity’ argument is set to 300 seconds.</p>
+these implicit gaps into explicit gaps. In that case, it will add 18:32
+and 18:37 as timestamps with the corresponding glucose values marked as
+missing (i.e. NA), as shown below. The ‘Interpolate’ argument is set to
+FALSE as the aim here is solely to produce explicit gaps, not to
+interpolate glucose values. The ‘MinGap’ argument determines the minimum
+data gap considered and it is set to 600 seconds (or 10 min) so at least
+1 CGM timestamp can be added. The desired granularity of data is 5
+minutes so the ‘Granularity’ argument is set to 300 seconds.</p>
 <p><br></p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">cgm_explicit_gaps</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/cgmInterpolate.html">cgmInterpolate</a></span><span class="op">(</span><span class="va">raw_cgm</span>, Interpolate <span class="op">=</span> <span class="cn">FALSE</span>, MinGap <span class="op">=</span> <span class="fl">600</span>, Granularity <span class="op">=</span> <span class="fl">300</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">cgm_explicit_gaps</span> <span class="op">&lt;-</span> <span class="fu">hypometrics</span><span class="fu">::</span><span class="fu"><a href="../reference/cgmInterpolate.html">cgmInterpolate</a></span><span class="op">(</span><span class="va">raw_cgm</span>, Interpolate <span class="op">=</span> <span class="cn">FALSE</span>, MinGap <span class="op">=</span> <span class="fl">600</span>, Granularity <span class="op">=</span> <span class="fl">300</span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">cgm_explicit_gaps</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/slice.html" class="external-link">slice</a></span><span class="op">(</span><span class="fl">31</span><span class="op">:</span><span class="fl">41</span><span class="op">)</span></span>
-<span><span class="co">#&gt;     id       cgm_timestamp glucose</span></span>
-<span><span class="co">#&gt; 1  001 2020-10-30 16:48:00     5.3</span></span>
-<span><span class="co">#&gt; 2  001 2020-10-30 16:54:00     4.5</span></span>
-<span><span class="co">#&gt; 3  001 2020-10-30 17:00:00     3.4</span></span>
-<span><span class="co">#&gt; 4  001 2020-10-30 17:05:00      NA</span></span>
-<span><span class="co">#&gt; 5  001 2020-10-30 17:10:00      NA</span></span>
-<span><span class="co">#&gt; 6  001 2020-10-30 17:15:00      NA</span></span>
-<span><span class="co">#&gt; 7  001 2020-10-30 17:20:00     2.9</span></span>
-<span><span class="co">#&gt; 8  001 2020-10-30 17:25:00     2.9</span></span>
-<span><span class="co">#&gt; 9  001 2020-10-30 17:34:00     2.9</span></span>
-<span><span class="co">#&gt; 10 001 2020-10-30 17:42:00     3.2</span></span>
-<span><span class="co">#&gt; 11 001 2020-10-30 17:47:00     3.8</span></span></code></pre></div>
+<span><span class="va">cgm_explicit_gaps</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/slice.html" class="external-link">slice</a></span><span class="op">(</span><span class="fl">133</span><span class="op">:</span><span class="fl">140</span><span class="op">)</span></span>
+<span><span class="co">#&gt;    id       cgm_timestamp glucose</span></span>
+<span><span class="co">#&gt; 1 P01 2026-01-01 18:22:00    4.91</span></span>
+<span><span class="co">#&gt; 2 P01 2026-01-01 18:27:00    4.98</span></span>
+<span><span class="co">#&gt; 3 P01 2026-01-01 18:32:00      NA</span></span>
+<span><span class="co">#&gt; 4 P01 2026-01-01 18:37:00      NA</span></span>
+<span><span class="co">#&gt; 5 P01 2026-01-01 18:42:00    4.87</span></span>
+<span><span class="co">#&gt; 6 P01 2026-01-01 18:47:00    5.43</span></span>
+<span><span class="co">#&gt; 7 P01 2026-01-01 18:52:00    5.77</span></span>
+<span><span class="co">#&gt; 8 P01 2026-01-01 18:57:00    5.19</span></span></code></pre></div>
 <p><br></p>
 </div>
 <div class="section level3">
@@ -189,26 +185,24 @@ for which glucose values should be interpolated. For example, if set at
 longer than 30 minutes will not be interpolated and left as NA. It is up
 to the user to determine what the ‘MaxGap’ should be depending on their
 analysis. Let’s see what the linear interpolation looks like below,
-still based on our 17:00 to 17:20 gap example from earlier.</p>
+still based on our 18:27 to 18:42 gap example from earlier.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">cgm_explicit_gaps_and_interpolation</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/cgmInterpolate.html">cgmInterpolate</a></span><span class="op">(</span><span class="va">raw_cgm</span>, Interpolate <span class="op">=</span> <span class="cn">TRUE</span>, MinGap <span class="op">=</span> <span class="fl">600</span>, Granularity <span class="op">=</span> <span class="fl">300</span>, MaxGap <span class="op">=</span> <span class="fl">1800</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">cgm_explicit_gaps_and_interpolation</span> <span class="op">&lt;-</span> </span>
+<span>  <span class="fu">hypometrics</span><span class="fu">::</span><span class="fu"><a href="../reference/cgmInterpolate.html">cgmInterpolate</a></span><span class="op">(</span><span class="va">raw_cgm</span>, Interpolate <span class="op">=</span> <span class="cn">TRUE</span>, MinGap <span class="op">=</span> <span class="fl">600</span>, Granularity <span class="op">=</span> <span class="fl">300</span>, MaxGap <span class="op">=</span> <span class="fl">1800</span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">cgm_explicit_gaps_and_interpolation</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/slice.html" class="external-link">slice</a></span><span class="op">(</span><span class="fl">31</span><span class="op">:</span><span class="fl">41</span><span class="op">)</span></span>
-<span><span class="co">#&gt;     id       cgm_timestamp glucose</span></span>
-<span><span class="co">#&gt; 1  001 2020-10-30 16:48:00    5.30</span></span>
-<span><span class="co">#&gt; 2  001 2020-10-30 16:54:00    4.50</span></span>
-<span><span class="co">#&gt; 3  001 2020-10-30 17:00:00    3.40</span></span>
-<span><span class="co">#&gt; 4  001 2020-10-30 17:05:00    3.28</span></span>
-<span><span class="co">#&gt; 5  001 2020-10-30 17:10:00    3.15</span></span>
-<span><span class="co">#&gt; 6  001 2020-10-30 17:15:00    3.02</span></span>
-<span><span class="co">#&gt; 7  001 2020-10-30 17:20:00    2.90</span></span>
-<span><span class="co">#&gt; 8  001 2020-10-30 17:25:00    2.90</span></span>
-<span><span class="co">#&gt; 9  001 2020-10-30 17:34:00    2.90</span></span>
-<span><span class="co">#&gt; 10 001 2020-10-30 17:42:00    3.20</span></span>
-<span><span class="co">#&gt; 11 001 2020-10-30 17:47:00    3.80</span></span></code></pre></div>
+<span><span class="va">cgm_explicit_gaps_and_interpolation</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/slice.html" class="external-link">slice</a></span><span class="op">(</span><span class="fl">133</span><span class="op">:</span><span class="fl">140</span><span class="op">)</span></span>
+<span><span class="co">#&gt;    id       cgm_timestamp glucose</span></span>
+<span><span class="co">#&gt; 1 P01 2026-01-01 18:22:00    4.91</span></span>
+<span><span class="co">#&gt; 2 P01 2026-01-01 18:27:00    4.98</span></span>
+<span><span class="co">#&gt; 3 P01 2026-01-01 18:32:00    4.94</span></span>
+<span><span class="co">#&gt; 4 P01 2026-01-01 18:37:00    4.91</span></span>
+<span><span class="co">#&gt; 5 P01 2026-01-01 18:42:00    4.87</span></span>
+<span><span class="co">#&gt; 6 P01 2026-01-01 18:47:00    5.43</span></span>
+<span><span class="co">#&gt; 7 P01 2026-01-01 18:52:00    5.77</span></span>
+<span><span class="co">#&gt; 8 P01 2026-01-01 18:57:00    5.19</span></span></code></pre></div>
 <p>We can see here that as the gap was less than 30 minutes, glucose
-values have been linearly interpolated. The added values are 3.28 mmol/L
-(at 17:05), 3.15 mmol/L (at 17:10) and 3.02 mmol/L (at 17:15).</p>
+values have been linearly interpolated. The added values are 4.91 mmol/L
+(at 18:37) and 4.87 mmol/L (at 18:42).</p>
 </div>
 </div>
 <div class="section level2">
@@ -223,21 +217,21 @@ missingness in glucose data.</p>
 <p>Firstly, you can explore the number of hours of CGM data available
 per day for all participants included by running:</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/cgmCheck.html">cgmCheck</a></span><span class="op">(</span><span class="va">cgm</span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 140 × 3</span></span></span>
+<code class="sourceCode R"><span><span class="fu">hypometrics</span><span class="fu">::</span><span class="fu"><a href="../reference/cgmCheck.html">cgmCheck</a></span><span class="op">(</span><span class="va">cgm</span><span class="op">)</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 30 × 3</span></span></span>
 <span><span class="co">#&gt;    id    Date       total_cgm_hours</span></span>
 <span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;date&gt;</span>               <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> 001   2020-10-30            8.12</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> 001   2020-10-31           24.0 </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> 001   2020-11-01           24.0 </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> 001   2020-11-02           24.0 </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> 001   2020-11-03           24.0 </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> 001   2020-11-04           24.0 </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> 001   2020-11-05           24.0 </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> 001   2020-11-06           23.2 </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> 001   2020-11-07           24.0 </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> 001   2020-11-08           24.0 </span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 130 more rows</span></span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> P01   2026-01-01            16.6</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> P01   2026-01-02            23.9</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> P01   2026-01-03            23.9</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> P01   2026-01-04            23.9</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> P01   2026-01-05            23.9</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> P01   2026-01-06            23.9</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> P01   2026-01-07            23.9</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> P01   2026-01-08            23.9</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> P01   2026-01-09            23.9</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> P01   2026-01-10            23.9</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 20 more rows</span></span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="individual-level">Individual level<a class="anchor" aria-label="anchor" href="#individual-level"></a>
@@ -247,13 +241,13 @@ data coverage in the previous step, further investigation can be
 conducted by looking at CGM data from individual participants. For
 example:</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">missingness_001</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/cgmCheck.html">cgmCheck</a></span><span class="op">(</span><span class="va">cgm</span>, CheckAll <span class="op">=</span> <span class="cn">FALSE</span>, StudyID <span class="op">=</span> <span class="st">"001"</span>, AxisLabels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">2.2</span>, <span class="fl">3.9</span>, <span class="fl">10</span>, <span class="fl">20</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">missingness_P01</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/cgmCheck.html">cgmCheck</a></span><span class="op">(</span><span class="va">cgm</span>, CheckAll <span class="op">=</span> <span class="cn">FALSE</span>, StudyID <span class="op">=</span> <span class="st">"P01"</span>, AxisLabels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">2.2</span>, <span class="fl">3.9</span>, <span class="fl">10</span>, <span class="fl">20</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p>This creates a list which contains a data set with daily breakdown of
-available hours of CGM data for participant ‘001’ and a graph
-highlighting periods of missingness as shown below.</p>
+available hours of CGM data for participant ‘P01’ and a graph
+highlighting periods of missingness can be produced using the code
+below.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">graphics</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">missingness_001</span><span class="op">$</span><span class="va">cgm_na_distribution_plot</span><span class="op">)</span></span></code></pre></div>
-<p><img src="cgm_data_files/figure-html/unnamed-chunk-9-1.png" alt="" width="700"></p>
+<code class="sourceCode R"><span><span class="fu">graphics</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">missingness_P01</span><span class="op">$</span><span class="va">cgm_na_distribution_plot</span><span class="op">)</span></span></code></pre></div>
 </div>
 </div>
 <div class="section level2">
@@ -272,15 +266,15 @@ be changed to mg/dL. The parameters for the interquartile range, time
 in/above/below range can also be adapted depending on user’s needs.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/cgmSummarise.html">cgmSummarise</a></span><span class="op">(</span>DataFrame <span class="op">=</span> <span class="va">cgm</span>, GlucoseUnit <span class="op">=</span> <span class="st">"mmol/L"</span><span class="op">)</span></span>
-<span><span class="co">#&gt;    id      start_date_cgm        end_date_cgm nweeks     ndays active_percent</span></span>
-<span><span class="co">#&gt; 1 001 2020-10-30 14:12:00 2021-01-07 23:59:53    9.9 69.4 days           95.6</span></span>
-<span><span class="co">#&gt; 2 002 2020-11-20 14:42:18 2021-01-28 23:56:00    9.9 69.4 days           98.6</span></span>
+<span><span class="co">#&gt;    id      start_date_cgm        end_date_cgm nweeks   ndays active_percent</span></span>
+<span><span class="co">#&gt; 1 P01 2026-01-01 07:22:00 2026-01-15 07:12:00      2 14 days            100</span></span>
+<span><span class="co">#&gt; 2 P02 2026-01-02 15:52:00 2026-01-16 15:47:00      2 14 days            100</span></span>
 <span><span class="co">#&gt;   mean_glu sd_glu median_glu Q1_glu Q3_glu cv_glu above_13.9 above_10</span></span>
-<span><span class="co">#&gt; 1      6.8    2.8        6.3    4.6    8.4   40.7        1.6     12.7</span></span>
-<span><span class="co">#&gt; 2     10.4    4.1        9.9    7.5   12.8   39.0       18.4     49.2</span></span>
+<span><span class="co">#&gt; 1      8.1    2.1        7.8    6.7    9.4   26.3        0.7     18.6</span></span>
+<span><span class="co">#&gt; 2      8.5    2.9        7.8    6.5    9.8   34.4        6.5     23.5</span></span>
 <span><span class="co">#&gt;   in_range_3.9_10 below_3.9 below_3</span></span>
-<span><span class="co">#&gt; 1            73.4      13.9     2.6</span></span>
-<span><span class="co">#&gt; 2            48.4       2.4     0.2</span></span></code></pre></div>
+<span><span class="co">#&gt; 1            80.6       0.7     0.3</span></span>
+<span><span class="co">#&gt; 2            73.6       2.9     0.5</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="hypoglycaemia-episode-detection">Hypoglycaemia episode detection<a class="anchor" aria-label="anchor" href="#hypoglycaemia-episode-detection"></a>
@@ -295,86 +289,50 @@ default hypoglycaemia detection limit is 3.9 mmol/L and duration 15
 minutes.</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">utils</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fu"><a href="../reference/sdhDetection.html">sdhDetection</a></span><span class="op">(</span>DataFrame <span class="op">=</span> <span class="va">cgm</span><span class="op">)</span>, n<span class="op">=</span><span class="fl">10</span><span class="op">)</span></span>
-<span><span class="co">#&gt;     id sdh_number                                     sdh_interval</span></span>
-<span><span class="co">#&gt; 1  001          1 2020-10-30 16:57:34 UTC--2020-10-30 17:47:43 UTC</span></span>
-<span><span class="co">#&gt; 2  001          2 2020-10-30 18:19:47 UTC--2020-10-30 18:53:52 UTC</span></span>
-<span><span class="co">#&gt; 3  001          3 2020-10-31 08:15:50 UTC--2020-10-31 10:12:06 UTC</span></span>
-<span><span class="co">#&gt; 4  001          4 2020-10-31 12:08:22 UTC--2020-10-31 14:01:36 UTC</span></span>
-<span><span class="co">#&gt; 5  001          5 2020-10-31 16:14:57 UTC--2020-10-31 17:27:02 UTC</span></span>
-<span><span class="co">#&gt; 6  001          6 2020-11-01 01:18:09 UTC--2020-11-01 09:48:33 UTC</span></span>
-<span><span class="co">#&gt; 7  001          7 2020-11-01 11:20:48 UTC--2020-11-01 12:13:55 UTC</span></span>
-<span><span class="co">#&gt; 8  001          8 2020-11-01 14:45:15 UTC--2020-11-01 15:38:22 UTC</span></span>
-<span><span class="co">#&gt; 9  001          9 2020-11-02 00:06:33 UTC--2020-11-02 00:26:35 UTC</span></span>
-<span><span class="co">#&gt; 10 001         10 2020-11-02 14:53:48 UTC--2020-11-02 15:42:55 UTC</span></span>
-<span><span class="co">#&gt;    sdh_duration_mins sdh_nadir sdh_night_status</span></span>
-<span><span class="co">#&gt; 1               50.1       2.9              Day</span></span>
-<span><span class="co">#&gt; 2               34.1       3.0              Day</span></span>
-<span><span class="co">#&gt; 3              116.3       2.8              Day</span></span>
-<span><span class="co">#&gt; 4              113.2       2.9              Day</span></span>
-<span><span class="co">#&gt; 5               72.1       2.4              Day</span></span>
-<span><span class="co">#&gt; 6              510.4       2.8          Overlap</span></span>
-<span><span class="co">#&gt; 7               53.1       2.8              Day</span></span>
-<span><span class="co">#&gt; 8               53.1       3.4              Day</span></span>
-<span><span class="co">#&gt; 9               20.0       3.2            Night</span></span>
-<span><span class="co">#&gt; 10              49.1       2.9              Day</span></span></code></pre></div>
+<span><span class="co">#&gt;    id sdh_number                                     sdh_interval</span></span>
+<span><span class="co">#&gt; 1 P02          1 2026-01-11 17:57:00 UTC--2026-01-11 18:42:00 UTC</span></span>
+<span><span class="co">#&gt; 2 P02          2 2026-01-13 16:57:00 UTC--2026-01-13 18:47:00 UTC</span></span>
+<span><span class="co">#&gt; 3 P02          3 2026-01-13 19:17:00 UTC--2026-01-13 20:27:00 UTC</span></span>
+<span><span class="co">#&gt; 4 P02          4 2026-01-14 17:57:00 UTC--2026-01-14 18:22:00 UTC</span></span>
+<span><span class="co">#&gt; 5 P02          5 2026-01-14 18:42:00 UTC--2026-01-14 18:57:00 UTC</span></span>
+<span><span class="co">#&gt; 6 P02          6 2026-01-14 19:17:00 UTC--2026-01-14 19:52:00 UTC</span></span>
+<span><span class="co">#&gt; 7 P02          7 2026-01-15 19:12:00 UTC--2026-01-15 19:52:00 UTC</span></span>
+<span><span class="co">#&gt;   sdh_duration_mins sdh_nadir sdh_night_status</span></span>
+<span><span class="co">#&gt; 1                45       3.4              Day</span></span>
+<span><span class="co">#&gt; 2               110       3.0              Day</span></span>
+<span><span class="co">#&gt; 3                70       2.9              Day</span></span>
+<span><span class="co">#&gt; 4                25       2.9              Day</span></span>
+<span><span class="co">#&gt; 5                15       2.5              Day</span></span>
+<span><span class="co">#&gt; 6                35       3.1              Day</span></span>
+<span><span class="co">#&gt; 7                40       3.3              Day</span></span></code></pre></div>
+<p>We can see in the table above that P02 experienced 7 episodes of
+hypoglycaemia below 3.9 mmol/L of a minimum duration of 15 minutes. P01
+did not experience any hypoglycaemia episodes with those
+characteristics.</p>
 <p>The default parameters can be changed to explore a different glucose
 threshold, and minimum duration. For example:</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">utils</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fu"><a href="../reference/sdhDetection.html">sdhDetection</a></span><span class="op">(</span>DataFrame <span class="op">=</span> <span class="va">cgm</span>, DetectionLimit <span class="op">=</span> <span class="fl">3</span>, DetectionDuration <span class="op">=</span> <span class="fl">30</span><span class="op">)</span>, n<span class="op">=</span><span class="fl">10</span><span class="op">)</span></span>
-<span><span class="co">#&gt;     id sdh_number                                     sdh_interval</span></span>
-<span><span class="co">#&gt; 1  001          1 2020-10-31 08:58:54 UTC--2020-10-31 09:53:04 UTC</span></span>
-<span><span class="co">#&gt; 2  001          2 2020-10-31 16:20:56 UTC--2020-10-31 17:02:01 UTC</span></span>
-<span><span class="co">#&gt; 3  001          3 2020-11-01 02:36:24 UTC--2020-11-01 05:27:53 UTC</span></span>
-<span><span class="co">#&gt; 4  001          4 2020-11-01 11:34:00 UTC--2020-11-01 12:04:56 UTC</span></span>
-<span><span class="co">#&gt; 5  001          5 2020-11-06 00:09:16 UTC--2020-11-06 00:52:22 UTC</span></span>
-<span><span class="co">#&gt; 6  001          6 2020-11-06 07:08:27 UTC--2020-11-06 08:12:36 UTC</span></span>
-<span><span class="co">#&gt; 7  001          7 2020-11-06 18:55:03 UTC--2020-11-06 19:39:08 UTC</span></span>
-<span><span class="co">#&gt; 8  001          8 2020-11-08 08:22:46 UTC--2020-11-08 09:19:54 UTC</span></span>
-<span><span class="co">#&gt; 9  001          9 2020-11-08 19:39:12 UTC--2020-11-08 20:25:19 UTC</span></span>
-<span><span class="co">#&gt; 10 001         10 2020-11-10 01:58:29 UTC--2020-11-10 02:53:37 UTC</span></span>
-<span><span class="co">#&gt;    sdh_duration_mins sdh_nadir sdh_night_status</span></span>
-<span><span class="co">#&gt; 1               54.2       2.9              Day</span></span>
-<span><span class="co">#&gt; 2               41.1       2.4              Day</span></span>
-<span><span class="co">#&gt; 3              171.5       2.8            Night</span></span>
-<span><span class="co">#&gt; 4               30.9       2.8              Day</span></span>
-<span><span class="co">#&gt; 5               43.1       2.9            Night</span></span>
-<span><span class="co">#&gt; 6               64.2       2.9              Day</span></span>
-<span><span class="co">#&gt; 7               44.1       2.9              Day</span></span>
-<span><span class="co">#&gt; 8               57.1       2.9              Day</span></span>
-<span><span class="co">#&gt; 9               46.1       2.9              Day</span></span>
-<span><span class="co">#&gt; 10              55.1       2.9            Night</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu">utils</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fu"><a href="../reference/sdhDetection.html">sdhDetection</a></span><span class="op">(</span>DataFrame <span class="op">=</span> <span class="va">cgm</span>, DetectionLimit <span class="op">=</span> <span class="fl">3</span>, DetectionDuration <span class="op">=</span> <span class="fl">10</span><span class="op">)</span>, n<span class="op">=</span><span class="fl">10</span><span class="op">)</span></span>
+<span><span class="co">#&gt;    id sdh_number                                     sdh_interval</span></span>
+<span><span class="co">#&gt; 1 P01          1 2026-01-06 05:17:00 UTC--2026-01-06 05:27:00 UTC</span></span>
+<span><span class="co">#&gt; 2 P02          1 2026-01-14 18:42:00 UTC--2026-01-14 18:57:00 UTC</span></span>
+<span><span class="co">#&gt;   sdh_duration_mins sdh_nadir sdh_night_status</span></span>
+<span><span class="co">#&gt; 1                10       2.9            Night</span></span>
+<span><span class="co">#&gt; 2                15       2.5              Day</span></span></code></pre></div>
+<p>After changing the default parameters, we see that P01 experienced
+one episode of hypoglycaemia below 3 mmol/L for a duration of 10
+minutes.</p>
 <p>If sleep data is available, the user can also sleep information to
 the output by changing the default AddSleepStatus parameter to “yes”.
 For this to run, the CGM dataset used must include a sleep_status column
 (this can be obtained using the <code><a href="../reference/cgmsleepLink.html">cgmsleepLink()</a></code> function).
 For example:</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">linked_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/cgmsleepLink.html">cgmsleepLink</a></span><span class="op">(</span>CgmDataFrame <span class="op">=</span> <span class="fu">hypometrics</span><span class="fu">::</span><span class="va"><a href="../reference/cgm.html">cgm</a></span>,</span>
+<code class="sourceCode R"><span><span class="va">linked_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/cgmsleepLink.html">cgmsleepLink</a></span><span class="op">(</span>CgmDataFrame <span class="op">=</span> <span class="va">cgm</span>,</span>
 <span>                            SleepDataFrame <span class="op">=</span> <span class="fu">hypometrics</span><span class="fu">::</span><span class="va"><a href="../reference/raw_sleep.html">raw_sleep</a></span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">utils</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fu"><a href="../reference/sdhDetection.html">sdhDetection</a></span><span class="op">(</span>DataFrame <span class="op">=</span> <span class="va">linked_data</span><span class="op">)</span>, n<span class="op">=</span><span class="fl">10</span><span class="op">)</span></span>
-<span><span class="co">#&gt;     id sdh_number                                     sdh_interval</span></span>
-<span><span class="co">#&gt; 1  001          1 2020-10-30 16:57:34 UTC--2020-10-30 17:47:43 UTC</span></span>
-<span><span class="co">#&gt; 2  001          2 2020-10-30 18:19:47 UTC--2020-10-30 18:53:52 UTC</span></span>
-<span><span class="co">#&gt; 3  001          3 2020-10-31 08:15:50 UTC--2020-10-31 10:12:06 UTC</span></span>
-<span><span class="co">#&gt; 4  001          4 2020-10-31 12:08:22 UTC--2020-10-31 14:01:36 UTC</span></span>
-<span><span class="co">#&gt; 5  001          5 2020-10-31 16:14:57 UTC--2020-10-31 17:27:02 UTC</span></span>
-<span><span class="co">#&gt; 6  001          6 2020-11-01 01:18:09 UTC--2020-11-01 09:48:33 UTC</span></span>
-<span><span class="co">#&gt; 7  001          7 2020-11-01 11:20:48 UTC--2020-11-01 12:13:55 UTC</span></span>
-<span><span class="co">#&gt; 8  001          8 2020-11-01 14:45:15 UTC--2020-11-01 15:38:22 UTC</span></span>
-<span><span class="co">#&gt; 9  001          9 2020-11-02 00:06:33 UTC--2020-11-02 00:26:35 UTC</span></span>
-<span><span class="co">#&gt; 10 001         10 2020-11-02 14:53:48 UTC--2020-11-02 15:42:55 UTC</span></span>
-<span><span class="co">#&gt;    sdh_duration_mins sdh_nadir sdh_night_status</span></span>
-<span><span class="co">#&gt; 1               50.1       2.9              Day</span></span>
-<span><span class="co">#&gt; 2               34.1       3.0              Day</span></span>
-<span><span class="co">#&gt; 3              116.3       2.8              Day</span></span>
-<span><span class="co">#&gt; 4              113.2       2.9              Day</span></span>
-<span><span class="co">#&gt; 5               72.1       2.4              Day</span></span>
-<span><span class="co">#&gt; 6              510.4       2.8          Overlap</span></span>
-<span><span class="co">#&gt; 7               53.1       2.8              Day</span></span>
-<span><span class="co">#&gt; 8               53.1       3.4              Day</span></span>
-<span><span class="co">#&gt; 9               20.0       3.2            Night</span></span>
-<span><span class="co">#&gt; 10              49.1       2.9              Day</span></span></code></pre></div>
+<span><span class="fu">utils</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fu"><a href="../reference/sdhDetection.html">sdhDetection</a></span><span class="op">(</span>DataFrame <span class="op">=</span> <span class="va">linked_data</span>,</span>
+<span>                         AddSleepStatus <span class="op">=</span> <span class="st">"yes"</span><span class="op">)</span>, n<span class="op">=</span><span class="fl">10</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="sensor-detected-hypoglycaemia-data-summary">Sensor-detected hypoglycaemia data summary<a class="anchor" aria-label="anchor" href="#sensor-detected-hypoglycaemia-data-summary"></a>
@@ -398,14 +356,11 @@ Let’s see a summary of SDH data, for a glucose threshold of 3.9 mmol/L
 <span><span class="co">## Summarising SDH data</span></span>
 <span><span class="fu"><a href="../reference/sdhSummarise.html">sdhSummarise</a></span><span class="op">(</span>DataFrame <span class="op">=</span> <span class="va">sdh_map</span><span class="op">)</span></span>
 <span><span class="co">#&gt;    id n_sdh3.9 n_sdh3.9_day n_sdh3.9_night n_sdh3.9_overlap_daynight</span></span>
-<span><span class="co">#&gt; 1 001      146          115             16                        15</span></span>
-<span><span class="co">#&gt; 2 002       40           21             11                         8</span></span>
+<span><span class="co">#&gt; 1 P02        7            7              0                         0</span></span>
 <span><span class="co">#&gt;   mean_duration_sdh3.9 mean_duration_sdh3.9_day mean_duration_sdh3.9_night</span></span>
-<span><span class="co">#&gt; 1                 88.3                     78.7                       51.8</span></span>
-<span><span class="co">#&gt; 2                 56.2                     44.4                       39.8</span></span>
+<span><span class="co">#&gt; 1                 48.6                     48.6                        NaN</span></span>
 <span><span class="co">#&gt;   mean_duration_sdh3.9_overlap_daynight n_longsdh3.9 n_day_with_longsdh3.9</span></span>
-<span><span class="co">#&gt; 1                                 200.9           35                    25</span></span>
-<span><span class="co">#&gt; 2                                 110.0            3                     3</span></span></code></pre></div>
+<span><span class="co">#&gt; 1                                   NaN            0                     0</span></span></code></pre></div>
 <p>If sleep data is available, the parameter
 <code>AddSleepSummary</code> can be turned to “yes” and the number of SD
 when asleep, awake or when sleep information was missing for each SDH
@@ -425,8 +380,8 @@ allows you to do this at three different levels of granularity.</p>
 glucose data for the entire study period for a selected participant, as
 shown below:</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/cgmVisualise.html">cgmVisualise</a></span><span class="op">(</span><span class="va">cgm</span>, StudyID <span class="op">=</span> <span class="st">"001"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="cgm_data_files/figure-html/unnamed-chunk-15-1.png" alt="" width="700"></p>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/cgmVisualise.html">cgmVisualise</a></span><span class="op">(</span><span class="va">cgm</span>, StudyID <span class="op">=</span> <span class="st">"P02"</span><span class="op">)</span></span></code></pre></div>
+<p><img src="cgm_data_files/figure-html/unnamed-chunk-15-1.png" class="r-plt" width="700"></p>
 <p>The figure shows the glucose trace in blue, the 3.9-10mmol/L range is
 delimited by green lines. The grey area highlights the period from 00:00
 to 06:00 for reference, as it is typically used when examining nocturnal
@@ -445,12 +400,12 @@ specifying a breakdown by week in the <code>TimeBreak</code> argument of
 the function and which week is of interest using the
 <code>PageNumber</code> argument, as shown below:</p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/cgmVisualise.html">cgmVisualise</a></span><span class="op">(</span><span class="va">cgm</span>, StudyID <span class="op">=</span> <span class="st">"001"</span>, TimeBreak <span class="op">=</span> <span class="st">"week"</span>, PageNumber <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span></code></pre></div>
-<p><img src="cgm_data_files/figure-html/unnamed-chunk-16-1.png" alt="" width="700"><br></p>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/cgmVisualise.html">cgmVisualise</a></span><span class="op">(</span><span class="va">cgm</span>, StudyID <span class="op">=</span> <span class="st">"P01"</span>, TimeBreak <span class="op">=</span> <span class="st">"week"</span>, PageNumber <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></code></pre></div>
+<p><img src="cgm_data_files/figure-html/unnamed-chunk-16-1.png" class="r-plt" width="700"><br></p>
 <p>The number at the top of the figure indicates the week selected for
 visualisation. Please note the function will return an error if the
 picked PageNumber (i.e. here, week number) is out of the data range
-(e.g. PageNumber = 11 when there are only 10 weeks of data).</p>
+(e.g. PageNumber = 5 when there are only 4 weeks of data).</p>
 </div>
 <div class="section level3">
 <h3 id="day-by-day">Day by day<a class="anchor" aria-label="anchor" href="#day-by-day"></a>
@@ -458,12 +413,12 @@ picked PageNumber (i.e. here, week number) is out of the data range
 <p>Lastly, for further granularity, there is an option to visualise this
 data for specific days using the same logic as for the weekly data.</p>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/cgmVisualise.html">cgmVisualise</a></span><span class="op">(</span><span class="va">cgm</span>, StudyID <span class="op">=</span> <span class="st">"001"</span>, TimeBreak <span class="op">=</span> <span class="st">"day"</span>, PageNumber <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></code></pre></div>
-<p><img src="cgm_data_files/figure-html/unnamed-chunk-17-1.png" alt="" width="700"><br></p>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/cgmVisualise.html">cgmVisualise</a></span><span class="op">(</span><span class="va">cgm</span>, StudyID <span class="op">=</span> <span class="st">"P02"</span>, TimeBreak <span class="op">=</span> <span class="st">"day"</span>, PageNumber <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span></code></pre></div>
+<p><img src="cgm_data_files/figure-html/unnamed-chunk-17-1.png" class="r-plt" width="700"><br></p>
 <p>The number at the top of the figure indicates the day selected for
 visualisation. Please note the function will return an error if the
 picked PageNumber (i.e. here, day number) is out of the data range
-(e.g. PageNumber = 71 when there are only 70 days of data).</p>
+(e.g. PageNumber = 15 when there are only 14 days of data).</p>
 </div>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
@@ -473,11 +428,11 @@ picked PageNumber (i.e. here, day number) is out of the data range
 
 
     <footer><div class="pkgdown-footer-left">
-  <p>Developed by Gilberte Martine-Edith, Jonah Thomas.</p>
+  <p>Developed by Gilberte Martine-Edith.</p>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
 </div>
 
     </footer>
