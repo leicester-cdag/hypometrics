@@ -1,0 +1,54 @@
+# Unzip, Read and Combine Raw Activity Files Dowloaded From User's Fitbit account
+
+This function enables the unzipping, reading and combining of raw
+activity files following download from user's Fitbit account.
+
+## Usage
+
+``` r
+activityRead(Unzip = FALSE, FolderPath, FileType, FilePattern, StudyID)
+```
+
+## Arguments
+
+- Unzip:
+
+  Logical string (TRUE/FALSE) which determines whether fitbit folder
+  needs to be unzipped or not
+
+- FolderPath:
+
+  Character object indicating path to folder where Fitbit data is stored
+
+- FileType:
+
+  Character object indicating what type of file is to be read. Can be
+  either "json" or "csv".
+
+- FilePattern:
+
+  Character object indicating the pattern in the file name that will be
+  used to extract the activity files of interest. For example, "^heart"
+  for heart rate files, "steps" for step count files, "sedentary" for
+  sedentary minutes files.
+
+- StudyID:
+
+  ID of participant for whom activity data will be read.
+
+## Value
+
+A dataset containing original Fitbit activity (e.g. steps, heart rate)
+data with an additional column with participant's ID.
+
+## Examples
+
+``` r
+if (FALSE) { # \dontrun{
+hypometrics::activityRead(Unzip = TRUE,
+                          FolderPath = "~/Documents",
+                          FileType = "json",
+                          FilePattern = "steps",
+                          StudyID = "001")
+} # }
+```

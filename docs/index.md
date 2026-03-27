@@ -1,0 +1,77 @@
+# hypometrics
+
+## What is the *hypometrics* package?
+
+The `hypometrics` package aims to bring together analysis of continuous
+glucose monitor (CGM) data, physical activity and sleep data from
+wearable devices (e.g. Fitbit) and person-reported hypoglycaemia data
+from smartphone applications (e.g. The Hypo-METRICS app). The package
+offers the ability to clean, link, visualise and analyse data from those
+devices and provide key metrics from each.
+
+## Why the *hypometrics* package?
+
+The building blocks of what is now the `hypometrics` package were
+developed in an effort to support and facilitate the analysis of data
+from the Hypo-METRICS (Hypoglycaemia - MEasurement, ThResholds and
+ImpaCtS) study. Hypo-METRICS was a multinational, multicentre,
+observational study conducted between 2020 and 2022 as part of the
+[Hypo-RESOLVE project](https://hypo-resolve.eu) to investigate
+hypoglycaemia and its impact in diabetes. Over 600 participants with
+type 1 or insulin-treated type 2 diabetes were recruited across 9 UK and
+EU sites. For 10 weeks, participants wore a CGM and Fitbit and recorded
+episodes of hypoglycaemia using the Hypo-METRICS smartphone app. You can
+find more information in the protocols for the [Hypo-METRICS
+study](https://onlinelibrary.wiley.com/doi/10.1111/dme.14892) and
+[Hypo-METRICS
+app](https://bmjopen.bmj.com/content/12/2/e051651%22target=%22_blank).
+
+## What data can I analyse using the *hypometrics* package?
+
+The `hypometrics` package offers tools to clean, check, analyse and
+visualise the following types of data:
+
+**1. Continuous Glucose Monitoring Data**: more detail can be found
+[here](https://leicester-cdag.github.io/hypometrics/articles/cgm_data.html/).
+
+**2. Physical Activity Data**: more detail can be found
+[here](https://leicester-cdag.github.io/hypometrics/articles/activity_data.html/).
+
+**3. Sleep Data**: more detail can be found
+[here](https://leicester-cdag.github.io/hypometrics/articles/sleep_data.html/).
+
+**4. Person-Reported Hypoglycaemia Data**: more detail can be found
+[here](https://leicester-cdag.github.io/hypometrics/articles/umotif_data.html/).
+
+Importantly, the package also allows the **linkage and integration** of
+the above described data, as shown
+[here](https://leicester-cdag.github.io/hypometrics/articles/linking_data.html/).
+
+## Installation
+
+The package is available on `GitHub` and can be installed and downloaded
+by running:
+
+    install.packages("remotes")
+    remotes::install_github("leicester-cdag/hypometrics")
+
+Load the package every time you start R:
+
+    library(hypometrics)
+
+## Documentation
+
+The package documentation can be found
+[**here**](https://leicester-cdag.github.io/hypometrics/index.html/).
+
+## Contributing
+
+We are happy to receive bug reports, suggestions and questions to fix
+problems and add features.
+
+Here are some simple ways in which you can contribute (in the increasing
+order of commitment):
+
+- Read and correct any inconsistencies in the documentation
+- Raise issues about bugs or wanted features
+- Review code

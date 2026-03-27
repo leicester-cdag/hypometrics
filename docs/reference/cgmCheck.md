@@ -1,0 +1,60 @@
+# Checking Daily Patterns of Missingness in CGM data
+
+Calculates the daily number of CGM hours available for analysis and
+creates a graph highlighting missing glucose data, leveraging
+[ggplot_na_distribution](https://SteffenMoritz.github.io/imputeTS/reference/ggplot_na_distribution.html)
+function from imputeTS package.
+
+## Usage
+
+``` r
+cgmCheck(DataFrame, CheckAll = TRUE, StudyID = "", AxisLabels = NA_real_)
+```
+
+## Arguments
+
+- DataFrame:
+
+  A dataframe containing CGM data in which missingness will be assessed.
+  Must have columns id, cgm_timestamp, glucose.
+
+- CheckAll:
+
+  Logical string (TRUE/FALSE) which determines whether missingness will
+  be checked for all participants (in which case an individual graph
+  will not be produced) or a selected participant (in which case an
+  individual missingness graph will be produced). Default is TRUE.
+
+- StudyID:
+
+  ID of participant for whom CGM data will be checked for missingness.
+  This is only relevant if CheckAll = FALSE, and will produce 3
+  individualised graphs.
+
+- AxisLabels:
+
+  Vector of numeric values determining the labels for the breaks on the
+  y axis (i.e. glucose) of the missingness distribution graph. Only
+  relevant when CheckAll = FALSE.
+
+## Value
+
+If CheckAll = TRUE returns a data frame with 3 columns: id, date and
+number of CGM hours available. If CheckAll = FALSE, returns a list
+containing: data frame with id, date and number of CGM hours available
+and a glucose trace with missingness in data highlighted in orange.
+
+## Examples
+
+``` r
+if (FALSE) { # \dontrun{
+# Checking daily missingness in CGM data for all participants
+hypometrics::cgmCheck(DataFrame)
+
+#Checking daily missingness in CGM data for a specific participant
+hypometrics::cgmCheck(DataFrame,
+                      CheckAll = FALSE,
+                      StudyID = "001",
+                      AxisLabels = c(0, 2.2, 3.9, 10, 20))
+} # }
+```
