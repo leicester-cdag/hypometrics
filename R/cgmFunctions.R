@@ -781,8 +781,9 @@ sdhDetection <- function(DataFrame,
         dplyr::mutate(sdh_number = data.table::rleid(sdh_seq)) %>%
         dplyr::select(id, sdh_number, sdh_interval, sdh_duration_mins, sdh_nadir, sdh_night_status, sdh_sleep_status) %>%
         dplyr::ungroup() %>%
-        dplyr::mutate_if(is.numeric, round, digits = 1) #%>%
-        #dplyr::mutate(sdh_night_status = as.character(sdh_night_status)) #to make sure of consistent variable type for row binding
+        dplyr::mutate_if(is.numeric, round, digits = 1) %>%
+        dplyr::mutate(sdh_night_status = as.character(sdh_night_status),
+                      sdh_sleep_status = as.character(sdh_sleep_status)) #to make sure of consistent variable type for row binding
 
  }
 
